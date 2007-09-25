@@ -9,7 +9,8 @@ I'm wikifying these names, so when we do writeups they'll link right over.
 = Details =
 
   * *Physical*
-     * JengaPartyGame (Eugene, Daniel)
+     * *JengaPartyGame* (Eugene, Daniel)
+       This seems best to me. -- Zach
      * CharadesPartyGame (Daniel)
   * *Narrative*
      * DeusEx (Eugene)
