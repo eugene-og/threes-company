@@ -6,15 +6,13 @@ We need to play a total of ten games, one from each of ten categories, and do a 
 
 = Details =
 
-*Eugene*
-
-  * Physical: Jenga
-  * Narrative: Deus Ex
-  * Social: LambdaMOO
-  * Emergent Behavior: GTA
-  * Visual Aesthetics: Loop
-  * Accessibility: Bejeweled (Demo), Super Mario World
-  * Real time: HalfLife 2, Ragdoll Kung Fu (demo?)
-  * Management: Civilization 4 (_I have the real Civ4 --Zach_)
+  * Physical: Jenga (Eugene, Daniel) or Charades (Daniel)
+  * Narrative: Deus Ex (Eugene), Zork (Zach)
+  * Social: LambdaMOO, Mafia (Daniel, Zach)
+  * Emergent Behavior: GTA (Eugene), Sims (Zach)
+  * Visual Aesthetics: Loop (Eugene, Daniel)
+  * Accessibility: Bejeweled (Demo), Super Mario World (Eugene, Zach), Monopoly (John, Zach has)
+  * Real time: HalfLife 2, Ragdoll Kung Fu (demo?) (Eugene), Need For Speed, Quake 4 (John)
+  * Management: Carcassone (Daniel has), Civilization 4 (_I have the real Civ4 --Zach_), Scrabble (Zach has), Starcraft (John)
   * Concrete Content: Oregon Trail
-  * Creativity: Second Life
+  * Creativity: Second Life, Apples to Apples (Daniel has), 1000 White Blank Cards (Zach), SimCity 2000 (Zach, John)
