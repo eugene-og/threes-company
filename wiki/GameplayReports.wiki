@@ -4,15 +4,17 @@
 
 We need to play a total of ten games, one from each of ten categories, and do a writeup of its merits (roughly 3 graf).
 
+I'm wikifying these names, so when we do writeups they'll link right over.
+
 = Details =
 
-  * *Physical:* Jenga (Eugene),
-  * *Narrative:* Deus Ex (Eugene),
-  * *Social:* LambdaMOO (Eugene),
-  * *Emergent Behavior:* GTA (Eugene),
-  * *Visual Aesthetics:* Loop (Eugene),
-  * *Accessibility:* Bejeweled (Eugene - demo), Super Mario World (Eugene),
-  * *Real time:* HalfLife 2 (Eugene), Ragdoll Kung Fu (Eugene - demo),
-  * *Management:* Civilization 4 (Zach),
-  * *Concrete Content:* Oregon Trail (Eugene), 
-  * *Creativity:* Second Life (Eugene), 
+  * *Physical*: JengaPartyGame (Eugene, Daniel) or CharadesPartyGame (Daniel)
+  * *Narrative*: DeusEx (Eugene), ZorkTextGame (Zach)
+  * *Social*: LambdaMoo, MafiaCardGame (Daniel, Zach)
+  * *Emergent Behavior*: GrandTheftAuto (Eugene), TheSims (Zach)
+  * *Visual Aesthetics*: LoopGame (Eugene, Daniel)
+  * *Accessibility*: BeJeweled (Demo), SuperMarioWorld (Eugene, Zach), MonopolyBoardGame (John, Zach has)
+  * *Real time*: HalfLifeTwo, RagdollKungFu (demo?) (Eugene), NeedForSpeed, QuakeFour (John)
+  * *Management*: CarcassoneGame (Daniel has), CivilizationFour (_I have the real Civ4 --Zach_), ScrabbleBoardGame (Zach has), StarCraft (John)
+  * *Concrete Content*: OregonTrail (Eugene, Zach)
+  * *Creativity*: SecondLife, ApplesToApples (Daniel has), OneThousandBlankWhiteCards (Zach), SimCityTwoThousand (Zach, John)
