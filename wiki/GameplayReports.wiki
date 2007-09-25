@@ -6,7 +6,7 @@ We need to play a total of ten games, one from each of ten categories, and do a 
 
 I'm wikifying these names, so when we do writeups they'll link right over.
 
-*Update:* The ones that are ~~stricken through~~ are no longer on the list, for some reason.
+*Update:* The ones that are ~~stricken through~~ are no longer on the list, for some reason.  _@Zach, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4995/4995-RecommendedGames.doc is all the same games.  Am I looking at wrong list? -- John_
 
 = Details =
 
@@ -30,7 +30,7 @@ I'm wikifying these names, so when we do writeups they'll link right over.
      * SuperMarioWorld (Eugene, Zach)
      * ~~MonopolyBoardGame (John :o(, Zach has)~~
   * *Real time*
-     * HalfLifeTwo (Eugene)
+     * HalfLifeTwo (Eugene, John)
      * RagdollKungFu (demo?) (Eugene)
      * ~~NeedForSpeed (John :o()~~
      * ~~QuakeFour (John :o()~~
@@ -40,7 +40,7 @@ I'm wikifying these names, so when we do writeups they'll link right over.
      * ~~ScrabbleBoardGame (Zach has)~~
      * ~~StarCraft (John :o()~~
   * *Concrete Content*
-     * OregonTrail (Eugene, Zach)
+     * OregonTrail (Eugene, Zach, John-- can we still get this?)
   * *Creativity*
      * SecondLife (Eugene, John)
        Always wanted to try this.  Heard interface takes a day to get used to, though -- John
