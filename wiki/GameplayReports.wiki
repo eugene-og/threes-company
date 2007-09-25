@@ -11,8 +11,9 @@ I'm wikifying these names, so when we do writeups they'll link right over.
 = Details =
 
   * *Physical*
-     * *JengaPartyGame* (Eugene, Daniel)
+     * *JengaPartyGame* (Eugene, Daniel, John)
        This seems best to me. -- Zach
+       Sorry-- haven't used this before -- John
      * CharadesPartyGame (Daniel)
   * *Narrative*
      * DeusEx (Eugene)
@@ -21,28 +22,28 @@ I'm wikifying these names, so when we do writeups they'll link right over.
      * LambdaMoo (Eugene, Zach) -- this is online and free
      * MafiaCardGame (Daniel, Zach)
   * *Emergent Behavior*
-     * GrandTheftAuto (Eugene)
+     * GrandTheftAuto (Eugene, John)
      * ~~TheSims (Zach)~~
   * *Visual Aesthetics*
      * LoopGame (Eugene, Daniel)
   * *Accessibility*
      * BeJeweled (Demo) (Eugene, Zach)
      * SuperMarioWorld (Eugene, Zach)
-     * ~~MonopolyBoardGame (John, Zach has)~~
+     * ~~MonopolyBoardGame (John :o(, Zach has)~~
   * *Real time*
      * HalfLifeTwo (Eugene)
      * RagdollKungFu (demo?) (Eugene)
-     * ~~NeedForSpeed (John)~~
-     * ~~QuakeFour (John)~~
+     * ~~NeedForSpeed (John :o()~~
+     * ~~QuakeFour (John :o()~~
   * *Management*
      * CarcassoneGame (Daniel has)
      * CivilizationFour (Eugene) (_I have the full Civ4 --Zach_)
      * ~~ScrabbleBoardGame (Zach has)~~
-     * ~~StarCraft (John)~~
+     * ~~StarCraft (John :o()~~
   * *Concrete Content*
      * OregonTrail (Eugene, Zach)
   * *Creativity*
      * SecondLife (Eugene)
      * ApplesToApples (Daniel has)
      * OneThousandBlankWhiteCards (Zach)
-     * ~~SimCityTwoThousand (Zach, John)~~
+     * ~~SimCityTwoThousand (Zach, John :o()~~
