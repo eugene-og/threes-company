@@ -14,9 +14,9 @@ I'm wikifying these names, so when we do writeups they'll link right over.
      * CharadesPartyGame (Daniel)
   * *Narrative*
      * DeusEx (Eugene)
-     * ZorkTextGame (Zach)
+     * ZorkTextGame (Zach) -- this is online and free
   * *Social*
-     * LambdaMoo (Daniel, Zach)
+     * LambdaMoo (Eugene, Zach) -- this is online and free
      * MafiaCardGame (Daniel, Zach)
   * *Emergent Behavior*
      * GrandTheftAuto (Eugene)
