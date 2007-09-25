@@ -8,9 +8,7 @@ I'm wikifying these names, so when we do writeups they'll link right over.
 
 *Update:* The ones that are ~~stricken through~~ are no longer on the list, for some reason.
 
-_@Eugene, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4995/4995-RecommendedGames.doc it's all the same games.  Am I looking at wrong list? :o/ -- John_
-
-_The list I looked at is linked from the class page:  http://www1.cs.columbia.edu/~cs4995/files/Recommended_Games_Final_Fall_07.pdf --Eugene_
+_The list I looked at is linked from the class page:  http://www1.cs.columbia.edu/~cs4995/files/Recommended_Games_Final_Fall_07.pdf --Eugene_ Gotcha, thanks -- John.
 
 = Details = 
 (*m* - multiplayer, *d* - digital, *n* - non-digital)
