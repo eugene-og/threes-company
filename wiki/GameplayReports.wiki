@@ -17,8 +17,8 @@ _@Zach, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4
        This seems best to me. -- Zach
      * CharadesPartyGame (Daniel)
   * *Narrative*
-     * DeusEx (Eugene)
-     * Myst Baby! (John-- I don't have this though)
+     * DeusEx (Eugene, John)
+     * Myst (John-- I don't have this though)
      * ~~ZorkTextGame (Zach)~~
   * *Social*
      * LambdaMoo (Eugene, Zach, John) -- this is online and free
