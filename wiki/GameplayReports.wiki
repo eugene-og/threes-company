@@ -13,7 +13,6 @@ I'm wikifying these names, so when we do writeups they'll link right over.
   * *Physical*
      * *JengaPartyGame* (Eugene, Daniel, John)
        This seems best to me. -- Zach
-       Sorry-- haven't used this before -- John
      * CharadesPartyGame (Daniel)
   * *Narrative*
      * DeusEx (Eugene)
