@@ -8,7 +8,7 @@ I'm wikifying these names, so when we do writeups they'll link right over.
 
 *Update:* The ones that are ~~stricken through~~ are no longer on the list, for some reason.
 
-_@Zach, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4995/4995-RecommendedGames.doc it's all the same games.  Am I looking at wrong list? :o/ -- John_
+_@Eugene, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4995/4995-RecommendedGames.doc it's all the same games.  Am I looking at wrong list? :o/ -- John_
 
 = Details =
 
