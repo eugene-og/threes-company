@@ -31,7 +31,7 @@ _@Zach, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4
   * *Accessibility*
      * BeJeweled (Demo) (Eugene, Zach, John)
      * SuperMarioWorld (Eugene, Zach, John)
-     * ~~MonopolyBoardGame (John :o(, Zach has)~~
+     * ~~MonopolyBoardGame (John has :o(, Zach has)~~
   * *Real time*
      * HalfLifeTwo (Eugene, John)
      * RagdollKungFu (demo?) (Eugene)
