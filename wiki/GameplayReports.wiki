@@ -26,10 +26,10 @@ _@Zach, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4
      * GrandTheftAuto (Eugene, John)
      * ~~TheSims (Zach)~~
   * *Visual Aesthetics*
-     * LoopGame (Eugene, Daniel)
+     * LoopGame (Eugene, Daniel, John)
   * *Accessibility*
-     * BeJeweled (Demo) (Eugene, Zach)
-     * SuperMarioWorld (Eugene, Zach)
+     * BeJeweled (Demo) (Eugene, Zach, John)
+     * SuperMarioWorld (Eugene, Zach, John)
      * ~~MonopolyBoardGame (John :o(, Zach has)~~
   * *Real time*
      * HalfLifeTwo (Eugene, John)
@@ -37,7 +37,7 @@ _@Zach, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4
      * ~~NeedForSpeed (John :o()~~
      * ~~QuakeFour (John :o()~~
   * *Management*
-     * CarcassoneGame (Daniel has)
+     * CarcassoneGame (Daniel has, John)
      * CivilizationFour (Eugene) (_I have the full Civ4 --Zach_)
      * ~~ScrabbleBoardGame (Zach has)~~
      * ~~StarCraft (John :o()~~
