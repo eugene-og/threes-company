@@ -8,7 +8,9 @@ I'm wikifying these names, so when we do writeups they'll link right over.
 
 = Details =
 
-  * *Physical*: JengaPartyGame (Eugene, Daniel) or CharadesPartyGame (Daniel)
+  * *Physical*:
+     * JengaPartyGame (Eugene, Daniel)
+     * CharadesPartyGame (Daniel)
   * *Narrative*: DeusEx (Eugene), ZorkTextGame (Zach)
   * *Social*: LambdaMoo, MafiaCardGame (Daniel, Zach)
   * *Emergent Behavior*: GrandTheftAuto (Eugene), TheSims (Zach)
