@@ -8,15 +8,38 @@ I'm wikifying these names, so when we do writeups they'll link right over.
 
 = Details =
 
-  * *Physical*:
+  * *Physical*
      * JengaPartyGame (Eugene, Daniel)
      * CharadesPartyGame (Daniel)
-  * *Narrative*: DeusEx (Eugene), ZorkTextGame (Zach)
-  * *Social*: LambdaMoo, MafiaCardGame (Daniel, Zach)
-  * *Emergent Behavior*: GrandTheftAuto (Eugene), TheSims (Zach)
-  * *Visual Aesthetics*: LoopGame (Eugene, Daniel)
-  * *Accessibility*: BeJeweled (Demo), SuperMarioWorld (Eugene, Zach), MonopolyBoardGame (John, Zach has)
-  * *Real time*: HalfLifeTwo, RagdollKungFu (demo?) (Eugene), NeedForSpeed, QuakeFour (John)
-  * *Management*: CarcassoneGame (Daniel has), CivilizationFour (_I have the real Civ4 --Zach_), ScrabbleBoardGame (Zach has), StarCraft (John)
-  * *Concrete Content*: OregonTrail (Eugene, Zach)
-  * *Creativity*: SecondLife, ApplesToApples (Daniel has), OneThousandBlankWhiteCards (Zach), SimCityTwoThousand (Zach, John)
+  * *Narrative*
+     * DeusEx (Eugene)
+     * ZorkTextGame (Zach)
+  * *Social*
+     * LambdaMoo (Daniel, Zach)
+     * MafiaCardGame (Daniel, Zach)
+  * *Emergent Behavior*
+     * GrandTheftAuto (Eugene)
+     * TheSims (Zach)
+  * *Visual Aesthetics*
+     * LoopGame (Eugene, Daniel)
+  * *Accessibility*
+     * BeJeweled (Demo) (Eugene, Zach)
+     * SuperMarioWorld (Eugene, Zach)
+     * MonopolyBoardGame (John, Zach has)
+  * *Real time*
+     * HalfLifeTwo (Eugene)
+     * RagdollKungFu (demo?) (Eugene)
+     * NeedForSpeed (John)
+     * QuakeFour (John)
+  * *Management*
+     * CarcassoneGame (Daniel has)
+     * CivilizationFour (Eugene) (_I have the full Civ4 --Zach_)
+     * ScrabbleBoardGame (Zach has)
+     * StarCraft (John)
+  * *Concrete Content*
+     * OregonTrail (Eugene, Zach)
+  * *Creativity*
+     * SecondLife (Eugene)
+     * ApplesToApples (Daniel has)
+     * OneThousandBlankWhiteCards (Zach)
+     * SimCityTwoThousand (Zach, John)
