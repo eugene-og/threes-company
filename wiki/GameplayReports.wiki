@@ -4,15 +4,17 @@
 
 We need to play a total of ten games, one from each of ten categories, and do a writeup of its merits (roughly 3 graf).
 
+I'm wikifying these names, so when we do writeups they'll link right over.
+
 = Details =
 
-  * Physical: Jenga (Eugene, Daniel) or Charades (Daniel)
-  * Narrative: Deus Ex (Eugene), Zork (Zach)
-  * Social: LambdaMOO, Mafia (Daniel, Zach)
-  * Emergent Behavior: GTA (Eugene), Sims (Zach)
-  * Visual Aesthetics: Loop (Eugene, Daniel)
-  * Accessibility: Bejeweled (Demo), Super Mario World (Eugene, Zach), Monopoly (John, Zach has)
-  * Real time: HalfLife 2, Ragdoll Kung Fu (demo?) (Eugene), Need For Speed, Quake 4 (John)
-  * Management: Carcassone (Daniel has), Civilization 4 (_I have the real Civ4 --Zach_), Scrabble (Zach has), Starcraft (John)
-  * Concrete Content: Oregon Trail
-  * Creativity: Second Life, Apples to Apples (Daniel has), 1000 White Blank Cards (Zach), SimCity 2000 (Zach, John)
+  * Physical: JengaPartyGame (Eugene, Daniel) or CharadesPartyGame (Daniel)
+  * Narrative: DeusEx (Eugene), ZorkTextGame (Zach)
+  * Social: LambdaMoo, MafiaCardGame (Daniel, Zach)
+  * Emergent Behavior: GrandTheftAuto (Eugene), TheSims (Zach)
+  * Visual Aesthetics: LoopGame (Eugene, Daniel)
+  * Accessibility: BeJeweled (Demo), SuperMarioWorld (Eugene, Zach), MonopolyBoardGame (John, Zach has)
+  * Real time: HalfLifeTwo, RagdollKungFu (demo?) (Eugene), NeedForSpeed, QuakeFour (John)
+  * Management: CarcassoneGame (Daniel has), CivilizationFour (_I have the real Civ4 --Zach_), ScrabbleBoardGame (Zach has), StarCraft (John)
+  * Concrete Content: OregonTrail (Eugene, Zach)
+  * Creativity: SecondLife, ApplesToApples (Daniel has), OneThousandBlankWhiteCards (Zach), SimCityTwoThousand (Zach, John)
