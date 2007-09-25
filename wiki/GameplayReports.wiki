@@ -12,43 +12,44 @@ _@Eugene, where did you see this?  When I open up http://www1.cs.columbia.edu/~c
 
 _The list I looked at is linked from the class page:  http://www1.cs.columbia.edu/~cs4995/files/Recommended_Games_Final_Fall_07.pdf --Eugene_
 
-= Details =
+= Details = 
+(*m* - multiplayer, *d* - digital, *n* - non-digital)
 
   * *Physical*
-     * *JengaPartyGame* (Eugene, Daniel, John)
+     * *JengaPartyGame mn* (Eugene, Daniel, John)
        This seems best to me. -- Zach
-     * CharadesPartyGame (Daniel)
+     * CharadesPartyGame *mn* (Daniel)
   * *Narrative*
-     * DeusEx (Eugene, John)
-     * Myst (John-- I don't have this though)
+     * DeusEx *d* (Eugene, John)
+     * Myst *d* (John-- I don't have this though)
      * ~~ZorkTextGame (Zach)~~
   * *Social*
-     * LambdaMoo (Eugene, Zach, John) -- this is online and free
-     * MafiaCardGame (Daniel, Zach, John)
+     * LambdaMoo *md* (Eugene, Zach, John) -- this is online and free
+     * MafiaCardGame *mn* (Daniel, Zach, John)
   * *Emergent Behavior*
-     * GrandTheftAuto (Eugene, John)
+     * GrandTheftAuto *d* (Eugene, John)
      * ~~TheSims (Zach)~~
   * *Visual Aesthetics*
-     * LoopGame (Eugene, Daniel, John)
+     * LoopGame *d* (Daniel, John)
   * *Accessibility*
-     * BeJeweled (Demo) (Eugene, Zach, John)
-     * SuperMarioWorld (Eugene, Zach, John)
+     * BeJeweled (Demo) *d* (Eugene, Zach, John)
+     * SuperMarioWorld *d* (Eugene, Zach, John)
      * ~~MonopolyBoardGame (John has :o(, Zach has)~~
   * *Real time*
-     * HalfLifeTwo (Eugene, John)
-     * RagdollKungFu (demo?) (Eugene)
+     * HalfLifeTwo *d* (Eugene, John)
+     * RagdollKungFu *d* (demo?) (Eugene)
      * ~~NeedForSpeed (John :o()~~
      * ~~QuakeFour (John :o()~~
   * *Management*
-     * CarcassoneGame (Daniel has, John)
-     * CivilizationFour (Eugene) (_I have the full Civ4 --Zach_)
+     * CarcassoneGame *mn* (Daniel has, John)
+     * CivilizationFour *d* (Eugene) (_I have the full Civ4 --Zach_)
      * ~~ScrabbleBoardGame (Zach has)~~
      * ~~StarCraft (John :o()~~
   * *Concrete Content*
-     * OregonTrail (Eugene, Zach, John-- can we still get this?)
+     * OregonTrail *d* (Eugene, Zach, John-- can we still get this?)
   * *Creativity*
-     * SecondLife (Eugene, John)
+     * SecondLife *md* (Eugene, John)
        Always wanted to try this.  Heard interface takes a day to get used to, though -- John
-     * ApplesToApples (Daniel has, John)
-     * OneThousandBlankWhiteCards (Zach)
+     * ApplesToApples *mn* (Daniel has, John)
+     * OneThousandBlankWhiteCards *mn* (Zach)
      * ~~SimCityTwoThousand (Zach, John :o()~~
