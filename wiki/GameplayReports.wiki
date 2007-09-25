@@ -14,7 +14,7 @@ I'm wikifying these names, so when we do writeups they'll link right over.
      * CharadesPartyGame (Daniel)
   * *Narrative*
      * DeusEx (Eugene)
-     * ZorkTextGame (Zach) -- this is online and free
+     * ~~ZorkTextGame (Zach)~~
   * *Social*
      * LambdaMoo (Eugene, Zach) -- this is online and free
      * MafiaCardGame (Daniel, Zach)
@@ -26,16 +26,16 @@ I'm wikifying these names, so when we do writeups they'll link right over.
   * *Accessibility*
      * BeJeweled (Demo) (Eugene, Zach)
      * SuperMarioWorld (Eugene, Zach)
-     * MonopolyBoardGame (John, Zach has)
+     * ~~MonopolyBoardGame (John, Zach has)~~
   * *Real time*
      * HalfLifeTwo (Eugene)
      * RagdollKungFu (demo?) (Eugene)
-     * NeedForSpeed (John)
+     * ~~NeedForSpeed (John)~~
      * ~~QuakeFour (John)~~
   * *Management*
      * CarcassoneGame (Daniel has)
      * CivilizationFour (Eugene) (_I have the full Civ4 --Zach_)
-     * ScrabbleBoardGame (Zach has)
+     * ~~ScrabbleBoardGame (Zach has)~~
      * ~~StarCraft (John)~~
   * *Concrete Content*
      * OregonTrail (Eugene, Zach)
