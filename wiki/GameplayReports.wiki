@@ -18,10 +18,11 @@ _@Zach, where did you see this?  When I open up http://www1.cs.columbia.edu/~cs4
      * CharadesPartyGame (Daniel)
   * *Narrative*
      * DeusEx (Eugene)
+     * Myst Baby! (John-- I don't have this though)
      * ~~ZorkTextGame (Zach)~~
   * *Social*
-     * LambdaMoo (Eugene, Zach) -- this is online and free
-     * MafiaCardGame (Daniel, Zach)
+     * LambdaMoo (Eugene, Zach, John) -- this is online and free
+     * MafiaCardGame (Daniel, Zach, John)
   * *Emergent Behavior*
      * GrandTheftAuto (Eugene, John)
      * ~~TheSims (Zach)~~
