@@ -1,4 +1,4 @@
-#summary What games everyone is going to play.
+ #summary What games everyone is going to play.
 
 = Introduction =
 
@@ -20,7 +20,7 @@ I'm wikifying these names, so when we do writeups they'll link right over.
      * MafiaCardGame (Daniel, Zach)
   * *Emergent Behavior*
      * GrandTheftAuto (Eugene)
-     * TheSims (Zach)
+     * ~~TheSims (Zach)~~
   * *Visual Aesthetics*
      * LoopGame (Eugene, Daniel)
   * *Accessibility*
@@ -31,16 +31,16 @@ I'm wikifying these names, so when we do writeups they'll link right over.
      * HalfLifeTwo (Eugene)
      * RagdollKungFu (demo?) (Eugene)
      * NeedForSpeed (John)
-     * QuakeFour (John)
+     * ~~QuakeFour (John)~~
   * *Management*
      * CarcassoneGame (Daniel has)
      * CivilizationFour (Eugene) (_I have the full Civ4 --Zach_)
      * ScrabbleBoardGame (Zach has)
-     * StarCraft (John)
+     * ~~StarCraft (John)~~
   * *Concrete Content*
      * OregonTrail (Eugene, Zach)
   * *Creativity*
      * SecondLife (Eugene)
      * ApplesToApples (Daniel has)
      * OneThousandBlankWhiteCards (Zach)
-     * SimCityTwoThousand (Zach, John)
+     * ~~SimCityTwoThousand (Zach, John)~~
