@@ -28,7 +28,7 @@ _The list I looked at is linked from the class page:  http://www1.cs.columbia.ed
      * GrandTheftAuto *d* (Eugene, John)
      * ~~TheSims (Zach)~~
   * *Visual Aesthetics*
-     * LoopGame *d* (Daniel, John)
+     * LoopGame *d* (Daniel)
   * *Accessibility*
      * BeJeweled (Demo) *d* (Eugene, Zach, John)
      * SuperMarioWorld *d* (Eugene, Zach, John)
