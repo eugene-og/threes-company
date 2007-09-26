@@ -14,14 +14,13 @@ _The list I looked at is linked from the class page:  http://www1.cs.columbia.ed
 (*m* - multiplayer, *d* - digital, *n* - non-digital)
 
   * *Physical*
-     * *JengaPartyGame mn* (Eugene, Daniel, John)
-     * CharadesPartyGame *mn* (Daniel)
+     * CharadesPartyGame *mn* (John)
   * *Narrative*
      * *DeusEx *d* (Eugene)*
   * *Social*
      * *LambdaMoo *md* (Zach)*
   * *Emergent Behavior*
-     * GrandTheftAuto *d* (Eugene, John)
+     * GrandTheftAuto *d* (Eugene)
   * *Visual Aesthetics*
      * *LoopGame *d* (Daniel)*
   * *Accessibility*
