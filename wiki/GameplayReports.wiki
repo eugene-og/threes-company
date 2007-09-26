@@ -18,17 +18,16 @@ _The list I looked at is linked from the class page:  http://www1.cs.columbia.ed
        This seems best to me. -- Zach
      * CharadesPartyGame *mn* (Daniel)
   * *Narrative*
-     * DeusEx *d* (Eugene, John)
+     * *DeusEx *d* (Eugene)*
      * Myst *d* (John-- I don't have this though)
      * ~~ZorkTextGame (Zach)~~
   * *Social*
-     * LambdaMoo *md* (Eugene, Zach, John) -- this is online and free
-     * MafiaCardGame *mn* (Daniel, Zach, John)
+     * *LambdaMoo *md* (Zach)*
   * *Emergent Behavior*
      * GrandTheftAuto *d* (Eugene, John)
      * ~~TheSims (Zach)~~
   * *Visual Aesthetics*
-     * LoopGame *d* (Daniel)
+     * *LoopGame *d* (Daniel)*
   * *Accessibility*
      * BeJeweled (Demo) *d* (Eugene, Zach, John)
      * SuperMarioWorld *d* (Eugene, Zach, John)
@@ -39,15 +38,8 @@ _The list I looked at is linked from the class page:  http://www1.cs.columbia.ed
      * ~~NeedForSpeed (John :o()~~
      * ~~QuakeFour (John :o()~~
   * *Management*
-     * CarcassoneGame *mn* (Daniel has, John)
-     * CivilizationFour *d* (Eugene) (_I have the full Civ4 --Zach_)
-     * ~~ScrabbleBoardGame (Zach has)~~
-     * ~~StarCraft (John :o()~~
+     * *CivilizationFour *d* (Zach)*
   * *Concrete Content*
      * OregonTrail *d* (Eugene, Zach, John-- can we still get this?)
   * *Creativity*
-     * SecondLife *md* (Eugene, John)
-       Always wanted to try this.  Heard interface takes a day to get used to, though -- John
-     * ApplesToApples *mn* (Daniel has, John)
-     * OneThousandBlankWhiteCards *mn* (Zach)
-     * ~~SimCityTwoThousand (Zach, John :o()~~
+     * *OneThousandBlankWhiteCards *mn* (Dan)*
