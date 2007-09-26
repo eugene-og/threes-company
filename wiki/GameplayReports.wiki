@@ -15,31 +15,22 @@ _The list I looked at is linked from the class page:  http://www1.cs.columbia.ed
 
   * *Physical*
      * *JengaPartyGame mn* (Eugene, Daniel, John)
-       This seems best to me. -- Zach
      * CharadesPartyGame *mn* (Daniel)
   * *Narrative*
      * *DeusEx *d* (Eugene)*
-     * Myst *d* (John-- I don't have this though)
-     * ~~ZorkTextGame (Zach)~~
   * *Social*
      * *LambdaMoo *md* (Zach)*
   * *Emergent Behavior*
      * GrandTheftAuto *d* (Eugene, John)
-     * ~~TheSims (Zach)~~
   * *Visual Aesthetics*
      * *LoopGame *d* (Daniel)*
   * *Accessibility*
-     * BeJeweled (Demo) *d* (Eugene, Zach, John)
-     * SuperMarioWorld *d* (Eugene, Zach, John)
-     * ~~MonopolyBoardGame (John has :o(, Zach has)~~
+     * *SuperMarioWorld *d** (Zach)
   * *Real time*
-     * HalfLifeTwo *d* (Eugene, John)
-     * RagdollKungFu *d* (demo?) (Eugene)
-     * ~~NeedForSpeed (John :o()~~
-     * ~~QuakeFour (John :o()~~
+     * HalfLifeTwo *d* (John)
   * *Management*
      * *CivilizationFour *d* (Zach)*
   * *Concrete Content*
-     * OregonTrail *d* (Eugene, Zach, John-- can we still get this?)
+     * *OregonTrail *d** (Eugene)
   * *Creativity*
      * *OneThousandBlankWhiteCards *mn* (Dan)*
