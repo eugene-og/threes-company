@@ -14,22 +14,22 @@ _The list I looked at is linked from the class page:  http://www1.cs.columbia.ed
 (*m* - multiplayer, *d* - digital, *n* - non-digital)
 
   * *Physical*
-     * CharadesPartyGame *mn* (John)
+     * *CharadesPartyGame mn (John)*
   * *Narrative*
-     * *DeusEx *d* (Eugene)*
+     * *DeusEx d (Eugene)*
   * *Social*
-     * *LambdaMoo *md* (Zach)*
+     * *LambdaMoo md (Zach)*
   * *Emergent Behavior*
-     * GrandTheftAuto *d* (Eugene)
+     * *GrandTheftAuto d (Eugene)*
   * *Visual Aesthetics*
-     * *LoopGame *d* (Daniel)*
+     * *LoopGame d (Daniel)*
   * *Accessibility*
-     * *SuperMarioWorld *d** (Zach)
+     * *SuperMarioWorld d (Zach)*
   * *Real time*
-     * HalfLifeTwo *d* (John)
+     * *HalfLifeTwo d (John)*
   * *Management*
-     * *CivilizationFour *d* (Zach)*
+     * *CivilizationFour d (Zach)*
   * *Concrete Content*
-     * *OregonTrail *d** (Eugene)
+     * *OregonTrail d (Eugene)*
   * *Creativity*
-     * *OneThousandBlankWhiteCards *mn* (Dan)*
+     * *OneThousandBlankWhiteCards mn (Dan)*
