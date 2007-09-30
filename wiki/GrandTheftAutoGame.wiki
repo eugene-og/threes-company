@@ -1,4 +1,3 @@
-#labels GrandTheftAutoSanAndreasGameplayReport
 ===Grand Theft Auto: San Andreas Gameplay Report ===
 
 Eugene Kozhukalo 
