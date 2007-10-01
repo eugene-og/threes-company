@@ -1,6 +1,5 @@
-#summary Charades
 
-= Charades Gameplay Report =
+== Charades Gameplay Report ==
 
 John Morales
 
