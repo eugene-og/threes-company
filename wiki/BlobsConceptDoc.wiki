@@ -5,3 +5,15 @@ Blobs have a size. Every blob grows slightly each turn. When two blobs (from dif
 When a blob activates its force, there is a physics forces type interaction (like gravity) between it and other blobs within a certain radius. For example, if a pusher blob is next to another blob and activates its force, both blobs will be pushed apart from each other. There will be anchor points in a few places on the board. Any blob on an anchor point can't be moved by a blob force, but can still affect other blobs.
 
 Blob forces can be used to sling blobs across the board, suck in weak enemy blobs, defend an area, etc.
+
+Platform: PC possibly with Java installed
+
+Points of Differentiation: We don't know of any game like this. It's different than traditional strategy games like Chess and Checkers in that it involves physics simulations so you can't really plan a few moves ahead and it will depend more on intuition and experience.
+
+Inspirational Sources: Chess, Conway's Game of Life, Starcraft (just kidding)
+
+Target Audience: ?
+
+Competitive Products: ?
+
+Visual Style: Simple, cartoony.
