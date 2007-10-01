@@ -1,3 +1,4 @@
+#summary Charades Gameplay Report
 
 == Charades Gameplay Report ==
 
