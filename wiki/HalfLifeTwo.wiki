@@ -1,7 +1,5 @@
 #summary Half Life 2 Gameplay Report
 
-== Half Life 2 Gameplay Report ==
-
 John Morales
 
 Playing Valve’s Half Life 2 was an impressive experience over other first-person shooters I’ve played before.  It began by first downloading the 750+ MB demo from online and from there, registering a new username and password and providing my email address to the game’s manage system, “Steam”, before I was ready to play.  The demo consists of two “Chapters” (game levels), which I played through from start to finish.  Surprisingly, each level was quite different from the other.  The first was a mostly open and bright area that actually had no gunplay or “enemies” whatsoever.  Instead, the level’s focus seemed to be on showcasing the game’s excellent use of physics; practically all of the virtual world’s objects are interactive and their behaviors are modeled with extreme accuracy to real life.  For example, bottles and boxes shatter with realistic motion into conceivably sized pieces, and the remaining pieces can be picked up, too.  A few brief challenges of picking things up within the script serve to highlight the depth of the physics accuracy throughout the level.  On the other hand, the second level starts the player off with a variety of weapons and on closed-off, menacing terrain.  Here the use of gravity and physics to complement the game play continues, but the theme is darker and more typical of a FPS.
