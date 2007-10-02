@@ -1,0 +1,92 @@
+<html>
+<head>
+
+<title>Blobs Primitif</title>
+
+<link rel="stylesheet" type="text/css" href="blobs.css" />
+<script langugage="JavaScript" src="blobs.js"></script>
+
+</head>
+<body onload="initialDrawBlobs()">
+
+<h1>Blobs Primitif</h1>
+
+<table border="2" cellpadding="5">
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>Type</th>
+		<th>P<sub>x</sub></th>
+		<th>P<sub>y</sub></th>
+		<th>Using the force?</th>
+		<th>V<sub>x</sub></th>
+		<th>V<sub>y</sub></th>
+		<th>Radius</th>
+		<th>Force strength</th>
+		<th>Status</th>
+	</tr>
+</thead>
+
+<tbody id="data">
+	<tr>
+		<td>0</td>
+		<td>Pull</td>
+		<td>-3.000</td>
+		<td>-3.000</td>
+		<td>No</td>
+		<td>0.000</td>
+		<td>0.000</td>
+		<td>1.000</td>
+		<td>1.000</td>
+		<td>Alive</td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>Push</td>
+		<td>3.000</td>
+		<td>-3.000</td>
+		<td>Yes</td>
+		<td>0.000</td>
+		<td>0.000</td>
+		<td>1.000</td>
+		<td>0.75</td>
+		<td>Alive</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>Push</td>
+		<td>-3.000</td>
+		<td>3.000</td>
+		<td>No</td>
+		<td>0.000</td>
+		<td>0.000</td>
+		<td>1.000</td>
+		<td>1.000</td>
+		<td>Alive</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>Pull</td>
+		<td>3.000</td>
+		<td>3.000</td>
+		<td>No</td>
+		<td>0.000</td>
+		<td>0.000</td>
+		<td>1.000</td>
+		<td>1.000</td>
+		<td>Alive</td>
+	</tr>
+</tbody>
+</table>
+
+<br/>
+
+<button onclick="takeTurn()">Take a turn</button>
+
+<br/><br/>
+
+SVG render window:<br/>
+<iframe id="svg" src="blank.svg" style="width: 300px; height: 300px; border: 2px solid black"></iframe>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+body,td,th {
+	font-family: Courier New;
+	font-size: 11px;
+}
+
+th {
+	background: #ffc;
+}
+
+tr.dead {
+	color: #ccc;
+}
