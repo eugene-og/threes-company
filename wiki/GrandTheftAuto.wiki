@@ -1,4 +1,5 @@
 #summary Grand Theft Auto: San Andreas Gameplay Report
+#labels Deprecated
 
 ===Grand Theft Auto: San Andreas Gameplay Report ===
 
