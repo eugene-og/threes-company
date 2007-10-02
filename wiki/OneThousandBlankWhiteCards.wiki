@@ -1,4 +1,5 @@
 #summary 1000 Blank White Cards Gameplay Report
+#labels Deprecated
 
 Three of us sat down to play. None of us had played before, so we turned to Wikipedia to learn how. We learned that there aren't any rules, but there are some conventions such as each player having five cards and playing and drawing cards on their turn. We were to start off with blank cards, write some stuff on them, and then begin "play". Throughout the game we wrote on some more blank cards, we wound up ignoring some of the cards played such as the "give me all your money" card, and an endgame state was defined by a card which said the first player to get rid of all their cards wins. And we did get a winner.
 
