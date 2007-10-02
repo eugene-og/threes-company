@@ -1,4 +1,5 @@
 #summary Gameplay report for Civilization IV.
+#labels Deprecated
 
 I came to Civilization IV as a veteran of the series, having played Civilization II as a kid, and Civilization III right up to the present day. Both of those games worked with a straightforward ruleset and a large corpus of buildings and units that worked within (and created exceptions to) those rules. All of these games shipped with a giant fold-out poster illustrating the game's mechanics, with trees of scientific advancements and unit upgrades.
 
