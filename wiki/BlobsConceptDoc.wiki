@@ -1,10 +1,15 @@
 = Blobs Concept Doc =
 
 == Intro ==
-Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board with one of each kind of blob. On their turn, a player can move or turn a blob, split a blob, or use a blob's ability. Players try to kill each others' blobs. When a player runs out of blobs, they loose.
+Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board with one of each kind of blob. On their turn, a player can move or turn a blob, split a blob, or use a blob's ability. Players try to kill each others' blobs. When a player runs out of blobs, they lose.
+
+_EK: How far can a blob move per turn?  Does a blob's speed play a part?_
 
 == The Board ==
 The board is a square with each side being 15 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be fine so it will seem to players that they can move in pretty much any direction they want. If a blob moves off the edge of the board or falls through a hole in the board, it dies. The board can have features on it such as anchor points (discussed below).
+
+_EK: What is moving off the edge - touching the edge, more than half the blob is outside, all of it?_
+_EK: How about holes decreasing in size each turn (perhaps the same rate as blobs increase?_
 
 == Units ==
 Blobs have a size. Every blob grows slightly each turn until they reach a maximum size of 4 times the starting size. When two blobs (from different teams) touch, the larger destroys the smaller. When blobs split, each child blob is half the size of the parent blob.
@@ -17,13 +22,19 @@ There are a few kinds of blobs:
 
 When pusher or puller blobs activate their forces, there is a physics forces type interaction (like gravity) between it and other blobs within a certain radius. For example, if a pusher blob is next to another blob and activates its force, both blobs will be pushed apart from each other. If a blob is on an anchor point, it can't be moved by a blob force, but can still affect other blobs. Blob forces can be used to sling blobs across the board, suck in weak enemy blobs, keep blobs out of an area, etc.
 
+_EK:  Do forces decrease gradually with range, or just terminate abruptly after a certain range?_
+
 A death ray blob can only use its ability if it hasn't moved in 9 turns. When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed.
+
+_EK: Death ray range idea - perhaps bigger blobs with death ray ability can shoot it farther?_
 
 An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If the board is split into more than one pieces and there are blobs on more than one piece, the player that split the board looses.
 
 == Strategy ==
 Want to use big blobs for greater killing power vs want to use many blobs for abilities.
 ...
+
+_EK: I don't see a clear use for smaller blobs yet... perhaps quick death-ray carriers (if we decide that smaller blobs move faster)?  Quick anchor point capturers?  How to defend against a small blob death-ray rush?  Or, how to defend against a huge death-ray blob that is too big for a trap hole and hard to push around in general due to its size? _
 
 == One Minute of Gameplay ==
 
@@ -43,9 +54,10 @@ Elements of Blobs are inspired by a number of games. The turn based strategy pla
 
 == Target Audience ==
 ?
+_EK: I would say everyone... 8 to 80 years old?_
 
 == Competitive Products ==
-?
+_EK: Worms is a good comparable game, actually_
 
 == Visual Style ==
 Blobs is about thinking with abstract shapes and forces. There's nothing about it that needs to look realistic. It will have a simple and cartoony look and feel. Although the game is turn-based, we'd like to give a sense of motion and the forces involved, which we'll reflect with passive arrows and simple animated blobs. Simplicity is important, since ever-multiplying pieces will otherwise complicate the field of view.
