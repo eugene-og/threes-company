@@ -1,4 +1,5 @@
 #summary What games everyone is going to play.
+#labels Deprecated
 
 = Games We Played =
 (*m* - multiplayer, *d* - digital, *n* - non-digital)
