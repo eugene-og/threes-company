@@ -1,4 +1,5 @@
 #summary Gameplay report for LambdaMOO.
+#labels Deprecated
 
 I'd played MUDs before, but never MOOs. (Due to LambdaMOO's multi-day wait for characters, I'm the only one who managed to get an account.) As an object-oriented programmer, this was immediately pretty interesting. I'd once tried to create an HTTP equivalent of this sort of game, but never followed through on it -- at least now I know that one exists.
 
