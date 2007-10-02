@@ -1,3 +1,5 @@
+#summary Blobs Concept document - work in progress
+
 = Blobs Concept Doc =
 
 == Intro ==
