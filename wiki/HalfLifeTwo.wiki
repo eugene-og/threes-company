@@ -1,4 +1,5 @@
 #summary Half Life 2 Gameplay Report
+#labels Deprecated
 
 John Morales
 
