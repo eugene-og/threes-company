@@ -26,7 +26,11 @@ Want to use big blobs for greater killing power vs want to use many blobs for ab
 ...
 
 == One Minute of Gameplay ==
-?
+
+  * Players start with one of each blob; we'll call our players Blue and Red.
+  * Turns move fairly quickly. Blue starts by setting his death ray blob in motion toward Red's pieces.
+  * Red reacts by moving forward his exploding blob.
+  * ?
 
 == Platform ==
 Blobs will be a PC game that runs on at least Windows and Linux. If we decide to write it in Java, it should be playable on any J2SE platform.
@@ -44,4 +48,4 @@ Elements of Blobs are inspired by a number of games. The turn based strategy pla
 ?
 
 == Visual Style ==
-Blobs is about thinking with abstract shapes and forces. There's nothing about it that needs to look realistic. It will have a simple and cartoony look and feel.
+Blobs is about thinking with abstract shapes and forces. There's nothing about it that needs to look realistic. It will have a simple and cartoony look and feel. Although the game is turn-based, we'd like to give a sense of motion and the forces involved, which we'll reflect with passive arrows and simple animated blobs. Simplicity is important, since ever-multiplying pieces will otherwise complicate the field of view.
