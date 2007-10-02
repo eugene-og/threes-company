@@ -1,4 +1,5 @@
 #summary Deus Ex Gameplay Report
+#labels Deprecated
 
 ===Deus Ex Gameplay Report===
 
