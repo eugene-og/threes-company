@@ -1,4 +1,5 @@
 #summary Charades Gameplay Report
+#labels Deprecated
 
 John Morales
 
