@@ -1,4 +1,5 @@
 #summary Oregon Trail Gameplay Report
+#labels Deprecated
 
 ===Oregon Trail Gameplay Report===
 
