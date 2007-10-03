@@ -38,7 +38,7 @@ When pusher or puller blobs activate their abilities/forces, there is a force ex
 
 _DB: Radius inversly proportional to size?_
 
-_JM: @DB, I don't know.  I guess i'm worried that making biggies having +range +power +eating -speed is making them a fair-enough match for little guys.  I could see largest puller hoovering everyone up becoming quite popular.  (Which could be fine.  After all, they could be death ray'ed.)_
+_JM: @DB, I don't know.  I guess i'm worried if biggies having +range +power +eating -speed is making them a fair-enough match for little guys.  I could see the largest puller/pusher hoovering everyone up/pushing everyone off becoming the predominate strategy.  (Which could be fair.  After all, they could just get death ray'ed.)_
 
 *Death Rays*
 
