@@ -53,6 +53,8 @@ Want to use big blobs for greater killing power vs want to use many blobs for ab
 
 _EK: I don't see a clear use for smaller blobs yet... perhaps quick death-ray carriers (if we decide that smaller blobs move faster)?  Quick anchor point capturers?  How to defend against a small blob death-ray rush?  Or, how to defend against a huge death-ray blob that is too big for a trap hole and hard to push around in general due to its size? _
 
+_DB: Does this still apply?_
+
 == One Minute of Gameplay ==
 
   * Players each start with 2 push blobs, 2 pull blobs, one explosion and one death ray blob; we'll call our players Blue and Red.
