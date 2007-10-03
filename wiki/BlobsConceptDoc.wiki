@@ -5,18 +5,15 @@
 == Intro ==
 Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; fully charged Activity Point meters. On their turn, a player can move or turn a blob, split a blob, or use a blob's ability, with each action drawing Activity Points (AP) from their available Activity Point pool.  The amount of points used per action is prorated by a number of factors and are accrue after each turn.  A player's turn is finished when the player has spent all their AP on blob actions or optionally selects Done to carry the remaining AP into their next turn.  Players try to kill each others' blobs using a variety of tactics discussed in further detail below.  A player wins when they have destroyed all enemy blobs.
 
-_EK: How far can a blob move per turn?  Does a blob's speed play a part?_
-
-_JM: I think we can discuss the specifics in the units section and leave the intro high-level._
+_DB: Do we want to allow rollover AP?_
 
 == The Board ==
 The board is a square with each side being 20 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
 
-~~_EK: What is moving off the edge - touching the edge, more than half the blob is outside, all of it?_~~
-
-
 == Units ==
-Blobs have a size and grow slightly each turn until they reach a maximum size of 3 times the starting diameter.  Blobs may also be split in half provided the resulting blobs are larger than the minimum allowed blob size of half the starting diameter.  When two blobs from opposing teams touch, the larger destroys the smaller. 
+Blobs have a size. The starting units will be size 1. Every blob grows slightly each turn until they reach a maximum size of 3. When two blobs (from different teams) touch, the larger destroys the smaller. Two blobs from the same team can't overlap. If one is moving towards another, it stops when it hits it. When blobs split, each child blob is half the size of the parent blob. Blobs must be at least size 1 to split.
+
+When blob abilities are activated, they stay active for one round (until it's that players turn again).
 
 There are a few kinds of blobs:
  * Pusher blobs
@@ -26,23 +23,22 @@ There are a few kinds of blobs:
 
 *Force Blobs*
 
-When pusher or puller blobs activate their forces, there is a physical force exerted on itself and other blobs within a radius inversely proportional its size and force directly proportional to its size. For example, if a large pusher blob has small blob very close by, and the pusher activates its force, both blobs will be pushed apart from each other with the small blog being moved farther.  A blob is on a board anchor point where it can't be moved by a blob force, but can still affect other blobs. Blob forces play a central role to the game strategy and can be used to sling blobs across the board, suck in weak enemy blobs, push and pull blobs off board edges (being careful not the sacrifice their own blobs), keep blobs out of an area, push blobs into the line of fire of death rays, etc.
+When pusher or puller blobs activate their abilities/forces, there is a force exerted in all directions between it and other blobs. For example, if a pusher blob is next to another blob and activates its force, both blobs will be pushed apart from each other. The force and the radius are proportional to the blob's size. The force will more strongly affect closer blobs. For example, if a large pusher blob has small blob very close by, and the pusher activates its force, both blobs will be pushed apart from each other with the small blog being moved farther. If a blob is on an anchor point, it can't be moved by a blob force, but can still affect other blobs. Blob forces play a central role to the game strategy and can be used to sling blobs across the board, suck in weak enemy blobs, push and pull blobs off board edges (being careful not the sacrifice their own blobs), keep blobs out of an area, push blobs into the line of fire of death rays, etc.
 
-~~_EK:  Do forces decrease gradually with range, or just terminate abruptly after a certain range?_~~
+_DB: Radius inversly proportional to size?_
 
 *Death Rays*
 
-A death ray blob can only use its ability if it hasn't moved in 5 turns. When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed.  Death ray range is 
-
-_EK: Death ray range idea - perhaps bigger blobs with death ray ability can shoot it farther?_
+When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed. Death ray blobs must "charge" for a few turns by not moving before their ability can be activated. The distance the rays extend and the charging time is proportional to the size of the blob.
 
 _JM: Actually, i kinda like the idea of range being inversely proportional to size-- this might be a nice way to beef up small blobs by making them both quick and long range.  This could make more of an equality between large and small blobs.  trying to get enough death rays to sniper frequently, or even guerrilla-like warfare, could be two play strategies by themselves.
 
 *Exploding*
 
-An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob of equal or lesser size that falls into the hole dies. If the board is split into more than one piece and there are blobs on more than one piece, the player that split the board looses.
+An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If a blob who is at least as big as the hole moves onto it, the blob fills in the hole with itself, disappearing in the process. After that, any blob can once again move over that area.
 
-_EK: How about holes decreasing in size each turn (perhaps the same rate as blobs increase?_
+== Movement and Action ==
+Each turn, a player gets 10 action points which they can spend to move blobs or use their abilities. Moving a blob costs the distance to move X the size of the blob. Other abilities will have a cost proportional to how powerful the blob or action is.
 
 == Strategies ==
 Want to use big blobs for greater killing power vs want to use many blobs for abilities.
@@ -72,11 +68,10 @@ We don't know of any game like this. It's different than traditional strategy ga
 Elements of Blobs are inspired by a number of games. The turn based strategy play is inspired by Chess, the use of "physical" bodies interacting is from Pool, and the other interesting abilities and visual style is from Worms.
 
 == Target Audience ==
-?
-_EK: I would say everyone... 8 to 80 years old?_
+Everyone... 8 to 80 years old.
 
 == Competitive Products ==
-_EK: Worms is a good comparable game, actually_
+Worms.
 
 == Visual Style ==
 Blobs is about thinking with abstract shapes and forces. There's nothing about it that needs to look realistic. It will have a simple and cartoony look and feel. Although the game is turn-based, we'd like to give a sense of motion and the forces involved, which we'll reflect with passive arrows and simple animated blobs. Simplicity is important, since ever-multiplying pieces will otherwise complicate the field of view.
