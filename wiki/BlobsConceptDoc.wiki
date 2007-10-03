@@ -13,7 +13,7 @@ _JM: I think we can discuss the specifics in the units section and leave the int
 The board is a square with each side being 20 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
 
 ~~_EK: What is moving off the edge - touching the edge, more than half the blob is outside, all of it?_~~
-_EK: How about holes decreasing in size each turn (perhaps the same rate as blobs increase?_
+
 
 == Units ==
 Blobs have a size and grow slightly each turn until they reach a maximum size of 3 times the starting diameter.  Blobs may also be split in half provided the resulting blobs are larger than the minimum allowed blob size of half the starting diameter.  When two blobs from opposing teams touch, the larger destroys the smaller. 
@@ -40,7 +40,9 @@ _JM: Actually, i kinda like the idea of range being inversely proportional to si
 
 *Exploding*
 
-An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If the board is split into more than one pieces and there are blobs on more than one piece, the player that split the board looses.
+An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob of equal or lesser size that falls into the hole dies. If the board is split into more than one piece and there are blobs on more than one piece, the player that split the board looses.
+
+_EK: How about holes decreasing in size each turn (perhaps the same rate as blobs increase?_
 
 == Strategies ==
 Want to use big blobs for greater killing power vs want to use many blobs for abilities.
