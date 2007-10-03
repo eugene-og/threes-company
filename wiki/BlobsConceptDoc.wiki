@@ -48,7 +48,7 @@ _EK: I don't see a clear use for smaller blobs yet... perhaps quick death-ray ca
   * Blue sees what's happening and, anticipating being sucked into a hole next turn, activates his 2 pushes to repel the incoming threat.  He also activates his death ray on one of Red's pullers, effectively cutting their sucking power in half.
   * ...
 
-_JM: I'm starting to wonder about this minute of gameplay.. it seems like you could take Red and Blue's internal thoughts pretty far.  Like, each bullet could be 3 sentences about current positioning, choices, intentions, and then consequences-- kind of like Bernie was looking for?_
+_JM: I'm starting to wonder about this minute of gameplay.. it seems like you could take Red and Blue's internal thoughts pretty far.  Like, each bullet could be 4 sentences about current positioning, player choices, their intentions, and then consequences-- kind of directly like Bernie was looking for?_
 
 == Platform ==
 Blobs will be a PC game that runs on at least Windows and Linux. If we decide to write it in Java, it should be playable on any J2SE platform.
