@@ -44,7 +44,7 @@ _JM: @DB, I don't know.  I guess i'm worried if biggies having +range +power +ea
 
 When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed. Death ray blobs must "charge" for a few turns by not moving before their ability can be activated. The distance the rays extend and the charging time is proportional to the size of the blob.
 
-_JM: Actually, i kinda like the idea of range being inversely proportional to size-- this might be a nice way to beef up small blobs by making them both quick and long range.  This could make more of an equality between large and small blobs.  Trying to get enough death rays to sniper frequently, or even guerrilla-like warfare, could be two play strategies by themselves.
+_JM: Actually, i kinda like the idea of range being inversely proportional to size-- this might be a nice way to beef up small blobs by making them both quick and long range.  It could make more of an equality between large and small blobs.  Trying to get enough death rays to sniper frequently from afar, or even guerrilla-like warfare, could be two play strategies by themselves.
 
 *Exploding*
 
