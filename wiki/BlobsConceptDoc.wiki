@@ -3,12 +3,22 @@
 = Blobs Concept Doc =
 
 == Intro ==
-Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; fully charged Activity Point meters. On their turn, a player can move or turn a blob, split a blob, or use a blob's ability, with each action drawing Activity Points (AP) from their available Activity Point pool.  The amount of points used per action is prorated by a number of factors and are accrue after each turn.  A player's turn is finished when the player has spent all their AP on blob actions or optionally selects Done to carry the remaining AP into their next turn.  Players try to kill each others' blobs using a variety of tactics discussed in further detail below.  A player wins when they have destroyed all enemy blobs.
+Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; and a fully charged Action Point meter. Each turn, a player gets 10 (additional?) action points which they can spend to move blobs or use their abilities.
+The amount of points used per action is prorated by a number of factors and are accrue after each turn. Players try to kill each others' blobs using a variety of tactics discussed in further detail below. A player wins when they have destroyed all enemy blobs.
 
-_DB: Do we want to allow rollover AP?_
+_DB: I'm not sure rollover AP are a good idea. Players might hoard them and after a while have a crazy turn where they can move 100 units. Do we want that?_
 
 == The Board ==
 The board is a square with each side being 20 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
+
+== Movement and Action ==
+Each turn, a player gets 10 action points which they can spend to:
+ * move blobs,
+ * use blob abilities,
+ * split blobs, or
+ * start or stop a blob's growth.
+The cost in AP to move a blob is the distance to move x the size of the blob. Other abilities will have a cost proportional to how powerful the blob or action is.
+A player's turn is finished when the player has spent all their AP on blob actions or they can end it earlier to carry the remaining AP into their next turn. 
 
 == Units ==
 Blobs have a size. The starting units will be size 1. Every blob grows slightly each turn until they reach a maximum size of 3. When two blobs (from different teams) touch, the larger destroys the smaller. Two blobs from the same team can't overlap. If one is moving towards another, it stops when it hits it. When blobs split, each child blob is half the size of the parent blob. Blobs must be at least size 1 to split.
@@ -36,9 +46,6 @@ _JM: Actually, i kinda like the idea of range being inversely proportional to si
 *Exploding*
 
 An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If a blob who is at least as big as the hole moves onto it, the blob fills in the hole with itself, disappearing in the process. After that, any blob can once again move over that area.
-
-== Movement and Action ==
-Each turn, a player gets 10 action points which they can spend to move blobs or use their abilities. Moving a blob costs the distance to move X the size of the blob. Other abilities will have a cost proportional to how powerful the blob or action is.
 
 == Strategies ==
 Want to use big blobs for greater killing power vs want to use many blobs for abilities.
