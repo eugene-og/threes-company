@@ -9,8 +9,12 @@ _DB: I'm not sure rollover AP are a good idea. Players might hoard them and afte
 
 _JM: @DB, Sorry, didn't get to clarify.  By "fully recharged" meter i was trying to imply that the meter is capped at the initial value of 10 (or whatever initial value we decide).  So in effect, you only get a portion of your meter back per turn up to a max.  The idea being, if you spend all your points in one shot, you've got to wait some turns until you're back up to full again.  Where i was going with this is that the points seem like they could be an implicit delay mechanism for using powerful actions like a death ray, rather than a fixed number of turns.  For example, maybe we make a death ray use 9 points and only recover 2 points per turn.  (Exact weighting to change i'm sure, but you get the idea.)_
 
+_ZvS: It might make sense to refill empty meters quicker than full ones -- it'll probably be very easy to run your meter out inadvertently by moving a blob too far (dunno how this works within the game's interface, which will matter)._
+
 == The Board ==
 The board is a square with each side being 20 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
+
+_ZvS: 20 seems *very* small, if blobs can grow to a size of 3, and there's 4 blobs on the ground at the beginning. I'd be more inclined to use a number like 50._
 
 == Movement and Action ==
 Each turn, a player gets 10 action points which they can spend to:
@@ -34,6 +38,8 @@ There are a few kinds of blobs:
  * Death ray blobs
  * Exploding blobs
 
+_ZvS: Half the size is sqrt(2) times the radius._
+
 *Force Blobs*
 
 When pusher or puller blobs activate their abilities/forces, there is a force exerted in all directions between it and other blobs. For example, if a pusher blob is next to another blob and activates its force, both blobs will be pushed apart from each other. The force and the radius are proportional to the blob's size. The force will more strongly affect closer blobs and smaller blobs. For example, if a large pusher blob has small blob very close by, and the pusher activates its force, both blobs will be pushed apart from each other with the small blog being moved farther. If a blob is on an anchor point, it can't be moved by a blob force, but can still affect other blobs. Blob forces play a central role to the game strategy and can be used to sling blobs across the board, suck in weak enemy blobs, push and pull blobs off board edges (being careful not the sacrifice their own blobs), keep blobs out of an area, push blobs into the line of fire of death rays, etc.
@@ -44,6 +50,8 @@ _JM: @DB, I don't know.  I guess i'm worried if biggies having +range +power +ea
 
 _DB @ JM: I think that makes sense. Or making force strength inversely proportional to size._
 
+_ZvS: I agree... bigs have the power to kill through collision already, which shouldn't be underestimated._
+
 *Death Rays*
 
 When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed. Death ray blobs must "charge" for a few turns by not moving before their ability can be activated. The distance the rays extend and the charging time is proportional to the size of the blob.
@@ -53,6 +61,8 @@ _JM: Actually, i kinda like the idea of range being inversely proportional to si
 *Exploding*
 
 An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If a blob who is at least as big as the hole moves onto it, the blob fills in the hole with itself, disappearing in the process. After that, any blob can once again move over that area.
+
+_ZvS: Touching any part of the hole == falling in?_
 
 == Strategies ==
 Want to use big blobs for greater killing power vs want to use many blobs for abilities.
