@@ -1,4 +1,4 @@
-#summary Blobs Concept document - work in progress
+#summary Blobs Concept Document
 
 = Blobs Concept Doc =
 
