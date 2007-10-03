@@ -21,8 +21,10 @@ Each turn, a player gets 10 action points which they can spend to:
 The cost in AP to move a blob is the distance to move x the size of the blob. Other abilities will have a cost proportional to how powerful the blob or action is.
 A player's turn is finished when the player has spent all their AP on blob actions. They can also end it earlier to carry the remaining AP into their next turn. 
 
+When two blobs (from different teams) touch, the larger destroys the smaller. Two blobs from the same team can't overlap. If one is moving towards another, it stops when they collide. 
+
 == Units ==
-Blobs have a size. The starting units will be size 1. Every blob grows slightly each turn until they reach a maximum size of 3. When two blobs (from different teams) touch, the larger destroys the smaller. Two blobs from the same team can't overlap. If one is moving towards another, it stops when it hits it. When blobs split, each child blob is half the size of the parent blob. Blobs must be at least size 1 to split.
+Blobs have a size. The starting units will be size 1. Every blob grows slightly each turn until they reach a maximum size of 3. When blobs split, each child blob is half the size of the parent blob. Blobs must be at least size 1 to split.
 
 When blob abilities are activated, they stay active for one round (until it's that players turn again).
 
