@@ -3,7 +3,7 @@
 = Blobs Concept Doc =
 
 == Intro ==
-Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; and a fully charged Action Point meter. Each turn, a player gets 2 additional action points to their Action Point meter up to a maximum of 10, which they can spend to move blobs or use their abilities.  The amount of points used per action is prorated by a number of factors and are accrue after each turn. Players try to kill each others' blobs using a variety of tactics discussed in further detail below. A player wins when they have destroyed all enemy blobs.
+Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; and a fully charged Action Point meter. Each turn, a player gets 2 additional action points to their Action Point meter up to a maximum of 10, which they can spend to move blobs or use their abilities.  The amount of points used per action is prorated by the action's strength with points accruing after each turn. Players try to kill each others' blobs using a variety of tactics discussed in further detail below. A player wins when they have destroyed all enemy blobs.
 
 _DB: I'm not sure rollover AP are a good idea. Players might hoard them and after a while have a crazy turn where they can move 100 units. Do we want that?_
 
