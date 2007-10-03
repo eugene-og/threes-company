@@ -32,7 +32,7 @@ A death ray blob can only use its ability if it hasn't moved in 5 turns. When a 
 
 _EK: Death ray range idea - perhaps bigger blobs with death ray ability can shoot it farther?_
 
-_JM: Actually, i kinda like the idea of range being inversely proportional to size-- this might be a nice way to beef up small blobs by making their range longer.  Combine this with their increased speed and now there's more of a separation and equality between large and small blobs.  trying to get enough death rays to sniper frequently could be a strategy by itself.
+_JM: Actually, i kinda like the idea of range being inversely proportional to size-- this might be a nice way to beef up small blobs by making them both quick and long range.  This could make more of an equality between large and small blobs.  trying to get enough death rays to sniper frequently, or even guerrilla-like warfare, could be two play strategies by themselves.
 
 An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If the board is split into more than one pieces and there are blobs on more than one piece, the player that split the board looses.
 
