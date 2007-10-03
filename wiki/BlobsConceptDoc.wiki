@@ -6,6 +6,7 @@
 Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; fully charged Activity Point meters. On their turn, a player can move or turn a blob, split a blob, or use a blob's ability, with each action drawing Activity Points (AP) from their available Activity Point pool.  The amount of points used per action is prorated by a number of factors and are accrue after each turn.  A player's turn is finished when the player has spent all their AP on blob actions or optionally selects Done to carry the remaining AP into their next turn.  Players try to kill each others' blobs using a variety of tactics discussed in further detail below.  A player wins when they have destroyed all enemy blobs.
 
 _EK: How far can a blob move per turn?  Does a blob's speed play a part?_
+
 _JM: I think we can discuss the specifics in the units section and leave the intro high-level._
 
 == The Board ==
