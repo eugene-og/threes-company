@@ -42,6 +42,8 @@ _DB: Radius inversly proportional to size?_
 
 _JM: @DB, I don't know.  I guess i'm worried if biggies having +range +power +eating -speed is making them a fair-enough match for little guys.  I could see the largest puller/pusher hoovering everyone up/pushing everyone off becoming the predominate strategy.  (Which could be fair.  After all, they could just get death ray'ed.)_
 
+_DB @ JM: I think that makes sense. Or making force strength inversely proportional to size._
+
 *Death Rays*
 
 When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed. Death ray blobs must "charge" for a few turns by not moving before their ability can be activated. The distance the rays extend and the charging time is proportional to the size of the blob.
