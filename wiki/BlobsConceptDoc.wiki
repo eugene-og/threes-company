@@ -52,6 +52,8 @@ _DB @ JM: I think that makes sense. Or making force strength inversely proportio
 
 _ZvS: I agree... bigs have the power to kill through collision already, which shouldn't be underestimated._
 
+_ZvS: *Problem:* Can we maybe convert between pullers to pushers somehow (high cost)? If both players are stuck with pushers, even if they can move them, we get veeeery deadlocky._
+
 *Death Rays*
 
 When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed. Death ray blobs must "charge" for a few turns by not moving before their ability can be activated. The distance the rays extend and the charging time is proportional to the size of the blob.
