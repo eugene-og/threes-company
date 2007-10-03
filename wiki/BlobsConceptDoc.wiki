@@ -79,6 +79,8 @@ We don't know of any game like this. It's different than traditional strategy ga
 == Inspirational Sources ==
 Elements of Blobs are inspired by a number of games. The turn based strategy play is inspired by Chess, the use of "physical" bodies interacting is from Pool, and the other interesting abilities and visual style is from Worms.
 
+_EK: The old game I was talking about that our game reminded me of is Berzerk: http://en.wikipedia.org/wiki/Berzerk _
+
 == Target Audience ==
 Everyone... 8 to 80 years old.
 
