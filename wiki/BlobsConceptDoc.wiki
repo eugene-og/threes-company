@@ -7,7 +7,7 @@ Blobs is a turn based strategy game played on a 2D board. 2 players start at opp
 
 _DB: I'm not sure rollover AP are a good idea. Players might hoard them and after a while have a crazy turn where they can move 100 units. Do we want that?_
 
-_JM: Sorry, didn't get to clarify.  By "fully recharged" meter i was trying to imply that the meter is capped at the initial value of 10 (or whatever initial value we decide).  So in effect, you only get a portion of your meter back per turn up to a max.  The idea being, if you spend all your points in one shot, you've got to wait some turns until you're back up to full again.  Where i was going with all this is that the points seems like it could be an implicit delay mechanism for using powerful actions like a death ray.  For example, maybe you make the death ray 9 points and only recover 2 points per turn.
+_JM: @DB, Sorry, didn't get to clarify.  By "fully recharged" meter i was trying to imply that the meter is capped at the initial value of 10 (or whatever initial value we decide).  So in effect, you only get a portion of your meter back per turn up to a max.  The idea being, if you spend all your points in one shot, you've got to wait some turns until you're back up to full again.  Where i was going with this is that the points seems like it could be an implicit delay mechanism for using powerful actions like a death ray rather than a fixed number of turns.  For example, maybe you make the death ray 9 points and only recover 2 points per turn.  (Exact weighting i'm sure to change, but you get the idea.)_
 
 == The Board ==
 The board is a square with each side being 20 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
@@ -38,11 +38,13 @@ When pusher or puller blobs activate their abilities/forces, there is a force ex
 
 _DB: Radius inversly proportional to size?_
 
+_JM: @DB, not sure if making biggie blogs have more range and more power, yet only slower, is making them a fair enough match for the little guys.  :o/_
+
 *Death Rays*
 
 When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed. Death ray blobs must "charge" for a few turns by not moving before their ability can be activated. The distance the rays extend and the charging time is proportional to the size of the blob.
 
-_JM: Actually, i kinda like the idea of range being inversely proportional to size-- this might be a nice way to beef up small blobs by making them both quick and long range.  This could make more of an equality between large and small blobs.  trying to get enough death rays to sniper frequently, or even guerrilla-like warfare, could be two play strategies by themselves.
+_JM: Actually, i kinda like the idea of range being inversely proportional to size-- this might be a nice way to beef up small blobs by making them both quick and long range.  This could make more of an equality between large and small blobs.  Trying to get enough death rays to sniper frequently, or even guerrilla-like warfare, could be two play strategies by themselves.
 
 *Exploding*
 
