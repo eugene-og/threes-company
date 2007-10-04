@@ -69,7 +69,7 @@ Want to use big blobs for greater killing power vs want to use many blobs for ab
   * Blue decides to focus on a death ray strategy, splitting his death ray in half for increased numbers and for the longer range.
   * Red thinks about going for a explode-and-pull strategy; he splits his exploding blob to have a spare, and advances his pullers behind one exploding blob.
   * Blue sees what's happening and, anticipating being sucked into a hole next turn, activates a pusher to repel the incoming threat.  He also activates his death ray on one of Red's pullers, effectively cutting their sucking power in half.
-  * Red, now rethinking his strategy, stops his exploding and puller blobs and splits the remaining puller.  With some Activity Points still remaining, and knowing that Blue is mostly powerless after using the death ray, Red decides to save the points for a stronger coordinated strike next turn.
+  * Red, now rethinking his strategy, stops his exploding and puller blobs and splits the remaining puller.  With some Activity Points still remaining, and knowing that Blue is mostly powerless after using the death ray, Red decides to save the points for a stronger, coordinated strike next turn.
   * Blue knows he's left the door open for an attack.  He uses the few Activity Points accrued since last turn to disburse his units out of any formation, anticipating a death ray coming on Red's next turn.
   * Red, finding an opportunity for maximum havok, unleashes a guerrilla attack-and-retreat with his death ray...
 
