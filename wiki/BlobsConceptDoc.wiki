@@ -5,19 +5,11 @@
 == Intro ==
 Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; and a fully charged Action Point meter. Each turn, a player gets 2 additional action points to their Action Point meter up to a maximum of 10, which they can spend to move blobs or use their abilities.  The amount of points used per action is prorated by the action's strength with points accruing after each turn. Players try to kill each others' blobs using a variety of tactics discussed in further detail below. A player wins when they have destroyed all enemy blobs.
 
-_DB: I'm not sure rollover AP are a good idea. Players might hoard them and after a while have a crazy turn where they can move 100 units. Do we want that?_
-
-_JM: @DB, Sorry, didn't get to clarify.  By "fully recharged" meter i was trying to imply that the meter is capped at the initial value of 10 (or whatever initial value we decide).  So in effect, you only get a portion of your meter back per turn up to a max.  The idea being, if you spend all your points in one shot, you've got to wait some turns until you're back up to full again.  Where i was going with this is that the points seem like they could be an implicit delay mechanism for using powerful actions like a death ray, rather than a fixed number of turns.  For example, maybe we make a death ray use 9 points and only recover 2 points per turn.  (Exact weighting to change i'm sure, but you get the idea.)_
-
-_ZvS: It might make sense to refill empty meters quicker than full ones -- it'll probably be very easy to run your meter out inadvertently by moving a blob too far (dunno how this works within the game's interface, which will matter)._
-
 == The Board ==
-The board is a square with each side being 20 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
-
-_ZvS: 20 seems *very* small, if blobs can grow to a size of 3, and there's 4 blobs on the ground at the beginning. I'd be more inclined to use a number like 50._
+The board is a square with each side being 25 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
 
 == Movement and Action ==
-Each turn, a player gets 10 action points which they can spend to:
+Each turn, a player gets 2 action points (which they can accrue up to a maximum of 10) which they can spend to:
  * move blobs,
  * use blob abilities,
  * split blobs, or
