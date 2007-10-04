@@ -3,10 +3,13 @@
 = Blobs Concept Doc =
 
 == Intro ==
-Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; and a fully charged Action Point meter. Each turn, a player gets 2 additional action points to their Action Point meter up to a maximum of 10, which they can spend to move blobs or use their abilities.  The amount of points used per action is prorated by the action's strength with points accruing after each turn. Players try to kill each others' blobs using a variety of tactics discussed in further detail below. A player wins when they have destroyed all enemy blobs.
+Blobs is a turn based strategy game played on a 2D board. 2 players start at opposite ends of the board, each armed with: 2 push blobs; 2 pull blobs; one explosion blob; one death ray blob; and 10 action points. Each turn, a player gets 2 additional action points up to a maximum of 10, which they can spend to move blobs or use their abilities.  The amount of points used per action depends on the action's strength with points accruing after each turn. Players try to kill each others' blobs using a variety of tactics discussed in further detail below. A player wins when they have destroyed all enemy blobs.
 
 == The Board ==
-The board is a square with each side being 25 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be granular such that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players may utilize the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
+The board is a square with each side being 25 times the diameter of a starting blob. It does not have any grid visible to the players. The resolution of the board will be fine grained so that it will seem to players that they can move within a full 360 degree range of motion.  Blobs whose center crosses any edge of the board fall to their doom. Players can change the board by creating holes into which enemy blobs may be pushed or pulled.  The board can have features on it as well, such as anchor points (discussed below).
+
+== Turns ==
+A turn consists of a set up phase where the player decides how they will spend their AP, and an execution phase where the moves are carried out and the physics simulated. Conceptually, the second phase is just the execution of the first. In the game though, the player will see all sorts of stuff happening in realtime as the moves are executed and it will be interesting to watch.
 
 == Movement and Action ==
 Each turn, a player gets 2 action points (which they can accrue up to a maximum of 10) which they can spend to:
