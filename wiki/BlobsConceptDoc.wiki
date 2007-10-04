@@ -52,11 +52,12 @@ When a death ray blob is activated, it emits death rays in 4 directions- forward
 
 An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If a blob who is at least as big as the hole moves onto it, the blob fills in the hole with itself, disappearing in the process. After that, any blob can once again move over that area.
 
-=== Balance Between ===
-
-The force and the radius are proportional to the blob's size. The force will more strongly affect closer blobs and smaller blobs. For example, if a large pusher blob has small blob very close by, and the pusher activates its force, both blobs will be pushed apart from each other with the small blog being moved farther. 
-
-The distance the rays extend and the charging time is proportional to the size of the blob.
+=== Balance ===
+The cost to move a blob (in AP) is proportional to its size. Favors small blobs.
+The killing power of a blob when it touches another is its size. Favors big blobs.
+The force a force blob exters is inversly proportional to its size (and the distance between the blobs being pushed). Favors small blobs.
+The amount a blob moves when subjected to a force is inversly proportional to its size. Favors big blobs.
+The range of a death ray blob's rays is inversly proportional to its size. Favors small blobs.
 
 == Strategies ==
 Want to use big blobs for greater killing power vs want to use many blobs for abilities.
