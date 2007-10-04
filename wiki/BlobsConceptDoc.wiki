@@ -26,11 +26,13 @@ When two blobs (from different teams) touch, the larger destroys the smaller. Tw
 
 During simulation, blobs move with speed inversely proportional to their size.
 
-== Units ==
-Blobs have a size. The starting units will be size 1. Every blob grows slightly each turn until they reach a maximum size of 3. When blobs split, each child blob is half the size of the parent blob. Blobs must be at least size 1 to split.
-
 When blob abilities are activated, they stay active for one round (until it's that players turn again).
 
+== Units ==
+=== Growth ===
+Blobs have a size. The starting units will be size 1. Every blob grows slightly each turn until they reach a maximum size of 3. When blobs split, each child blob is half the size of the parent blob. Blobs must be at least size 1 to split.
+
+=== Types ===
 There are a few kinds of blobs:
  * Pusher blobs
  * Puller blobs
@@ -42,17 +44,19 @@ There are a few kinds of blobs:
 When pusher or puller blobs activate their abilities/forces, there is a force exerted in all directions between it and other blobs. For example, if a pusher blob is next to another blob and activates its force, both blobs will be pushed apart from each other. 
 If a blob is on an anchor point, it can't be moved by a blob force, but can still affect other blobs. Blob forces play a central role to the game strategy and can be used to sling blobs across the board, suck in weak enemy blobs, push and pull blobs off board edges (being careful not the sacrifice their own blobs), keep blobs out of an area, push blobs into the line of fire of death rays, etc.
 
-The force and the radius are proportional to the blob's size. The force will more strongly affect closer blobs and smaller blobs. For example, if a large pusher blob has small blob very close by, and the pusher activates its force, both blobs will be pushed apart from each other with the small blog being moved farther. 
-
 *Death Rays*
 
 When a death ray blob is activated, it emits death rays in 4 directions- forwards, backwards, left, and right where forwards is the direction it last moved in or was turned to. Any blob on either team that is touched by a death ray is killed. Activating the death ray will have a high AP cost (9?).
 
-The distance the rays extend and the charging time is proportional to the size of the blob.
-
 *Exploding*
 
 An exploding blob destroys itself, creating a hole in the board that's the size of the blob. Any other blob that falls into the hole dies. If a blob who is at least as big as the hole moves onto it, the blob fills in the hole with itself, disappearing in the process. After that, any blob can once again move over that area.
+
+=== Balance Between ===
+
+The force and the radius are proportional to the blob's size. The force will more strongly affect closer blobs and smaller blobs. For example, if a large pusher blob has small blob very close by, and the pusher activates its force, both blobs will be pushed apart from each other with the small blog being moved farther. 
+
+The distance the rays extend and the charging time is proportional to the size of the blob.
 
 == Strategies ==
 Want to use big blobs for greater killing power vs want to use many blobs for abilities.
