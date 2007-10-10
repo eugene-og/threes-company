@@ -18,4 +18,7 @@ public interface GameObject {
 	 * obj. (The inverse of that force will presumably be applied to
 	 * this object. */
 	public Force actOn(GameObject obj);
+	
+	public void die();
+	public boolean isDead();
 }

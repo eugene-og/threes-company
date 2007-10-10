@@ -67,9 +67,18 @@ public abstract class Blob implements GameObject {
 		return _owner;
 	}
 	
+	public boolean isDead() {
+		return _dead;
+	}
+	
+	public void die() {
+		_dead = true;
+	}
+	
 	protected Coordinate _position;
 	protected double _weight;
 	protected double _radius;
 	protected Player _owner;
+	protected boolean _dead;
 }
 
