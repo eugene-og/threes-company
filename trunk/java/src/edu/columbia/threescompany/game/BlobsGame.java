@@ -27,6 +27,7 @@ public class BlobsGame {
 		
 		/* Do multiple players have blobs on the board? */
 		for (GameObject obj : blobs) if (obj.getOwner().id != Player.NOBODY &&
+										 !obj.isDead() &&
 										 !obj.getOwner().equals(firstPlayer))
 			return false;
 		

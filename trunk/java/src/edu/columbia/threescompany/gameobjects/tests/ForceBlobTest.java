@@ -4,6 +4,7 @@ import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.Force;
 import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.PullBlob;
+import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.tests.BaseTestCase;
 
 public class ForceBlobTest extends BaseTestCase {

@@ -2,7 +2,9 @@ package edu.columbia.threescompany.tests;
 
 import junit.framework.TestCase;
 
-public class BaseTestCase extends TestCase {
+public abstract class BaseTestCase extends TestCase {
+	public static final double EPSILON = .0001;
+	
 	protected void assertNegative(int x) {
 		assertNegative((double) x);
 	}
@@ -25,6 +27,11 @@ public class BaseTestCase extends TestCase {
 
 	protected void assertPositive(double x) {
 		assertTrue("Value should be positive: " + x, x > 0.0);
+	}
+
+	protected void assertRoughlyEqual(String message, double a, double b) {
+		assertTrue(message + " (values should be equal)",
+				   Math.abs(a - b) < EPSILON);
 	}
 
 }
