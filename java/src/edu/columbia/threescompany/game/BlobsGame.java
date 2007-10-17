@@ -12,6 +12,7 @@ public class BlobsGame {
 	
 	public static void main(String[] args) {
 		// TODO get player information
+		List<Player> players = null;
 		// TODO start up graphics engine
 		// TODO generate blobs
 		while (!gameOver()) {
