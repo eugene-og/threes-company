@@ -4,22 +4,32 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.graphics.Gui;
 
 public class BlobsGame {
+	private Gui gui;
+	
 	public BlobsGame() {
 		blobs = new LinkedList<GameObject>();
+		gui = new Gui();
 	}
 	
-	public static void main(String[] args) {
+	public void runGame() {
 		// TODO get player information
 		List<Player> players = null;
 		// TODO start up graphics engine
 		// TODO generate blobs
-		while (!gameOver()) {
+		while (true) { //!gameOver()) {
+			gui.drawState(blobs);
 			// TODO redraw board
 			// TODO get a move from somebody
 			// TODO act on it
-		}
+		}		
+	}
+	
+	public static void main(String[] args) {
+		BlobsGame game = new BlobsGame();
+		game.runGame();
 	}
 	
 	private static boolean gameOver() {
