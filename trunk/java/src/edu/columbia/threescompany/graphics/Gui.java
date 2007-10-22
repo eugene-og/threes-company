@@ -18,6 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
@@ -66,6 +67,17 @@ public class Gui extends JFrame {
 	public void drawState(List<GameObject> gameState)
 	{
 		_board.drawState(gameState);
+	}
+
+	public GameMove getMove() {
+		// TODO UI returns a list of actions
+		return null;
+	}
+
+	public Player getPlayer() {
+		// TODO Ask the user what they want, send it back
+		// (name, color, etc.)
+		return null;
 	}
 	
 }
