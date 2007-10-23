@@ -2,7 +2,7 @@ package edu.columbia.threescompany.client;
 
 import java.util.List;
 
-import edu.columbia.threescompany.client.communication.DisplayMoveMessage;
+import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
 import edu.columbia.threescompany.client.communication.ServerConnection;
 import edu.columbia.threescompany.client.communication.ServerMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
@@ -48,14 +48,14 @@ public class BlobsClient {
 			_gameState.updateActivePlayer(activePlayer);
 			if (_gameState.isLocalPlayer(activePlayer)) {
 				GameMove move = _gui.getMoveFor(activePlayer);
-				_gameState.executeMove(move);
+				_gameState.executeMove(move, _gui);
 				_serverConnection.sendMove(move, _gameState);
 			} else {
 				// TODO Display "Someone else's turn" or something
 			}
-		} else if (message instanceof DisplayMoveMessage) {
-			// TODO Animate this move by sending the GUI several
-			// successive new gameStates...
+		} else if (message instanceof ExecuteMoveMessage) {
+			_gameState.executeMove(((ExecuteMoveMessage) message).getMove(),
+								   _gui);
 		}
 	}
 }

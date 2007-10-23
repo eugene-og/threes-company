@@ -7,4 +7,8 @@ public class GameParameters {
 	
 	public static final double DEATH_RAY_RANGE_MULTIPLIER = 3;
 	public static final double BOARD_SIZE = 20;
+	
+	/* How many pieces moves are broken down into (basically 1/dt).
+	 * I may later replace this with integrals. --ZvS */
+	public static final double GRANULARITY_OF_PHYSICS = 100;
 }
