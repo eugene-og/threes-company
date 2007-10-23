@@ -157,7 +157,6 @@ public class Gui extends JFrame {
 	private void setAP(int ap) {
 //		for (int i=9; i >= 0; i++)
 //			_ap_panes[i].setBackground(GuiConstants.BG_COLOR);
-		// TODO: need to know player's current AP.
 	}
 	
 	/**

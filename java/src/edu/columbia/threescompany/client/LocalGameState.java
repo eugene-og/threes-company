@@ -8,7 +8,8 @@ import edu.columbia.threescompany.gameobjects.GameObject;
 public class LocalGameState {
 	private List<GameObject> _gameObjects;
 	private List<Player> _players;
-	private Player _localPlayer;
+	private List<Player> _localPlayers;
+	private Player _activePlayer;
 	
 	public List<GameObject> getObjects() {
 		return _gameObjects;
@@ -19,6 +20,21 @@ public class LocalGameState {
 	}
 	
 	public int getAP() {
-		return _localPlayer.getAbilityPoints();
+		return _activePlayer.getAbilityPoints();
+	}
+
+	public Player getActivePlayer() {
+		return _activePlayer;
+	}
+	
+	public void updateActivePlayer(int id) {
+		for (Player player : _players) {
+			if (id == player.getId()) {
+				_activePlayer = player;
+				return;
+			}
+		}
+		throw new RuntimeException("Can't set active player to " + id +
+								   ", that player doesn't exist!");
 	}
 }
