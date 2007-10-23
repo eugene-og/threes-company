@@ -2,9 +2,14 @@ package edu.columbia.threescompany.client;
 
 import java.util.List;
 
+import edu.columbia.threescompany.game.PhysicalMove;
+import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.gameobjects.Force;
 import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.graphics.Gui;
 
 public class LocalGameState {
 	private List<GameObject> _gameObjects;
@@ -12,6 +17,45 @@ public class LocalGameState {
 	private List<Player> _localPlayers;
 	private Player _activePlayer;
 	
+	public void executeMove(GameMove move, Gui gui) {
+		/* t is our time variable -- basically, we execute GRANULARITY tiny
+		 * moves, sequentially. */
+		for (int t = 0; t < GameParameters.GRANULARITY_OF_PHYSICS; t++) {
+			for (EventMove instantEvent : move.instantMovesAt(t))
+				instantEvent.execute();
+			for (PhysicalMove granularEvent : move.granularMovesAt(t))
+				granularEvent.execute();
+			
+			applyForces();
+			checkCollisions();
+			
+			if (gui != null) {
+				gui.drawState(this);
+				try {
+					/* TODO: Adjust this value so moves animate nicely. */
+					Thread.sleep(20);
+				} catch (InterruptedException exception) {}
+			}
+		}
+	}
+	
+	private void checkCollisions() {
+		for (GameObject obj1 : _gameObjects)
+		for (GameObject obj2 : _gameObjects)
+			obj1.checkCollision(obj2);
+	}
+
+	private void applyForces() {
+		for (GameObject obj1 : _gameObjects)
+		for (GameObject obj2 : _gameObjects) {
+			Force f = obj1.actOn(obj2);
+			
+			/* Newton's 3rd law: */
+			obj1.applyForce(f.inverse());
+			obj2.applyForce(f);
+		}
+	}
+
 	public List<GameObject> getObjects() {
 		return _gameObjects;
 	}
@@ -41,8 +85,4 @@ public class LocalGameState {
 		return false;
 	}
 
-	public void executeMove(GameMove move) {
-		// TODO Auto-generated method stub
-		
-	}
 }

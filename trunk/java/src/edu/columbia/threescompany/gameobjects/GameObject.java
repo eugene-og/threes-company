@@ -21,6 +21,9 @@ public interface GameObject extends Serializable {
 	 * this object. */
 	public Force actOn(GameObject obj);
 	
+	/* Things that don't die can ignore die events. */
 	public void die();
 	public boolean isDead();
+	
+	public void checkCollision(GameObject rhs);
 }

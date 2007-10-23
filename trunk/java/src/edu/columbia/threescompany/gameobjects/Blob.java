@@ -75,6 +75,23 @@ public abstract class Blob implements GameObject {
 		_dead = true;
 	}
 	
+	public void checkCollision(GameObject rhs) {
+		if (!collidingWith(rhs)) return;
+		if (rhs.getOwner() == _owner)
+			elasticReboundFrom(rhs);
+		else	/* Opponent's smaller blob */
+			if (rhs.getRadius() < _radius) rhs.die();
+	}
+
+	private void elasticReboundFrom(GameObject rhs) {
+		// TODO Figure out the physics of this
+	}
+
+	private boolean collidingWith(GameObject obj) {
+		double distance = _position.distanceFrom(obj.getPosition());
+		return (distance <= _radius + obj.getRadius());
+	}
+
 	protected Coordinate _position;
 	protected double _weight;
 	protected double _radius;
