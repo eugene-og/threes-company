@@ -6,6 +6,7 @@ import edu.columbia.threescompany.game.Player;
 
 public class DeathRayBlob extends Blob {
 	private static final long serialVersionUID = 4191070966886734000L;
+	private boolean _activated;
 	
 	public DeathRayBlob(double x, double y, double radius, Player owner) {
 		super(x, y, radius, owner);
@@ -17,7 +18,12 @@ public class DeathRayBlob extends Blob {
 		recalculateStrength();
 	}
 
+	public void activate(boolean activated) {
+		_activated = activated;	
+	}
+	
 	public Force actOn(GameObject obj) {
+		if (!_activated) return Force.NULL_FORCE;
 		if (_lastMove == null) return Force.NULL_FORCE;
 		
 		Coordinate pos = obj.getPosition();

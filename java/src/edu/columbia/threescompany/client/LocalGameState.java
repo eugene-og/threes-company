@@ -7,6 +7,7 @@ import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.common.Force;
+import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
 import edu.columbia.threescompany.graphics.Gui;
@@ -34,6 +35,7 @@ public class LocalGameState {
 		
 		applyForces();
 		checkCollisions();
+		deactivateBlobs();
 		
 		if (gui != null) {
 			gui.drawState(this);
@@ -61,6 +63,12 @@ public class LocalGameState {
 		}
 	}
 
+	private void deactivateBlobs() {
+		for (GameObject obj : _gameObjects)
+			if (obj instanceof Blob)
+				((Blob) obj).activate(false);
+	}
+	
 	public List<GameObject> getObjects() {
 		return _gameObjects;
 	}

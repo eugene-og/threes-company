@@ -22,6 +22,10 @@ public class BlobTestTools {
 		public Force actOn(GameObject obj) {
 			return new Force(0, 0);
 		}
+		
+		public void activate(boolean activated) {
+			/* nada */
+		}
 	}
 
 }
