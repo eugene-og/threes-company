@@ -11,6 +11,7 @@ import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.graphics.PlayerInfoGui;
+import edu.columbia.threescompany.graphics.PreGameGui;
 
 public class BlobsClient {
 	private static LocalGameState _gameState;
@@ -34,9 +35,18 @@ public class BlobsClient {
 	}
 
 	private static void doPlayerSetup() {
-		// TODO: We're locked into Hotseat for now
-		List<Player> players = PlayerInfoGui.getPlayers(2);
-		System.out.println("Success: " + players.get(0).getName());
+		GameType gameType = PreGameGui.getGameType();
+		List<Player> players;
+		
+		if (gameType == GameType.HOTSEAT) {
+			players = PlayerInfoGui.getPlayers(2);
+		} else if (gameType == GameType.NETWORK) {
+			players = PlayerInfoGui.getPlayers(1);
+		} else {
+			throw new RuntimeException("Unknown game type!");
+		}
+
+		// TODO send these to the server
 	}
 	
 	private static void handleMessage(ServerMessage message) {
