@@ -45,6 +45,7 @@ public class BlobsClient {
 			_gui.drawState(_gameState);
 		} else if (message instanceof TurnChangeMessage) {
 			int activePlayer = ((TurnChangeMessage) message).whoseTurn();
+			_gameState.updateActivePlayer(activePlayer);
 			if (_gameState.isLocalPlayer(activePlayer)) {
 				GameMove move = _gui.getMoveFor(activePlayer);
 				_gameState.executeMove(move);

@@ -22,19 +22,4 @@ public class BlobsServer {
 			}
 		}
 	}
-
-	public static boolean gameOver() {
-//		if (_blobs.size() == 0) return true;
-//		Player firstPlayer = MainGameThread._blobs.get(0).getOwner();
-//		
-//		/* Do multiple players have blobs on the board? */
-//		for (GameObject obj : MainGameThread._blobs)
-//			if (obj.getOwner().id != Player.NOBODY && !obj.isDead() &&
-//				!obj.getOwner().equals(firstPlayer))
-//					return false;
-//		
-//		/* Nope, somebody won. */
-//		return true;
-		return false;
-	}
 }
