@@ -32,8 +32,7 @@ public class BlobsCommandHandler implements ClientCommandHandler {
 		} else if (command.equals("status")) {
 			sendPlayersReadyStatus(gameState, handler);
 		} else {
-			handler.sendClientMsg(handler.getName());
-			handler.sendClientMsg("You Sent: "+command);
+			broadcastMessage(handler, ((PlayerServerData)handler.getClientData()).getHandle() + ": " + command);
 		}
 		
 		/* check if all players are ready */
@@ -55,6 +54,15 @@ public class BlobsCommandHandler implements ClientCommandHandler {
 		for (Iterator<ClientHandler> iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
 			ClientHandler toHandler = (ClientHandler) iterator.next();
 			toHandler.sendClientMsg("START GAME!!");	
+		}
+	}
+	
+	private void broadcastMessage(ClientHandler handler, String msg) throws IOException {
+		for (Iterator<ClientHandler> iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
+			ClientHandler toHandler = (ClientHandler) iterator.next();
+			if (!toHandler.equals(handler)) {
+				toHandler.sendClientMsg(msg);
+			}
 		}
 	}
 		
