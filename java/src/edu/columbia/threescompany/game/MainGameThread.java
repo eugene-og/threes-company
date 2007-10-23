@@ -18,7 +18,7 @@ public class MainGameThread implements Runnable {
 		this.players = players;
 	}
 	
-	public void runGame() {
+	public void run() {
 		// Event processing loop / Game loop
 		while(!gameOver()) {
 			// Wake up twice a second and see if any players have anything for us to do.
@@ -72,9 +72,5 @@ public class MainGameThread implements Runnable {
 
 	protected boolean gameOver() {
 		return false; // we will increase market share by never allowing games to end
-	}
-
-	public void run() {
-		runGame();
 	}
 }
