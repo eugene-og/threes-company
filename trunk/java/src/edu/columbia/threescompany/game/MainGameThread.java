@@ -7,13 +7,13 @@ import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.players.Player;
 
-public class BlobsClient implements Runnable {
+public class MainGameThread implements Runnable {
 	protected int turn;
 	protected List<Player> players;
 	private Gui _gui = new Gui();
 	public List<GameObject> _blobs = new LinkedList<GameObject>();
 	
-	public BlobsClient(List<Player> players) {
+	public MainGameThread(List<Player> players) {
 		this.turn = 0;
 		this.players = players;
 	}

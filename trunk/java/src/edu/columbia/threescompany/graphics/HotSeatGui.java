@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.columbia.threescompany.game.BlobsClient;
+import edu.columbia.threescompany.game.MainGameThread;
 import edu.columbia.threescompany.players.LocalPlayer;
 import edu.columbia.threescompany.players.Player;
 
@@ -39,7 +39,7 @@ public class HotSeatGui extends JFrame {
 				List<Player> players = new LinkedList<Player>();
 				players.add(new LocalPlayer(player1Name.getText()));
 				players.add(new LocalPlayer(player2Name.getText()));
-				Thread gameLoopThread = new Thread(new BlobsClient(players));
+				Thread gameLoopThread = new Thread(new MainGameThread(players));
 				gameLoopThread.start();
 				dispose();
 			}

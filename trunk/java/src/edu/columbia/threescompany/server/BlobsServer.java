@@ -6,7 +6,7 @@ import java.util.List;
 import org.quickserver.net.AppException;
 import org.quickserver.net.server.QuickServer;
 
-import edu.columbia.threescompany.game.BlobsClient;
+import edu.columbia.threescompany.game.MainGameThread;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
@@ -32,10 +32,10 @@ public class BlobsServer {
 
 	public static boolean gameOver() {
 		if (_blobs.size() == 0) return true;
-		Player firstPlayer = BlobsClient._blobs.get(0).getOwner();
+		Player firstPlayer = MainGameThread._blobs.get(0).getOwner();
 		
 		/* Do multiple players have blobs on the board? */
-		for (GameObject obj : BlobsClient._blobs)
+		for (GameObject obj : MainGameThread._blobs)
 			if (obj.getOwner().id != Player.NOBODY && !obj.isDead() &&
 				!obj.getOwner().equals(firstPlayer))
 					return false;
