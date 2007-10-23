@@ -98,4 +98,13 @@ public class LocalGameState {
 		return false;
 	}
 
+	public boolean gameOver() {
+		// TODO
+		return false;
+	}
+
+	public static LocalGameState getInitialGameState(List<Player> players) {
+		// TODO some initial config of pieces
+		return null;
+	}
 }
