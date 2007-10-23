@@ -11,7 +11,8 @@ import java.util.List;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class Board extends Canvas {
-
+	private static final long serialVersionUID = 3523741675646270283L;
+	
 	private BufferStrategy strategy;
 	
 	public Board()
