@@ -17,7 +17,7 @@ public class ServerConnection {
 	}
 
 	public void sendPlayer(Player me) {
-		// TODO Serialize & the server your info
+		// TODO Serialize & send the server your info
 	}
 
 	public boolean gameOver() {
