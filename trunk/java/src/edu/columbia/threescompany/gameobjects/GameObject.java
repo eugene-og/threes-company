@@ -6,24 +6,36 @@ import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.Player;
 
 /* Any object that appears on the game board. */
-public interface GameObject extends Serializable {
-	public Coordinate getPosition();
-	public double getRadius();
-	public double getWeight();
+public abstract class GameObject implements Serializable {
+	public Coordinate getPosition() {
+		return _position.copy();
+	}
 	
-	public void applyForce(Force force);
-	public void grow();
+	public double getRadius() {
+		return _radius;
+	}
+
+	public double getWeight() {
+		return _weight;
+	}
 	
-	public Player getOwner();
+	public abstract void applyForce(Force force);
+	public abstract void grow();
+	
+	public abstract Player getOwner();
 	
 	/* Determines the resultant force that this object can apply to
 	 * obj. (The inverse of that force will presumably be applied to
 	 * this object. */
-	public Force actOn(GameObject obj);
+	public abstract Force actOn(GameObject obj);
 	
 	/* Things that don't die can ignore die events. */
-	public void die();
-	public boolean isDead();
+	public abstract void die();
+	public abstract boolean isDead();
 	
-	public void checkCollision(GameObject rhs);
+	public abstract void checkCollision(GameObject rhs);
+
+	protected Coordinate _position;
+	protected double _weight;
+	protected double _radius;
 }

@@ -5,7 +5,7 @@ import java.lang.reflect.Constructor;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.Player;
 
-public abstract class Blob implements GameObject {
+public abstract class Blob extends GameObject {
 	public abstract Force actOn(GameObject obj);
 
 	protected Blob(double x, double y, double radius, Player owner) {
@@ -40,20 +40,10 @@ public abstract class Blob implements GameObject {
 	}
 	
 	public void applyForce(Force force) {
+		if (isAnchored()) return;
+		
 		_position.x += force.x / _weight;
 		_position.y += force.y / _weight;
-	}
-
-	public Coordinate getPosition() {
-		return _position.copy();
-	}
-
-	public double getRadius() {
-		return _radius;
-	}
-
-	public double getWeight() {
-		return _weight;
 	}
 
 	public void grow() {
@@ -91,11 +81,17 @@ public abstract class Blob implements GameObject {
 		double distance = _position.distanceFrom(obj.getPosition());
 		return (distance <= _radius + obj.getRadius());
 	}
+	
+	public boolean isAnchored() {
+		return _anchored;
+	}
+	
+	public void setAnchored(boolean anchored) {
+		_anchored = anchored;
+	}
 
-	protected Coordinate _position;
-	protected double _weight;
-	protected double _radius;
 	protected Player _owner;
 	protected boolean _dead;
+	protected boolean _anchored;
 }
 
