@@ -7,7 +7,7 @@ public class ServerConnection {
 	public ServerMessage receiveMessage() {
 		/* Block until a message is received from the server, then return it.
 		 * If the game has ended, return null. */
-		
+		// TODO
 		return null;
 	}
 
