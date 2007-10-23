@@ -22,6 +22,8 @@ public class BlobsClient {
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
 		
+		// TODO instantiate server connection
+		
 		_chatThread = new ChatThread();
 		_gui = Gui.getInstance(_chatThread);
 		_chatThread.setGui(_gui);
@@ -31,7 +33,7 @@ public class BlobsClient {
 		while ((message = _serverConnection.receiveMessage()) != null)
 			handleMessage(message);
 		
-		// TODO display a polite game over in GUI
+		// TODO display a polite game over msg in GUI
 	}
 
 	private static void doPlayerSetup() {
@@ -46,7 +48,7 @@ public class BlobsClient {
 			throw new RuntimeException("Unknown game type!");
 		}
 
-		// TODO send these to the server
+		// TODO send player list to the server
 	}
 	
 	private static void handleMessage(ServerMessage message) {
