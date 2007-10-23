@@ -23,10 +23,6 @@ public class LocalGameState {
 	public int getAP() {
 		return _activePlayer.getAbilityPoints();
 	}
-
-	public Player getActivePlayer() {
-		return _activePlayer;
-	}
 	
 	public void updateActivePlayer(int id) {
 		for (Player player : _players) {
