@@ -36,6 +36,7 @@ public class PlayerInfoGui extends JFrame {
 		});
 		_mainpane.add(startGame);
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}
