@@ -15,8 +15,12 @@ public class ExplodingBlob extends Blob {
 	}
 
 	public Force actOn(GameObject obj) {
-		// TODO how's this turn into a hole?
 		return Force.NULL_FORCE;
 	}
 	
+	public void activate(boolean activated) {
+		if (activated) return;
+		
+		// TODO die and create a Hole [on deactivation]
+	}
 }

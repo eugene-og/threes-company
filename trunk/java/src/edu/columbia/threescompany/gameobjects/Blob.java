@@ -8,6 +8,7 @@ import edu.columbia.threescompany.game.Player;
 
 public abstract class Blob extends GameObject {
 	public abstract Force actOn(GameObject obj);
+	public abstract void activate(boolean activated);
 
 	protected Blob(double x, double y, double radius, Player owner) {
 		_position = new Coordinate(x, y);
