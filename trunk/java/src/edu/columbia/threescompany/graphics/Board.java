@@ -16,7 +16,7 @@ public class Board extends Canvas {
 	
 	public Board()
 	{
-		setBounds(0,0, GuiConstants.GUI_WIDTH, GuiConstants.GUI_HEIGHT);
+		setBounds(0,0, GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH);
 		setIgnoreRepaint(true);
 	}
 	
@@ -33,7 +33,6 @@ public class Board extends Canvas {
 	{
 		Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		surface.setColor(Color.black);
-		//surface.fillRect(0,0,800,600);
 		surface.setStroke(new BasicStroke(3.0f));
 		surface.setColor(Color.blue);
 		surface.draw(new Ellipse2D.Double(50,50,20,200));
