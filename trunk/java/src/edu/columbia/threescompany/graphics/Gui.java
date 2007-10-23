@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import edu.columbia.threescompany.game.ChatThread;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class Gui extends JFrame {
@@ -33,6 +34,7 @@ public class Gui extends JFrame {
 	private JTextField _txtLine;
 	private JTextArea _txtArea;
 	private JPanel[] _ap_panes;
+	private ChatThread _chatThread;
 		
 	/**
 	 * GuiHolder is loaded on the first execution of Gui.getInstance() 
@@ -138,6 +140,7 @@ public class Gui extends JFrame {
 		setVisible(true);
 
 		_board.initGraphicsBuffer();
+		_chatThread = new ChatThread();
 	}
 	
 	
@@ -156,10 +159,9 @@ public class Gui extends JFrame {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Gui gui = new Gui();
 		while (true) {
 			Thread.sleep(500);
-			gui.drawState(null);
+			Gui.getInstance().drawState(null);
 		}
 	}
 	
@@ -181,11 +183,16 @@ public class Gui extends JFrame {
 		
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				_txtArea.setText(_txtArea.getText()+_txtLine.getText()+"\n");
+				addChatLine(_txtLine.getText());
+				_chatThread.sendLine(_txtLine.getText());
 				_txtLine.setText("");
 				// TODO: pass off text to new chat event
 			}
 		}
+	}
+	
+	public void addChatLine(String line) {
+		_txtArea.setText(_txtArea.getText() + line + "\n");
 	}
 	
 }
