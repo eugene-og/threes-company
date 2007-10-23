@@ -18,4 +18,8 @@ public class GameMove implements Serializable {
 		// This refers to BlobMoves, which are all motion-based.
 		return null;
 	}
+	
+	/* TODO: There's an email thread to determine the inner workings of this
+	 * class! Nobody implement it! -- ZvS
+	 */
 }
