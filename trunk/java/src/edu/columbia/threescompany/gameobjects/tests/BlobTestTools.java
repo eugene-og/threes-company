@@ -13,6 +13,8 @@ public class BlobTestTools {
 	}
 	
 	private static class BoringBlob extends Blob {
+		private static final long serialVersionUID = 8759393276598506236L;
+
 		public BoringBlob(double x, double y) {
 			super(x, y, BlobTestTools.PLAYER);
 		}

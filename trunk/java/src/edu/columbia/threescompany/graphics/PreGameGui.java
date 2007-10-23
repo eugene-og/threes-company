@@ -14,7 +14,7 @@ public class PreGameGui extends JFrame {
 	 * keep all our data in one place. TODO on my part.
 	 */
 	
-//	private static final long serialVersionUID = -4557239773540965286L;
+	private static final long serialVersionUID = -4557239773540965286L;
 //
 //	public PreGameGui() {
 //		JPanel _mainpane = (JPanel)this.getContentPane();
