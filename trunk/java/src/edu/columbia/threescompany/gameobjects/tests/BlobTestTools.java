@@ -2,7 +2,7 @@ package edu.columbia.threescompany.gameobjects.tests;
 
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.Blob;
-import edu.columbia.threescompany.gameobjects.Force;
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class BlobTestTools {

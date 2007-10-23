@@ -3,6 +3,7 @@ package edu.columbia.threescompany.gameobjects;
 import java.lang.reflect.Constructor;
 
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
 public abstract class Blob extends GameObject {

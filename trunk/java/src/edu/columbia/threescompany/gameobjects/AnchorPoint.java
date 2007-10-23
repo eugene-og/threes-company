@@ -1,6 +1,7 @@
 package edu.columbia.threescompany.gameobjects;
 
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.common.Force;
 
 public class AnchorPoint extends ImmovableGameObject {
 	private static final long serialVersionUID = 2365645717684731802L;

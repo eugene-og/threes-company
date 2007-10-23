@@ -3,6 +3,7 @@ package edu.columbia.threescompany.gameobjects;
 import java.io.Serializable;
 
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
 /* Any object that appears on the game board. */

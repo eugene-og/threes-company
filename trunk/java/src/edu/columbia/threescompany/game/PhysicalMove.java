@@ -1,6 +1,6 @@
 package edu.columbia.threescompany.game;
 
-import edu.columbia.threescompany.gameobjects.Force;
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class PhysicalMove extends GameMoveComponent {

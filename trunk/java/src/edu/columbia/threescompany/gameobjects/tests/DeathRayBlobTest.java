@@ -1,8 +1,8 @@
 package edu.columbia.threescompany.gameobjects.tests;
 
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
-import edu.columbia.threescompany.gameobjects.Force;
 import edu.columbia.threescompany.tests.BaseTestCase;
 
 public class DeathRayBlobTest extends BaseTestCase {

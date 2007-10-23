@@ -1,6 +1,7 @@
 package edu.columbia.threescompany.gameobjects;
 
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
 public class DeathRayBlob extends Blob {

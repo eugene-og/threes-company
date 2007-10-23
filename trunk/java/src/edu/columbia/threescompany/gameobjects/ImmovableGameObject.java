@@ -1,5 +1,6 @@
 package edu.columbia.threescompany.gameobjects;
 
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
 public abstract class ImmovableGameObject extends GameObject {
