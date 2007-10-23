@@ -24,12 +24,13 @@ import javax.swing.UIManager;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
-public class Gui extends JFrame {
+public class SingleGui extends JFrame {
 	
+	private static final long serialVersionUID = -5234906655320340040L;
 	private int _xPos, _yPos;
 	private Board _board;
 		
-	public Gui()
+	public SingleGui()
 	{
 		super("Welcome to Blobs!");
 		try{ UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
@@ -104,24 +105,16 @@ public class Gui extends JFrame {
 		_board.initGraphicsBuffer();
 	}
 	
-	public void drawState(List<GameObject> gameState)
+	/**
+	 * Might be called from main game thread and gui processing thread. I'm not sure.
+	 */
+	public synchronized void drawState(List<GameObject> gameState)
 	{
 		_board.drawState(gameState);
 	}
 
-//	public GameMove getMove() {
-//		// TODO UI returns a list of actions
-//		return null;
-//	}
-
-	public Player getPlayer() {
-		// TODO Ask the user what they want, send it back
-		// (name, color, etc.)
-		return null;
-	}
-	
 	public static void main(String[] args) {
-		Gui gui = new Gui();
+		SingleGui gui = new SingleGui();
 		while (true) gui.drawState(null);
 	}
 	
