@@ -11,7 +11,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,7 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import edu.columbia.threescompany.client.ChatThread;
-import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.client.LocalGameState;
 
 public class Gui extends JFrame {
 	
@@ -59,13 +58,8 @@ public class Gui extends JFrame {
 		_yPos = (int)(rect.getHeight() - GuiConstants.GUI_HEIGHT)/2;        
 
 		// TODO: variable naming sucks here. Put gui creation into methods for each UI piece.
-        JPanel mainpane = (JPanel)this.getContentPane();
-		mainpane.setLayout(new BorderLayout());
-		mainpane.setBackground(GuiConstants.BG_COLOR);
-		
-		JPanel boardpane = new JPanel();
-		_board = new Board();
-		boardpane.add(_board);
+        JPanel mainpane = getMainPane(); 
+		JPanel boardpane = getBoardPane();
 		
 		mainpane.add(boardpane, BorderLayout.WEST);
 		mainpane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -142,9 +136,25 @@ public class Gui extends JFrame {
 		_board.initGraphicsBuffer();
 		_chatThread = new ChatThread();
 	}
+
+	private JPanel getBoardPane() {
+		JPanel pane = new JPanel();
+		_board = new Board();
+		pane.add(_board);
+		
+		return pane;
+	}
+
+	private JPanel getMainPane() {
+		JPanel mainpane = (JPanel)this.getContentPane();
+		mainpane.setLayout(new BorderLayout());
+		mainpane.setBackground(GuiConstants.BG_COLOR);
+		
+		return mainpane;
+	}
 	
 	
-	public void spendAP(int ap) {
+	private void setAP(int ap) {
 //		for (int i=9; i >= 0; i++)
 //			_ap_panes[i].setBackground(GuiConstants.BG_COLOR);
 		// TODO: need to know player's current AP.
@@ -153,18 +163,12 @@ public class Gui extends JFrame {
 	/**
 	 * Is called from main game thread and gui processing thread.
 	 */
-	public synchronized void drawState(List<GameObject> gameState)
+	public synchronized void drawState(LocalGameState gameState)
 	{
-		_board.drawState(gameState);
+		_board.drawState(gameState.getObjects());
+		setAP(gameState.getAP());
 	}
 
-	public static void main(String[] args) throws Exception {
-		while (true) {
-			Thread.sleep(500);
-			Gui.getInstance().drawState(null);
-		}
-	}
-	
 	private class ChatFocusListener implements FocusListener {
 		public void focusGained(FocusEvent e) {
 			if (_txtLine.getText().equals("Send message to player"))
