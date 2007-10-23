@@ -1,7 +1,9 @@
-package edu.columbia.threescompany.game;
+package edu.columbia.threescompany.client;
 
 import java.util.List;
 
+import edu.columbia.threescompany.game.GameMove;
+import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class ServerConnection {

@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
-import edu.columbia.threescompany.game.ChatThread;
+import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class Gui extends JFrame {
