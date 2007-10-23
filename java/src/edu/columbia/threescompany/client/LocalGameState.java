@@ -20,22 +20,27 @@ public class LocalGameState {
 	public void executeMove(GameMove move, Gui gui) {
 		/* t is our time variable -- basically, we execute GRANULARITY tiny
 		 * moves, sequentially. */
-		for (int t = 0; t < GameParameters.GRANULARITY_OF_PHYSICS; t++) {
-			for (EventMove instantEvent : move.instantMovesAt(t))
-				instantEvent.execute();
-			for (PhysicalMove granularEvent : move.granularMovesAt(t))
-				granularEvent.execute();
-			
-			applyForces();
-			checkCollisions();
-			
-			if (gui != null) {
-				gui.drawState(this);
-				try {
-					/* TODO: Adjust this value so moves animate nicely. */
-					Thread.sleep(20);
-				} catch (InterruptedException exception) {}
-			}
+		for (int t = 0; t < GameParameters.GRANULARITY_OF_PHYSICS; t++)
+			executeMoveStep(move, gui, t);
+	}
+
+	private void executeMoveStep(GameMove move, Gui gui, int t) {
+		for (EventMove instantEvent : move.instantMovesAt(t))
+			// These will fire once
+			instantEvent.execute();
+		for (PhysicalMove granularEvent : move.granularMovesAt(t))
+			// These will fire over and over
+			granularEvent.execute();
+		
+		applyForces();
+		checkCollisions();
+		
+		if (gui != null) {
+			gui.drawState(this);
+			try {
+				/* TODO: Adjust this value so moves animate nicely. */
+				Thread.sleep(20);
+			} catch (InterruptedException exception) {}
 		}
 	}
 	
