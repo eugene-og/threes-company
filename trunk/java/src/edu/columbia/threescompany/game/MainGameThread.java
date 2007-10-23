@@ -10,7 +10,7 @@ import edu.columbia.threescompany.players.Player;
 public class MainGameThread implements Runnable {
 	protected int turn;
 	protected List<Player> players;
-	private Gui _gui = new Gui();
+	private Gui _gui = Gui.getInstance();
 	public List<GameObject> _blobs = new LinkedList<GameObject>();
 	
 	public MainGameThread(List<Player> players) {
@@ -74,7 +74,6 @@ public class MainGameThread implements Runnable {
 		return false; // we will increase market share by never allowing games to end
 	}
 
-	@Override
 	public void run() {
 		runGame();
 	}
