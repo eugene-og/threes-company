@@ -7,7 +7,7 @@ import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class LocalPlayer extends Player {
-	private Gui _gui;
+	private Gui _gui = Gui.getInstance();
 	
 	public LocalPlayer(String name) {
 		super(name);
