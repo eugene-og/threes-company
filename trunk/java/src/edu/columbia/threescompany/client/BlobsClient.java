@@ -20,10 +20,11 @@ public class BlobsClient {
 		Gui gui = Gui.getInstance();
 		ServerMessage message;
 		
+		/* TODO Interface with Eugene's code in re "ready to play"/"game start"/etc. */
 		while ((message = _serverConnection.receiveMessage()) != null)
 			handleMessage(gui, message);
 		
-		// TODO polite game over in GUI
+		// TODO display a polite game over message in GUI
 	}
 
 	private static void doPlayerSetup() {

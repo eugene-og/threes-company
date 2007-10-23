@@ -31,4 +31,8 @@ public class Player {
 	public void setAbilityPoints(int points) {
 		_abilityPoints = points;
 	}
+
+	public int getId() {
+		return id;
+	}
 }
