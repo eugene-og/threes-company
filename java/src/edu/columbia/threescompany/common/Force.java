@@ -1,6 +1,6 @@
-package edu.columbia.threescompany.gameobjects;
+package edu.columbia.threescompany.common;
 
-import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.gameobjects.GameParameters;
 
 public class Force extends Coordinate {
 	public static final Force NULL_FORCE = new Force(0, 0);
