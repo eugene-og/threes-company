@@ -1,7 +1,7 @@
 package edu.columbia.threescompany.gameobjects.tests;
 
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.Blob;
-import edu.columbia.threescompany.gameobjects.Force;
 import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
