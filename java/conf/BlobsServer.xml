@@ -1,6 +1,6 @@
 <quickserver>
 	<name>BlobsServer v 0.1</name>
-	<port>1000</port>
+	<port>3444</port>
 	<bind-address>0.0.0.0</bind-address>
 
 	<client-command-handler>
