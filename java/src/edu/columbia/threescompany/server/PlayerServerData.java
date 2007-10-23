@@ -4,15 +4,15 @@ import org.quickserver.net.server.ClientData;
 import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.ClientIdentifiable;
 
+import edu.columbia.threescompany.game.Player;
+
 public class PlayerServerData implements ClientData, ClientIdentifiable {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2022551820772269910L;
 
 	private ClientHandler _client;
 
+	private Player _player;
+	
 	private String _handle;
 	
 	private boolean _isReadyToPlay;
@@ -23,6 +23,14 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 		return _isReadyToPlay;
 	}
 
+	public void setPlayer(Player player) {
+		_player = player;
+	}
+	
+	public Player getPlayer() {
+		return _player;
+	}
+	
 	public void setIsReadyToPlay(boolean isReady) {
 		this._isReadyToPlay = isReady;
 	}
