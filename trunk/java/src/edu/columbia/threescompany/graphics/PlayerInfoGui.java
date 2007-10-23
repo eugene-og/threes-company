@@ -50,7 +50,8 @@ public class PlayerInfoGui extends JFrame {
 	public static List<Player> getPlayers(int numPlayers) {
 		PlayerInfoGui gui = new PlayerInfoGui(numPlayers);
 		while (gui._players.isEmpty()) {
-			try {
+			try {			
+				// TODO I feel hackish
 				Thread.sleep(50);
 			} catch (InterruptedException e) {}
 		}
