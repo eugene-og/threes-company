@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.LocalGameState;
+import edu.columbia.threescompany.game.GameMove;
 
 public class Gui extends JFrame {
 	
@@ -155,6 +156,7 @@ public class Gui extends JFrame {
 	
 	
 	private void setAP(int ap) {
+		/* Dan|John, this AP count is now valid and does not require thought. -- Zach */
 //		for (int i=9; i >= 0; i++)
 //			_ap_panes[i].setBackground(GuiConstants.BG_COLOR);
 	}
@@ -196,6 +198,11 @@ public class Gui extends JFrame {
 	
 	public void addChatLine(String line) {
 		_txtArea.setText(_txtArea.getText() + line + "\n");
+	}
+
+	public GameMove getMoveFor(int activePlayer) {
+		// TODO Dan and John, we need to discuss what GameMove is -- Zach
+		return null;
 	}
 	
 }

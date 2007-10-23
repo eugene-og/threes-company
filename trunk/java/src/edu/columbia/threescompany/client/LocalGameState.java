@@ -37,4 +37,10 @@ public class LocalGameState {
 		throw new RuntimeException("Can't set active player to " + id +
 								   ", that player doesn't exist!");
 	}
+
+	public boolean isLocalPlayer(int somePlayer) {
+		for (Player player : _localPlayers)
+			if (player.getId() == somePlayer) return true;
+		return false;
+	}
 }

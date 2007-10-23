@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.columbia.threescompany.client.communication.ServerConnection;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
-import edu.columbia.threescompany.client.communication.YourTurnMessage;
+import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
@@ -24,7 +24,7 @@ public class BlobsClient {
 		while ((message = _serverConnection.receiveMessage()) != null)
 			handleMessage(gui, message);
 		
-		// TODO display a polite game over message in GUI
+		// TODO display a polite game over in GUI
 	}
 
 	private static void doPlayerSetup() {
@@ -37,9 +37,14 @@ public class BlobsClient {
 		if (message instanceof UpdateStateMessage) {
 			_gameState = ((UpdateStateMessage) message).getGameState();
 			gui.drawState(_gameState);
-		} else if (message instanceof YourTurnMessage) {
-			GameMove move = null;
-			_serverConnection.sendMove(move);
+		} else if (message instanceof TurnChangeMessage) {
+			int activePlayer = ((TurnChangeMessage) message).whoseTurn();
+			if (_gameState.isLocalPlayer(activePlayer)) {
+				GameMove move = gui.getMoveFor(activePlayer);
+				_serverConnection.sendMove(move);
+			} else {
+				// TODO Display "Someone else's turn" or something
+			}
 		} else {
 			// TODO more message types
 		}
