@@ -15,7 +15,7 @@ public class Force extends Coordinate {
 			  Fy / GameParameters.GRANULARITY_OF_PHYSICS);
 	}
 	
-	private Force newRawForce(double Fx, double Fy) {
+	public static Force newRawForce(double Fx, double Fy) {
 		return new Force(Fx * GameParameters.GRANULARITY_OF_PHYSICS,
 						 Fy * GameParameters.GRANULARITY_OF_PHYSICS);
 	}
