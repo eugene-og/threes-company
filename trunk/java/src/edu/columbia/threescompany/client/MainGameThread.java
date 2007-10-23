@@ -1,8 +1,10 @@
-package edu.columbia.threescompany.game;
+package edu.columbia.threescompany.client;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.columbia.threescompany.game.BlobMove;
+import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.players.Player;

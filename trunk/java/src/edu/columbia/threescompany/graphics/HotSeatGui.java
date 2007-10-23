@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.columbia.threescompany.game.MainGameThread;
+import edu.columbia.threescompany.client.MainGameThread;
 import edu.columbia.threescompany.players.LocalPlayer;
 import edu.columbia.threescompany.players.Player;
 
