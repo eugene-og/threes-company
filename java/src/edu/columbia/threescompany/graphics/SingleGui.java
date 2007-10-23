@@ -106,7 +106,7 @@ public class SingleGui extends JFrame {
 	}
 	
 	/**
-	 * Might be called from main game thread and gui processing thread. I'm not sure.
+	 * Is called from main game thread and gui processing thread.
 	 */
 	public synchronized void drawState(List<GameObject> gameState)
 	{

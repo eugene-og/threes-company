@@ -4,10 +4,10 @@ import java.util.List;
 
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.gameobjects.GameObject;
-import edu.columbia.threescompany.graphics.SingleGui;
+import edu.columbia.threescompany.graphics.Gui;
 
 public class LocalPlayer extends Player {
-	private SingleGui _gui;
+	private Gui _gui;
 	
 	public LocalPlayer(String name) {
 		super(name);

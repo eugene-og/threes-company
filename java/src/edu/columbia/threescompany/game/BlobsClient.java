@@ -4,13 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.columbia.threescompany.gameobjects.GameObject;
-import edu.columbia.threescompany.graphics.SingleGui;
+import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.players.Player;
 
 public class BlobsClient implements Runnable {
 	protected int turn;
 	protected List<Player> players;
-	private SingleGui _gui = new SingleGui();
+	private Gui _gui = new Gui();
 	public List<GameObject> _blobs = new LinkedList<GameObject>();
 	
 	public BlobsClient(List<Player> players) {
@@ -36,7 +36,7 @@ public class BlobsClient implements Runnable {
 					processEvent(player, move);
 				}
 			}
-			//_gui.drawState(_blobs);
+			_gui.drawState(_blobs);
 		}
 	}
 
