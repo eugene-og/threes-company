@@ -51,14 +51,14 @@ public class BlobsCommandHandler implements ClientCommandHandler {
 	}
 	
 	private void broadcastGameStart(ClientHandler handler) throws IOException {
-		for (Iterator<ClientHandler> iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
+		for (Iterator iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
 			ClientHandler toHandler = (ClientHandler) iterator.next();
 			toHandler.sendClientMsg("START GAME!!");	
 		}
 	}
 	
 	private void broadcastMessage(ClientHandler handler, String msg) throws IOException {
-		for (Iterator<ClientHandler> iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
+		for (Iterator iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
 			ClientHandler toHandler = (ClientHandler) iterator.next();
 			if (!toHandler.equals(handler)) {
 				toHandler.sendClientMsg(msg);
