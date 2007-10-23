@@ -3,12 +3,18 @@ package edu.columbia.threescompany.graphics;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,6 +30,9 @@ public class Gui extends JFrame {
 	private static final long serialVersionUID = -5234906655320340040L;
 	private int _xPos, _yPos;
 	private Board _board;
+	private JTextField _txtLine;
+	private JTextArea _txtArea;
+	private JPanel[] _ap_panes;
 		
 	/**
 	 * GuiHolder is loaded on the first execution of Gui.getInstance() 
@@ -47,8 +56,10 @@ public class Gui extends JFrame {
 		_xPos = (int)(rect.getWidth() - GuiConstants.GUI_WIDTH)/2;
 		_yPos = (int)(rect.getHeight() - GuiConstants.GUI_HEIGHT)/2;        
 
+		// TODO: variable naming sucks here. Put gui creation into methods for each UI piece.
         JPanel mainpane = (JPanel)this.getContentPane();
 		mainpane.setLayout(new BorderLayout());
+		mainpane.setBackground(GuiConstants.BG_COLOR);
 		
 		JPanel boardpane = new JPanel();
 		_board = new Board();
@@ -59,48 +70,66 @@ public class Gui extends JFrame {
 		
 		JPanel controlspane = new JPanel(new BorderLayout());
 		JPanel ap_pane = new JPanel(new GridLayout(1,10));
-		JPanel[] ap_panes = new JPanel[10];
-		Color[] ap_colors = {Color.RED, Color.YELLOW, Color.GREEN};
+		_ap_panes = new JPanel[10];
+		Color[] ap_colors = {Color.RED, Color.RED, Color.RED, 
+							 Color.YELLOW, Color.YELLOW, Color.YELLOW,
+							 Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
 		
 		for (int i=0; i<10; i++) {
-			ap_panes[i] = new JPanel();
-			ap_panes[i].setPreferredSize(new Dimension(20,20));
-			ap_panes[i].setBackground(ap_colors[i/4]);
-			//ap_panes[i].setVisible(true);
-			ap_panes[i].setBorder(BorderFactory.createLineBorder(Color.CYAN, 1));
-			ap_pane.add(ap_panes[i]);
+			_ap_panes[i] = new JPanel();
+			_ap_panes[i].setPreferredSize(new Dimension(20,20));
+			_ap_panes[i].setBackground(ap_colors[i]);
+			_ap_panes[i].setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+			ap_pane.add(_ap_panes[i]);
 		}
 		ap_pane.setBorder(	BorderFactory.createCompoundBorder(
 							BorderFactory.createTitledBorder(
 							BorderFactory.createLineBorder(Color.GRAY), "AP"),
-							BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+							BorderFactory.createEmptyBorder(0, 5, 5, 0)));
+		ap_pane.setBackground(GuiConstants.BG_COLOR);
 		controlspane.add(ap_pane, BorderLayout.NORTH);
 		
 		JPanel insideControlsPane = new JPanel(new BorderLayout());
-		JTextArea txtArea = new JTextArea("Chat Window");
-		txtArea.setRows(5);
-		txtArea.setColumns(30);
-		txtArea.setEditable(false);
-		txtArea.setFont(GuiConstants.CHAT_FONT);
-		txtArea.setForeground(Color.GRAY);
-		JScrollPane scrollPane = new JScrollPane(txtArea);
+		_txtArea = new JTextArea();
+		_txtArea.setRows(8);
+		_txtArea.setColumns(25);
+		_txtArea.setEditable(false);
+		_txtArea.setFont(GuiConstants.CHAT_FONT);
+		_txtArea.setForeground(Color.GRAY);
+		JScrollPane scrollPane = new JScrollPane(_txtArea);
 		insideControlsPane.add(scrollPane, BorderLayout.NORTH);
 		
 		insideControlsPane.add(new JLabel("<html>&nbsp;</html>"), BorderLayout.CENTER);
 		
-		JTextField txtLine = new JTextField("Send message to play");
-		txtLine.setFont(GuiConstants.CHAT_FONT);
-		txtLine.setForeground(Color.GRAY);
-		insideControlsPane.add(txtLine, BorderLayout.SOUTH);
-		
+		_txtLine = new JTextField("Send message to player");
+		_txtLine.setFont(GuiConstants.CHAT_FONT);
+		_txtLine.setForeground(Color.GRAY);
+		_txtLine.addFocusListener(new ChatFocusListener());
+		insideControlsPane.add(_txtLine, BorderLayout.SOUTH);
+		_txtLine.addKeyListener(new ChatSendListener());
 		insideControlsPane.setBorder(	BorderFactory.createCompoundBorder(
 										BorderFactory.createTitledBorder(
-										BorderFactory.createLineBorder(Color.GRAY), "Controls"),
+										BorderFactory.createLineBorder(Color.GRAY), "Chat"),
 										BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		controlspane.add(insideControlsPane, BorderLayout.SOUTH);
+		insideControlsPane.setBackground(GuiConstants.BG_COLOR);
+		controlspane.add(insideControlsPane, BorderLayout.CENTER);
 		controlspane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		
-		mainpane.add(controlspane, BorderLayout.EAST);		
+		JPanel buttonpane = new JPanel();
+		JButton donebutton = new JButton("Done");
+		donebutton.setMnemonic(KeyEvent.VK_D);
+		donebutton.setPreferredSize(new Dimension(160, 25));
+		donebutton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		buttonpane.add(donebutton);
+		buttonpane.setBorder(BorderFactory.createEmptyBorder(0, 0, 175, 0));
+		buttonpane.setBackground(GuiConstants.BG_COLOR);
+		
+		controlspane.add(buttonpane, BorderLayout.SOUTH);
+		controlspane.setBackground(GuiConstants.BG_COLOR);
+		
+		mainpane.add(controlspane, BorderLayout.EAST);
+		
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(_xPos, _yPos);
@@ -111,6 +140,13 @@ public class Gui extends JFrame {
 		_board.initGraphicsBuffer();
 	}
 	
+	
+	public void spendAP(int ap) {
+//		for (int i=9; i >= 0; i++)
+//			_ap_panes[i].setBackground(GuiConstants.BG_COLOR);
+		// TODO: need to know player's current AP.
+	}
+	
 	/**
 	 * Is called from main game thread and gui processing thread.
 	 */
@@ -119,9 +155,37 @@ public class Gui extends JFrame {
 		_board.drawState(gameState);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Gui gui = new Gui();
-		while (true) gui.drawState(null);
+		while (true) {
+			Thread.sleep(500);
+			gui.drawState(null);
+		}
+	}
+	
+	private class ChatFocusListener implements FocusListener {
+		public void focusGained(FocusEvent e) {
+			if (_txtLine.getText().equals("Send message to player"))
+				_txtLine.setText("");
+			_txtLine.setForeground(Color.BLACK);
+		}
+
+		public void focusLost(FocusEvent e) {
+			_txtLine.setForeground(Color.GRAY);
+		}
+	}
+	
+	private class ChatSendListener implements KeyListener {
+		public void keyPressed(KeyEvent e) {}
+		public void keyTyped(KeyEvent e) {}
+		
+		public void keyReleased(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				_txtArea.setText(_txtArea.getText()+_txtLine.getText()+"\n");
+				_txtLine.setText("");
+				// TODO: pass off text to new chat event
+			}
+		}
 	}
 	
 }
