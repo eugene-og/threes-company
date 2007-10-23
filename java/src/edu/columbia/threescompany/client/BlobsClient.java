@@ -2,7 +2,9 @@ package edu.columbia.threescompany.client;
 
 import java.util.List;
 
+import edu.columbia.threescompany.client.communication.DisplayMoveMessage;
 import edu.columbia.threescompany.client.communication.ServerConnection;
+import edu.columbia.threescompany.client.communication.ServerMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.game.GameMove;
@@ -13,16 +15,20 @@ import edu.columbia.threescompany.graphics.PlayerInfoGui;
 public class BlobsClient {
 	private static LocalGameState _gameState;
 	private static ServerConnection _serverConnection;
+	private static ChatThread _chatThread;
+	private static Gui _gui;
 	
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
-
-		Gui gui = Gui.getInstance();
-		ServerMessage message;
 		
+		_chatThread = new ChatThread();
+		_gui = Gui.getInstance(_chatThread);
+		_chatThread.setGui(_gui);
+		
+		ServerMessage message;
 		/* TODO Interface with Eugene's code in re "ready to play"/"game start"/etc. */
 		while ((message = _serverConnection.receiveMessage()) != null)
-			handleMessage(gui, message);
+			handleMessage(message);
 		
 		// TODO display a polite game over in GUI
 	}
@@ -33,20 +39,22 @@ public class BlobsClient {
 		System.out.println("Success: " + players.get(0).getName());
 	}
 	
-	private static void handleMessage(Gui gui, ServerMessage message) {
+	private static void handleMessage(ServerMessage message) {
 		if (message instanceof UpdateStateMessage) {
 			_gameState = ((UpdateStateMessage) message).getGameState();
-			gui.drawState(_gameState);
+			_gui.drawState(_gameState);
 		} else if (message instanceof TurnChangeMessage) {
 			int activePlayer = ((TurnChangeMessage) message).whoseTurn();
 			if (_gameState.isLocalPlayer(activePlayer)) {
-				GameMove move = gui.getMoveFor(activePlayer);
-				_serverConnection.sendMove(move);
+				GameMove move = _gui.getMoveFor(activePlayer);
+				_gameState.executeMove(move);
+				_serverConnection.sendMove(move, _gameState);
 			} else {
 				// TODO Display "Someone else's turn" or something
 			}
-		} else {
-			// TODO more message types
+		} else if (message instanceof DisplayMoveMessage) {
+			// TODO Animate this move by sending the GUI several
+			// successive new gameStates...
 		}
 	}
 }

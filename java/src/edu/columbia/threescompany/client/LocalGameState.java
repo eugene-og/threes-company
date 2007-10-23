@@ -2,6 +2,7 @@ package edu.columbia.threescompany.client;
 
 import java.util.List;
 
+import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
@@ -42,5 +43,10 @@ public class LocalGameState {
 		for (Player player : _localPlayers)
 			if (player.getId() == somePlayer) return true;
 		return false;
+	}
+
+	public void executeMove(GameMove move) {
+		// TODO Auto-generated method stub
+		
 	}
 }

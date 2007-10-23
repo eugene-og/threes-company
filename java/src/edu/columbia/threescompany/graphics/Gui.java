@@ -35,23 +35,20 @@ public class Gui extends JFrame {
 	private JTextArea _txtArea;
 	private JPanel[] _ap_panes;
 	private ChatThread _chatThread;
-		
-	/**
-	 * GuiHolder is loaded on the first execution of Gui.getInstance() 
-	 * or the first access to GuiHolder.INSTANCE, not before.
-	 */
-	private static class GuiHolder { 
-		private final static Gui INSTANCE = new Gui();
-	}
+
+	private static Gui _instance;
 	
-	public static Gui getInstance() {
-		return GuiHolder.INSTANCE;
+	public static Gui getInstance(ChatThread thread) {
+		if (_instance == null) _instance = new Gui(thread);
+		return _instance;
 	}
 	  
-	private Gui() {
+	private Gui(ChatThread chatThread) {
 		super("Welcome to Blobs!");
 		try{ UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
         catch( Exception e ) { e.printStackTrace(); }
+        
+		_chatThread = chatThread;
         
         // Get coordinates such that window's centered on screen
 		Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -135,7 +132,6 @@ public class Gui extends JFrame {
 		setVisible(true);
 
 		_board.initGraphicsBuffer();
-		_chatThread = new ChatThread();
 	}
 
 	private JPanel getBoardPane() {

@@ -21,6 +21,7 @@ public class ChatThread extends Thread {
 	private BufferedReader in;
 	private PrintWriter out;
 	private List<String> sendBuffer;
+	private Gui _gui;
 
 	public ChatThread() {
 		InetAddress addr;
@@ -63,6 +64,10 @@ public class ChatThread extends Thread {
 			}
 		}
 	}
+	
+	public void setGui(Gui gui) {
+		_gui = gui;
+	}
 
 	public void run() {
 		String str = "";
@@ -81,7 +86,7 @@ public class ChatThread extends Thread {
 	                //if something was received
 	                while (in.ready()) {
 	                	str = in.readLine();
-	                	Gui.getInstance().addChatLine(str);
+	                	_gui.addChatLine(str);
 	                }
 	            } catch (InterruptedException e){
 	            }
