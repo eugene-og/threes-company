@@ -1,6 +1,8 @@
 package edu.columbia.threescompany.graphics;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,6 +30,12 @@ public class PreGameGui extends JFrame {
 		addGameButton(mainPane, "Network", GameType.NETWORK);
 		addGameButton(mainPane, "Hotseat", GameType.HOTSEAT);
 		
+        // Get coordinates such that window's centered on screen
+		Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		int xPos = (int)(rect.getWidth() - getPreferredSize().width)/2;
+		int yPos = (int)(rect.getHeight() - getPreferredSize().height)/2;
+		
+		setLocation(xPos, yPos);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
