@@ -6,20 +6,29 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import edu.columbia.threescompany.client.ChatThread;
@@ -53,7 +62,50 @@ public class Gui extends JFrame {
         // Get coordinates such that window's centered on screen
 		Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		_xPos = (int)(rect.getWidth() - GuiConstants.GUI_WIDTH)/2;
-		_yPos = (int)(rect.getHeight() - GuiConstants.GUI_HEIGHT)/2;        
+		_yPos = (int)(rect.getHeight() - GuiConstants.GUI_HEIGHT)/2;
+		
+		// TODO canvas draws on top of menus?? wtf
+		// Begin creating the File menu
+        JMenuBar menubar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic('F');
+
+        // Setup exit menuitem with 'X' icon
+        JMenuItem menuitem = new JMenuItem(" Exit", 'E');
+        menuitem.setIcon(new ImageIcon(GuiConstants.IMAGES_MENU_DIR+"exit16.gif"));
+        Insets in = menuitem.getInsets(); in.left -= 16;
+		menuitem.setMargin(in);
+		menuitem.setActionCommand("Exit");
+        menuitem.addActionListener(new MenuItemListener());
+        fileMenu.add(menuitem);
+        menubar.add(fileMenu);
+
+        // Setup the Help menu
+        JMenu helpMenu = new JMenu("Help");
+        helpMenu.setMnemonic('H');
+
+//        // Setup contents menuitem with question mark icon
+//        menuitem = new JMenuItem(" Contents", 'C');
+//        menuitem.setIcon(new ImageIcon(GuiConstants.IMAGES_MENU_DIR+"help16.gif"));
+//        in = menuitem.getInsets(); in.left -= 16;
+//		menuitem.setMargin(in);
+//		menuitem.setActionCommand("Contents");
+//		menuitem.addActionListener(new MenuItemListener());
+//        menuitem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
+//        
+//        helpMenu.add(menuitem);
+//        helpMenu.addSeparator();
+
+        // Setup the About menuitem with the exclamation icon
+        menuitem = new JMenuItem(" About...",'A');
+        menuitem.setIcon(new ImageIcon(GuiConstants.IMAGES_MENU_DIR+"about16.gif"));
+        in = menuitem.getInsets(); in.left -= 16;
+		menuitem.setMargin(in);
+        menuitem.setActionCommand("About...");
+        menuitem.addActionListener(new MenuItemListener());
+        helpMenu.add(menuitem);
+
+        menubar.add(helpMenu);
 
 		// TODO: variable naming sucks here. Put gui creation into methods for each UI piece.
         JPanel mainpane = getMainPane(); 
@@ -124,7 +176,7 @@ public class Gui extends JFrame {
 		mainpane.add(controlspane, BorderLayout.EAST);
 		
 		
-		
+		setJMenuBar(menubar);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(_xPos, _yPos);
 		setResizable(false);
@@ -191,6 +243,26 @@ public class Gui extends JFrame {
 			}
 		}
 	}
+	
+    /**
+     * Listener for JMenuBar menu items
+     */
+    private class MenuItemListener implements ActionListener 
+    {
+        public void actionPerformed( ActionEvent e ) {
+            if( e.getActionCommand().equals( "Exit" ) ) {
+            	// TODO want to broadcast message that i'm exiting?
+            	System.exit(0);
+			}
+            else if( e.getActionCommand().equals( "About..." ) ) // Display about dialog box
+                JOptionPane.showMessageDialog(null, GuiConstants.HELP_ABOUT,
+                									"About...",
+                									JOptionPane.INFORMATION_MESSAGE );
+            else if( e.getActionCommand().equals( "Contents" ) ) // Display license dialog
+            	JOptionPane.showMessageDialog(null, "Help?  Get playing!", "Contents", 
+													JOptionPane.INFORMATION_MESSAGE );
+        }
+    }
 	
 	public void addChatLine(String line) {
 		_txtArea.setText(_txtArea.getText() + line + "\n");
