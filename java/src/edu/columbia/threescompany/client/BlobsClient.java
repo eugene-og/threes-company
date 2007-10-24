@@ -1,6 +1,7 @@
 package edu.columbia.threescompany.client;
 
 import java.util.List;
+import javax.swing.JOptionPane;
 
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
 import edu.columbia.threescompany.client.communication.ServerConnection;
@@ -34,6 +35,9 @@ public class BlobsClient {
 			handleMessage(message);
 		
 		// TODO display a polite game over msg in GUI
+		JOptionPane.showMessageDialog(null, "You didn't lose, you just weren't the winner", 
+											"Game over",
+											JOptionPane.INFORMATION_MESSAGE );
 	}
 
 	private static void doPlayerSetup() {
@@ -48,7 +52,7 @@ public class BlobsClient {
 			throw new RuntimeException("Unknown game type!");
 		}
 
-		// TODO send player list to the server
+		// TODO send player list to the server		
 	}
 	
 	private static void handleMessage(ServerMessage message) {
@@ -63,7 +67,9 @@ public class BlobsClient {
 				_gameState.executeMove(move, _gui);
 				_serverConnection.sendMove(move, _gameState);
 			} else {
-				// TODO Display "Someone else's turn" or something
+				JOptionPane.showMessageDialog(null, "Not your turn", 
+													"Hold your horses!",
+													JOptionPane.ERROR_MESSAGE );
 			}
 		} else if (message instanceof ExecuteMoveMessage) {
 			_gameState.executeMove(((ExecuteMoveMessage) message).getMove(),
