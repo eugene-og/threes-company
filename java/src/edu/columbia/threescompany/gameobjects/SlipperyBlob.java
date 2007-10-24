@@ -1,9 +1,7 @@
-package edu.columbia.threescompany.client;
+package edu.columbia.threescompany.gameobjects;
 
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
-import edu.columbia.threescompany.gameobjects.Blob;
-import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class SlipperyBlob extends Blob {
 	protected SlipperyBlob(double x, double y, double radius, Player owner) {
