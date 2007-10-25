@@ -43,6 +43,9 @@ public class Gui extends JFrame {
 	private JTextField _txtLine;
 	private JTextArea _txtArea;
 	private JPanel[] _ap_panes;
+	private Color[] _ap_colors = {Color.RED, Color.RED, Color.RED, 
+			 Color.YELLOW, Color.YELLOW, Color.YELLOW,
+			 Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
 	private ChatThread _chatThread;
 
 	private static Gui _instance;
@@ -117,14 +120,11 @@ public class Gui extends JFrame {
 		JPanel controlspane = new JPanel(new BorderLayout());
 		JPanel ap_pane = new JPanel(new GridLayout(1,10));
 		_ap_panes = new JPanel[10];
-		Color[] ap_colors = {Color.RED, Color.RED, Color.RED, 
-							 Color.YELLOW, Color.YELLOW, Color.YELLOW,
-							 Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
 		
 		for (int i=0; i<10; i++) {
 			_ap_panes[i] = new JPanel();
 			_ap_panes[i].setPreferredSize(new Dimension(20,20));
-			_ap_panes[i].setBackground(ap_colors[i]);
+			_ap_panes[i].setBackground(_ap_colors[i]);
 			_ap_panes[i].setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 			ap_pane.add(_ap_panes[i]);
 		}
@@ -204,9 +204,8 @@ public class Gui extends JFrame {
 	
 	
 	private void setAP(int ap) {
-		/* Dan|John, this AP count is now valid and does not require thought. -- Zach */
-//		for (int i=9; i >= 0; i++)
-//			_ap_panes[i].setBackground(GuiConstants.BG_COLOR);
+		for (int i=0; i < ap; i++)
+			_ap_panes[i].setBackground(_ap_colors[i]);
 	}
 	
 	/**
