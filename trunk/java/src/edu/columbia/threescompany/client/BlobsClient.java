@@ -19,30 +19,32 @@ public class BlobsClient {
 	private static ServerConnection _serverConnection;
 	private static ChatThread _chatThread;
 	private static Gui _gui;
+	private static List<Player> players;
 	
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
 		
-		// TODO instantiate server connection
+		// TODO instantiate server connection - need to start MainGameThread -ek
 		
-		_chatThread = new ChatThread();
+		//TODO for EK: authentication should be done earlier to handle error conditions
+		_chatThread = new ChatThread(players);
 		_gui = Gui.getInstance(_chatThread);
 		_chatThread.setGui(_gui);
+		_chatThread.start();
 		
-		ServerMessage message;
-		/* TODO Interface with Eugene's code in re "ready to play"/"game start"/etc. */
-		while ((message = _serverConnection.receiveMessage()) != null)
-			handleMessage(message);
-		
-		// TODO display a polite game over msg in GUI
-		JOptionPane.showMessageDialog(null, "You didn't lose, you just weren't the winner", 
-											"Game over",
-											JOptionPane.INFORMATION_MESSAGE );
+//		ServerMessage message;
+//		/* TODO Interface with Eugene's code in re "ready to play"/"game start"/etc. */
+//		while ((message = _serverConnection.receiveMessage()) != null)
+//			handleMessage(message);
+//		
+//		// TODO display a polite game over msg in GUI
+//		JOptionPane.showMessageDialog(null, "You didn't lose, you just weren't the winner", 
+//											"Game over",
+//											JOptionPane.INFORMATION_MESSAGE );
 	}
 
 	private static void doPlayerSetup() {
 		GameType gameType = PreGameGui.getGameType();
-		List<Player> players;
 		
 		if (gameType == GameType.HOTSEAT) {
 			players = PlayerInfoGui.getPlayers(2);
@@ -50,9 +52,7 @@ public class BlobsClient {
 			players = PlayerInfoGui.getPlayers(1);
 		} else {
 			throw new RuntimeException("Unknown game type!");
-		}
-
-		// TODO send player list to the server		
+		}	
 	}
 	
 	private static void handleMessage(ServerMessage message) {

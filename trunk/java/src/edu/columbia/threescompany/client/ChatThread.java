@@ -14,16 +14,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class ChatThread extends Thread {
+	
+	private static final int SERVER_PORT = 3444;
+	
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
 	private List<String> sendBuffer;
 	private Gui _gui;
 
-	public ChatThread() {
+	public ChatThread(List players) {
 		InetAddress addr;
 		sendBuffer = new ArrayList<String>();
 		try {
@@ -32,9 +36,8 @@ public class ChatThread extends Thread {
 			System.err.println("Unknown host : " + e1);
 			return;
 		}
-		int port = 1000;
 		try {
-			socket = new Socket(addr, port);
+			socket = new Socket(addr, SERVER_PORT);
 		} catch (IOException e) {
 			System.err.println("Socket failed : " + e);
 			return;
@@ -46,15 +49,11 @@ public class ChatThread extends Thread {
 			// Enable auto-flush:
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					socket.getOutputStream())), true);
-			// authentication, random handles
-			Random r = new Random();
-			int randint = r.nextInt(1000);
-			in.readLine();
-			out.println("User"+Integer.toString(randint));
-			in.readLine();
-			out.println("User"+Integer.toString(randint));
 			
-			start();
+			out.println(((Player) players.get(0)).getName());//username
+			out.println(((Player) players.get(0)).getName());//password
+//			randomAuthenticate();
+			
 		} catch (IOException e) {
 			System.out.println("Socket Error : " + e);
 			try {
@@ -63,6 +62,16 @@ public class ChatThread extends Thread {
 				System.err.println("Socket not closed");
 			}
 		}
+	}
+
+	private void randomAuthenticate() throws IOException {
+		// authentication, random handles
+		Random r = new Random();
+		int randint = r.nextInt(1000);
+		in.readLine();
+		out.println("User"+Integer.toString(randint));
+		in.readLine();
+		out.println("User"+Integer.toString(randint));
 	}
 	
 	public void setGui(Gui gui) {
@@ -93,9 +102,9 @@ public class ChatThread extends Thread {
 	        }
 
 		} catch (IOException e) {
-			System.err.println("IO Exception : " + e);
+			e.printStackTrace(System.err);
 		} catch (Exception e) {
-			System.err.println("Exception : " + e);
+			e.printStackTrace(System.err);
 		} finally {
 			try {
 				socket.close();
