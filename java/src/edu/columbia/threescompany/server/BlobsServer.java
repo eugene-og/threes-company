@@ -38,20 +38,20 @@ public class BlobsServer {
 			}
 		}
 		
-		LocalGameState gameState = new LocalGameState(playersFrom(_remotePlayers));
-		sendStateToAllPlayers(gameState);
-		
-		int activePlayer = -1;
-		while (!gameState.gameOver()) {
-			activePlayer = (activePlayer + 1) % _remotePlayers.size();
-			sendMessage(activePlayer, new TurnChangeMessage(activePlayer));
-
-			MoveStatePair pair = receiveMoveAndState(activePlayer);
-			sendMoveToAllPlayersExcept(activePlayer, pair._move);
-
-			gameState = pair._state;
-			sendStateToAllPlayers(gameState);
-		}
+//		LocalGameState gameState = new LocalGameState(playersFrom(_remotePlayers));
+//		sendStateToAllPlayers(gameState);
+//		
+//		int activePlayer = -1;
+//		while (!gameState.gameOver()) {
+//			activePlayer = (activePlayer + 1) % _remotePlayers.size();
+//			sendMessage(activePlayer, new TurnChangeMessage(activePlayer));
+//
+//			MoveStatePair pair = receiveMoveAndState(activePlayer);
+//			sendMoveToAllPlayersExcept(activePlayer, pair._move);
+//
+//			gameState = pair._state;
+//			sendStateToAllPlayers(gameState);
+//		}
 	}
 	
 	private static List<Player> playersFrom(List<PlayerServerData> players) {
