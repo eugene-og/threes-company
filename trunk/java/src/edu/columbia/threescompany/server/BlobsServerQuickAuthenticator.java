@@ -1,29 +1,27 @@
 package edu.columbia.threescompany.server;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.QuickAuthenticator;
 
 import edu.columbia.threescompany.game.Player;
 
-
 public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 	public boolean askAuthorisation(ClientHandler clientHandler) throws IOException {
 		BlobsGameState gameState = BlobsGameState.instance();
-		List<Player> players;
+		Player[] players;
 		
 		try {
-			players = (List) askObjectInput(clientHandler, null);
+			players = (Player[]) askObjectInput(clientHandler, null);
 		} catch (Exception e) {
 			throw new RuntimeException("Error deserializing player list", e);
 		}
 		
 		boolean retval = true;
 		
-		for (Player player : players)
-			retval &= authenticatePlayer(player, clientHandler, gameState);
+		for (int i = 0; i < players.length; i++)
+			retval &= authenticatePlayer(players[i], clientHandler, gameState);
 		
 		return retval;
 	}

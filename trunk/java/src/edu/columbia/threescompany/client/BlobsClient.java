@@ -26,8 +26,7 @@ public class BlobsClient {
 		_serverConnection = new ServerConnection();	// FIXME use port
 		doPlayerSetup();
 		
-		// TODO serialize players over to Eugene via BlobsServerQuickAuthenticator
-		// (as a List<Player>)
+		_serverConnection.sendPlayers(players);
 		
 		_chatThread = new ChatThread(players);
 		_gui = Gui.getInstance(_chatThread);
