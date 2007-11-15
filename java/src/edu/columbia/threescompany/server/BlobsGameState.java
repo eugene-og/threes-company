@@ -65,6 +65,4 @@ public class BlobsGameState {
 		}
 		return false;
 	}
-
-
 }

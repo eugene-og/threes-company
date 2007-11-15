@@ -81,9 +81,9 @@ public class LocalGameState {
 		return _activePlayer.getAbilityPoints();
 	}
 	
-	public void updateActivePlayer(int id) {
+	public void updateActivePlayer(String id) {
 		for (Player player : _players) {
-			if (id == player.getId()) {
+			if (id.equals(player.getName())) {
 				_activePlayer = player;
 				return;
 			}
@@ -92,9 +92,9 @@ public class LocalGameState {
 								   ", that player doesn't exist!");
 	}
 
-	public boolean isLocalPlayer(int somePlayer) {
+	public boolean isLocalPlayer(String id) {
 		for (Player player : _localPlayers)
-			if (player.getId() == somePlayer) return true;
+			if (id.equals(player.getName())) return true;
 		return false;
 	}
 

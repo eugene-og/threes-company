@@ -1,10 +1,13 @@
 package edu.columbia.threescompany.server;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.quickserver.net.AppException;
+import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.QuickServer;
 
 import edu.columbia.threescompany.client.LocalGameState;
@@ -22,7 +25,7 @@ public class BlobsServer {
 	
 	private static List<PlayerServerData> _players;
 	
-	public static void main(String args[])	{
+	public static void main(String args[]) throws IOException {
 		QuickServer blobsServer = new QuickServer();
 		Object config[] = new Object[] { _confFile };
 		if (blobsServer.initService(config) == true) {
@@ -35,10 +38,20 @@ public class BlobsServer {
 			}
 		}
 		
-		_players = getPlayers();
-		if (_players.size() == 0)
-			throw new RuntimeException("No players found!");
 		
+		do {
+			_players = getPlayers();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException exception) {
+				/* nada */
+			}
+		} while (_players.size() == 0);
+		
+		mainServerLoop();
+	}
+
+	private static void mainServerLoop() throws IOException {
 		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_players));
 		sendStateToAllPlayers(gameState);
 		
@@ -47,9 +60,9 @@ public class BlobsServer {
 			activePlayer = (activePlayer + 1) % _players.size();
 			// TODO do this better -- Zach
 			String playerId = _players.get(activePlayer).getClientId();
-			sendMessage(playerId, new TurnChangeMessage(activePlayer));
+			sendMessage(playerId, new TurnChangeMessage(playerId));
 
-			MoveStatePair pair = receiveMoveAndState(activePlayer);
+			MoveStatePair pair = receiveMoveAndState(playerId);
 			sendMoveToAllPlayersExcept(playerId, pair._move);
 
 			gameState = pair._state;
@@ -64,7 +77,7 @@ public class BlobsServer {
 		return result;
 	}
 
-	public static void sendStateToAllPlayers(LocalGameState gameState) {
+	public static void sendStateToAllPlayers(LocalGameState gameState) throws IOException {
 		ServerMessage msg = new UpdateStateMessage(gameState);
 		List<PlayerServerData> players = getPlayers();
 		for (PlayerServerData player : players) {
@@ -76,7 +89,7 @@ public class BlobsServer {
 		return BlobsGameState.instance().getAllPlayers();
 	}
 	
-	public static void sendMoveToAllPlayersExcept(String playerId, GameMove move) {
+	public static void sendMoveToAllPlayersExcept(String playerId, GameMove move) throws IOException {
 		ServerMessage msg = new ExecuteMoveMessage(move);
 		List<PlayerServerData> players = getPlayers();
 		for (PlayerServerData player : players) {
@@ -85,16 +98,16 @@ public class BlobsServer {
 		}
 	}
 	
-	public static MoveStatePair receiveMoveAndState(int playerId) {
-		//TODO talk to Eugene -- we need to listen to the socket from
-		// _remotePlayers.get(playerID) and receive a serialized
-		// MoveStatePair
-		return null;
+	public static MoveStatePair receiveMoveAndState(String playerId) {
+		return MoveStatePairQueue.instance().blockForNextPair();
 	}
-	
-	public static void sendMessage(String playerID, ServerMessage msg) {
-		BlobsGameState.instance().getPlayer(playerID);
-		//TODO talk to Eugene -- we need to serialize msg and send it to
-		// _remotePlayers.get(playerID) 's network socket
+
+	public static void sendMessage(String playerId, ServerMessage msg) throws IOException {
+		getObjectOutputStreamFor(playerId).writeObject(msg);
+	}
+
+	private static ObjectOutputStream getObjectOutputStreamFor(String playerId) {
+		ClientHandler handler = BlobsGameState.instance().getPlayer(playerId).getClient();
+		return handler.getObjectOutputStream();
 	}
 }

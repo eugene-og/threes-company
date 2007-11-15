@@ -11,6 +11,10 @@
 		edu.columbia.threescompany.server.PlayerServerData
 	</client-data>
 	
+	<client-object-handler>
+		edu.columbia.threescompany.server.BlobsClientObjectHandler
+	</client-object-handler>
+	
 	<client-authentication-handler>
 		edu.columbia.threescompany.server.BlobsServerQuickAuthenticator
 	</client-authentication-handler>
