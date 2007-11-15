@@ -20,15 +20,15 @@ public class BlobsClient {
 	private static ServerConnection _serverConnection;
 	private static ChatThread _chatThread;
 	private static Gui _gui;
-	private static List<Player> players;
+	private static List<Player> _players;
 	
 	public static void main(String[] args) throws Exception {
 		_serverConnection = new ServerConnection();	// FIXME use port
 		doPlayerSetup();
 		
-		_serverConnection.sendPlayers(players);
+		_serverConnection.sendPlayers(_players);
 		
-		_chatThread = new ChatThread(players);
+		_chatThread = new ChatThread(_players);
 		_gui = Gui.getInstance(_chatThread);
 		_chatThread.setGui(_gui);
 		_chatThread.start();
@@ -52,9 +52,9 @@ public class BlobsClient {
 		GameType gameType = PreGameGui.getGameType();
 		
 		if (gameType == GameType.HOTSEAT) {
-			players = PlayerInfoGui.getPlayers(2);
+			_players = PlayerInfoGui.getPlayers(2);
 		} else if (gameType == GameType.NETWORK) {
-			players = PlayerInfoGui.getPlayers(1);
+			_players = PlayerInfoGui.getPlayers(1);
 		} else {
 			throw new RuntimeException("Unknown game type!");
 		}	
@@ -64,10 +64,10 @@ public class BlobsClient {
 		if (message instanceof UpdateStateMessage) {
 			updateState(message);
 		} else if (message instanceof TurnChangeMessage) {
-			int activePlayer = ((TurnChangeMessage) message).whoseTurn();
+			String activePlayer = ((TurnChangeMessage) message).whoseTurn();
 			_gameState.updateActivePlayer(activePlayer);
 			if (_gameState.isLocalPlayer(activePlayer)) {
-				yourMove(activePlayer);
+				yourMove(getIdForName(activePlayer));
 			} else {
 				notYourTurnDialog();
 			}
@@ -75,6 +75,12 @@ public class BlobsClient {
 			_gameState.executeMove(((ExecuteMoveMessage) message).getMove(),
 								   _gui);
 		}
+	}
+
+	private static int getIdForName(String activePlayer) {
+		for (Player player : _players)
+			if (player.getName().equals(activePlayer)) return player.getId();
+		throw new RuntimeException("Bad player name!");
 	}
 
 	private static void updateState(ServerMessage message) {

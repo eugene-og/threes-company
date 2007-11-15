@@ -10,7 +10,11 @@ public class ServerClientAcceptanceTest extends BaseTestCase {
 		
 		Thread serverThread = new Thread(new Runnable() {
 				public void run() {
-					BlobsServer.main(new String[] { String.valueOf(TEST_PORT) });
+					try {
+						BlobsServer.main(new String[] { String.valueOf(TEST_PORT) });
+					} catch (Exception exception) {
+						throw new RuntimeException(exception);
+					}
 				};
 		});
 		

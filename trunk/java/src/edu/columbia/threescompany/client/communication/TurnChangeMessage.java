@@ -3,13 +3,13 @@ package edu.columbia.threescompany.client.communication;
 public class TurnChangeMessage extends ServerMessage {
 	private static final long serialVersionUID = -3151972268456439697L;
 	
-	public TurnChangeMessage(int id) {
-		_playerID = id;
+	public TurnChangeMessage(String playerId) {
+		_playerID = playerId;
 	}
 	
-	private int _playerID;
+	private String _playerID;
 	
-	public int whoseTurn() {
+	public String whoseTurn() {
 		return _playerID;
 	}
 }
