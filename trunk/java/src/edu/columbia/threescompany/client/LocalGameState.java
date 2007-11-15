@@ -15,7 +15,7 @@ import edu.columbia.threescompany.graphics.Gui;
 public class LocalGameState {
 	private List<GameObject> _gameObjects;
 	private List<Player> _players;
-	private List<Player> _localPlayers;
+	private List<Player> _localPlayers;	// TODO move this
 	private Player _activePlayer;
 	
 	public void executeMove(GameMove move, Gui gui) {
