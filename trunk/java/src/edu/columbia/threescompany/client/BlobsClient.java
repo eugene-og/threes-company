@@ -33,8 +33,6 @@ public class BlobsClient {
 		_chatThread.setGui(_gui);
 		_chatThread.start();
 		
-		System.err.println("Headed for primary message loop");
-		
 		ServerMessage message;
 		while ((message = _serverConnection.receiveMessage()) != null)
 			handleMessage(message);

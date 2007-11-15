@@ -46,7 +46,7 @@ public class BlobsServer {
 			} catch (InterruptedException exception) {
 				/* nada */
 			}
-		} while (_players.size() == 0);
+		} while (_players.size() < 2);
 		
 		mainServerLoop();
 	}
@@ -103,7 +103,10 @@ public class BlobsServer {
 	}
 
 	public static void sendMessage(String playerId, ServerMessage msg) throws IOException {
-		getObjectOutputStreamFor(playerId).writeObject(msg);
+		ObjectOutputStream ooStream = getObjectOutputStreamFor(playerId);
+		if (ooStream == null)
+			throw new RuntimeException("Player " + playerId + "doesn't have an output stream!");
+		ooStream.writeObject(msg);
 	}
 
 	private static ObjectOutputStream getObjectOutputStreamFor(String playerId) {

@@ -7,7 +7,10 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.collections.ListUtils;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.game.GameMove;
@@ -46,6 +49,9 @@ public class ServerConnection {
 
 	public void sendPlayers(List<Player> players) throws IOException {
 		// This has to be the first step in the conn process
-		writeObject(players.toArray());
+		Player[] array = new Player[players.size()];
+		for (int i = 0; i < players.size(); i++)
+			array[i] = players.get(i);
+		writeObject(array);
 	}
 }
