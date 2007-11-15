@@ -1,5 +1,6 @@
 package edu.columbia.threescompany.client;
 
+import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -22,6 +23,7 @@ public class BlobsClient {
 	private static List<Player> players;
 	
 	public static void main(String[] args) throws Exception {
+		_serverConnection = new ServerConnection();	// FIXME use port
 		doPlayerSetup();
 		
 		// TODO instantiate server connection - need to start MainGameThread -ek
@@ -32,15 +34,19 @@ public class BlobsClient {
 		_chatThread.setGui(_gui);
 		_chatThread.start();
 		
-//		ServerMessage message;
-//		/* TODO Interface with Eugene's code in re "ready to play"/"game start"/etc. */
-//		while ((message = _serverConnection.receiveMessage()) != null)
-//			handleMessage(message);
-//		
-//		// TODO display a polite game over msg in GUI
-//		JOptionPane.showMessageDialog(null, "You didn't lose, you just weren't the winner", 
-//											"Game over",
-//											JOptionPane.INFORMATION_MESSAGE );
+		System.err.println("Headed for primary message loop");
+		
+		ServerMessage message;
+		while ((message = _serverConnection.receiveMessage()) != null)
+			handleMessage(message);
+		
+		gameOverDialog();
+	}
+
+	private static void gameOverDialog() {
+		JOptionPane.showMessageDialog(null, "You didn't lose, you just weren't the winner", 
+											"Game over",
+											JOptionPane.INFORMATION_MESSAGE );
 	}
 
 	private static void doPlayerSetup() {
@@ -55,25 +61,39 @@ public class BlobsClient {
 		}	
 	}
 	
-	private static void handleMessage(ServerMessage message) {
+	private static void handleMessage(ServerMessage message) throws IOException {
 		if (message instanceof UpdateStateMessage) {
-			_gameState = ((UpdateStateMessage) message).getGameState();
-			_gui.drawState(_gameState);
+			updateState(message);
 		} else if (message instanceof TurnChangeMessage) {
 			int activePlayer = ((TurnChangeMessage) message).whoseTurn();
 			_gameState.updateActivePlayer(activePlayer);
 			if (_gameState.isLocalPlayer(activePlayer)) {
-				GameMove move = _gui.getMoveFor(activePlayer);
-				_gameState.executeMove(move, _gui);
-				_serverConnection.sendMove(move, _gameState);
+				yourMove(activePlayer);
 			} else {
-				JOptionPane.showMessageDialog(null, "Not your turn", 
-													"Hold your horses!",
-													JOptionPane.ERROR_MESSAGE );
+				notYourTurnDialog();
 			}
 		} else if (message instanceof ExecuteMoveMessage) {
 			_gameState.executeMove(((ExecuteMoveMessage) message).getMove(),
 								   _gui);
 		}
+	}
+
+	private static void updateState(ServerMessage message) {
+		// TODO confirm we already have this state.
+		_gameState = ((UpdateStateMessage) message).getGameState();
+		_gui.drawState(_gameState);
+	}
+
+	private static void yourMove(int activePlayer) throws IOException {
+		GameMove move = _gui.getMoveFor(activePlayer);
+		_gameState.executeMove(move, _gui);
+		// TODO this will create a simulation pause!
+		_serverConnection.sendMove(move, _gameState);
+	}
+
+	private static void notYourTurnDialog() {
+		JOptionPane.showMessageDialog(null, "Not your turn", 
+											"Hold your horses!",
+											JOptionPane.ERROR_MESSAGE );
 	}
 }
