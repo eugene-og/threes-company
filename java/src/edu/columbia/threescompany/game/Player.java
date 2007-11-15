@@ -1,6 +1,10 @@
 package edu.columbia.threescompany.game;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
+	private static final long serialVersionUID = -8662542280020716885L;
+
 	public static final int NOBODY = -1;
 	
 	private String name;

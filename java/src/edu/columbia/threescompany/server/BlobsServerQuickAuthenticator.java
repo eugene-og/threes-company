@@ -10,10 +10,10 @@ import edu.columbia.threescompany.game.Player;
 public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 	public boolean askAuthorisation(ClientHandler clientHandler) throws IOException {
 		BlobsGameState gameState = BlobsGameState.instance();
-		Player[] players;
+		Object[] players;
 		
 		try {
-			players = (Player[]) askObjectInput(clientHandler, null);
+			players = (Object[]) askObjectInput(clientHandler, null);
 		} catch (Exception e) {
 			throw new RuntimeException("Error deserializing player list", e);
 		}
@@ -21,7 +21,7 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 		boolean retval = true;
 		
 		for (int i = 0; i < players.length; i++)
-			retval &= authenticatePlayer(players[i], clientHandler, gameState);
+			retval &= authenticatePlayer((Player) players[i], clientHandler, gameState);
 		
 		return retval;
 	}

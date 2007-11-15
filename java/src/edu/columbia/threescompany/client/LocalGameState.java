@@ -107,4 +107,9 @@ public class LocalGameState {
 		// TODO
 		return new LocalGameState();
 	}
+	
+	public LocalGameState predictOutcome(GameMove move) {
+		// TODO
+		return null;
+	}
 }
