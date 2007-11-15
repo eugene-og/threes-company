@@ -9,8 +9,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
-
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
@@ -31,8 +29,7 @@ public class ServerConnection {
 	/* Block until a message is received from the server. */
 	public ServerMessage receiveMessage() throws IOException, ClassNotFoundException {
 		// TODO make sure we block
-		// TODO this classcast is fucked
-		ObjectInputStream stream = (ObjectInputStream) sock.getInputStream();
+		ObjectInputStream stream = new ObjectInputStream(sock.getInputStream());
 		ServerMessage msg = (ServerMessage) stream.readObject();
 
 		return msg;
@@ -43,8 +40,7 @@ public class ServerConnection {
 	}
 
 	private void writeObject(Serializable obj) throws IOException {
-		// TODO this classcast is also fucked
-		ObjectOutputStream stream = (ObjectOutputStream) sock.getOutputStream();
+		ObjectOutputStream stream = new ObjectOutputStream(sock.getOutputStream());
 		stream.writeObject(obj);
 	}
 

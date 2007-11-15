@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -24,7 +25,7 @@ public class ChatThread extends Thread {
 	private List<String> sendBuffer;
 	private Gui _gui;
 
-	public ChatThread(List players) {
+	public ChatThread(List players) throws IOException {
 		InetAddress addr;
 		sendBuffer = new ArrayList<String>();
 		try {
@@ -33,27 +34,29 @@ public class ChatThread extends Thread {
 			System.err.println("Unknown host : " + e1);
 			return;
 		}
+		
+		socket = new Socket(addr, SERVER_PORT);
+		ObjectOutputStream ooStream = new ObjectOutputStream(socket.getOutputStream());
+		ooStream.writeObject(players.toArray());
+		
 		try {
-			socket = new Socket(addr, SERVER_PORT);
+			startStreams();
 		} catch (IOException e) {
-			System.err.println("Socket failed : " + e);
-			return;
-		}
-
-		try {
-			in = new BufferedReader(new InputStreamReader(socket
-					.getInputStream()));
-			// Enable auto-flush:
-			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-					socket.getOutputStream())), true);
-		} catch (IOException e) {
-			System.out.println("Socket Error : " + e);
 			try {
 				socket.close();
 			} catch (IOException e2) {
 				System.err.println("Socket not closed");
 			}
+			throw(e);
 		}
+	}
+
+	private void startStreams() throws IOException {
+		in = new BufferedReader(new InputStreamReader(socket
+				.getInputStream()));
+		// Enable auto-flush:
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
+				socket.getOutputStream())), true);
 	}
 	
 	public void setGui(Gui gui) {

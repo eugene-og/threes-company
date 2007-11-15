@@ -20,8 +20,7 @@ public class BlobsServer {
 	public static String VERSION = "0.1";
 	private static String _confFile = "conf" + File.separator + "BlobsServer.xml";
 	
-	// TODO hook into Eugene code
-	private static List<PlayerServerData> _remotePlayers = null;
+	private static List<PlayerServerData> _players;
 	
 	public static void main(String args[])	{
 		QuickServer blobsServer = new QuickServer();
@@ -36,18 +35,19 @@ public class BlobsServer {
 			}
 		}
 		
-		// TODO instantiate _remotePlayers
-		
-		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_remotePlayers));
+		_players = getPlayers();
+		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_players));
 		sendStateToAllPlayers(gameState);
 		
 		int activePlayer = -1;
 		while (!gameState.gameOver()) {
-			activePlayer = (activePlayer + 1) % _remotePlayers.size();
-			sendMessage(activePlayer, new TurnChangeMessage(activePlayer));
+			activePlayer = (activePlayer + 1) % _players.size();
+			// TODO do this better -- Zach
+			String playerId = _players.get(activePlayer).getClientId();
+			sendMessage(playerId, new TurnChangeMessage(activePlayer));
 
 			MoveStatePair pair = receiveMoveAndState(activePlayer);
-			sendMoveToAllPlayersExcept(activePlayer, pair._move);
+			sendMoveToAllPlayersExcept(playerId, pair._move);
 
 			gameState = pair._state;
 			sendStateToAllPlayers(gameState);
@@ -63,14 +63,23 @@ public class BlobsServer {
 
 	public static void sendStateToAllPlayers(LocalGameState gameState) {
 		ServerMessage msg = new UpdateStateMessage(gameState);
-		for (int i = 0; i < _remotePlayers.size(); i++)
-			sendMessage(i, msg);
+		List<PlayerServerData> players = getPlayers();
+		for (PlayerServerData player : players) {
+			sendMessage(player.getClientId(), msg);
+		}
+	}
+
+	private static List<PlayerServerData> getPlayers() {
+		return BlobsGameState.instance().getAllPlayers();
 	}
 	
-	public static void sendMoveToAllPlayersExcept(int playerId, GameMove move) {
+	public static void sendMoveToAllPlayersExcept(String playerId, GameMove move) {
 		ServerMessage msg = new ExecuteMoveMessage(move);
-		for (int i = 0; i < _remotePlayers.size(); i++)
-			if (i != playerId) sendMessage(i, msg);
+		List<PlayerServerData> players = getPlayers();
+		for (PlayerServerData player : players) {
+			String id = player.getClientId();
+			if (!id.equals(playerId)) sendMessage(id, msg);
+		}
 	}
 	
 	public static MoveStatePair receiveMoveAndState(int playerId) {
@@ -80,7 +89,8 @@ public class BlobsServer {
 		return null;
 	}
 	
-	public static void sendMessage(int playerID, ServerMessage msg) {
+	public static void sendMessage(String playerID, ServerMessage msg) {
+		BlobsGameState.instance().getPlayer(playerID);
 		//TODO talk to Eugene -- we need to serialize msg and send it to
 		// _remotePlayers.get(playerID) 's network socket
 	}
