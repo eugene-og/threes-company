@@ -1,34 +1,53 @@
 package edu.columbia.threescompany.server;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.QuickAuthenticator;
+
+import edu.columbia.threescompany.game.Player;
 
 
 public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 	public boolean askAuthorisation(ClientHandler clientHandler) throws IOException {
 		BlobsGameState gameState = BlobsGameState.instance();
-		String username = askStringInput(clientHandler, "User Name :");
-		String password = askStringInput(clientHandler, "Password :"); 
-		if(username==null || password ==null) {
-			sendString(clientHandler, "Auth Failed - Username or Password empty");
+		List<Player> players;
+		
+		try {
+			players = (List) askObjectInput(clientHandler, null);
+		} catch (Exception e) {
+			throw new RuntimeException("Error deserializing player list", e);
+		}
+		
+		boolean retval = true;
+		
+		for (Player player : players)
+			retval &= authenticatePlayer(player, clientHandler, gameState);
+		
+		return retval;
+	}
+
+	private boolean authenticatePlayer(Player player, ClientHandler clientHandler, BlobsGameState gameState) throws IOException {
+		if(player.getName() == null) {
+			sendString(clientHandler, "Auth Failed - Username empty");
 			return false; 
-		} else if (gameState.isHandleTaken(username)) {
+		} else if (gameState.isHandleTaken(player.getName())) {
 			sendString(clientHandler, "Auth Failed - Handle in use");
 			return false;
-		} else if(username.equals(password) && !gameState.isHandleTaken(username)) {
+		} else {
 			sendString(clientHandler, "Auth OK");
 			PlayerServerData newPlayer = (PlayerServerData) clientHandler.getClientData();
-			newPlayer.setHandle(username);
+			newPlayer.setHandle(player.getName());
 			newPlayer.setClient(clientHandler);
 			newPlayer.setIsReadyToPlay(false);
 			newPlayer.setHasTurn();
+			
+			Player clientPlayer = null;	// TODO
+			newPlayer.setPlayer(clientPlayer);
+			
 			gameState.addPlayer(newPlayer.getClientId(), newPlayer);
 			return true;
-		} else {
-			sendString(clientHandler, "Auth Failed - Incorrect password");
-			return false;
 		}
 	}
 }

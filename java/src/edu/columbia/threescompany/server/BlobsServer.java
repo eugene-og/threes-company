@@ -7,8 +7,6 @@ import java.util.List;
 import org.quickserver.net.AppException;
 import org.quickserver.net.server.QuickServer;
 
-import com.sun.corba.se.spi.activation.Server;
-
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
 import edu.columbia.threescompany.client.communication.MoveStatePair;
@@ -37,6 +35,8 @@ public class BlobsServer {
 				e.printStackTrace();
 			}
 		}
+		
+		// TODO instantiate _remotePlayers
 		
 		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_remotePlayers));
 		sendStateToAllPlayers(gameState);

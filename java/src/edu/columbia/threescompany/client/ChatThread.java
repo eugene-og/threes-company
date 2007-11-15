@@ -12,14 +12,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
-import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class ChatThread extends Thread {
-	
-	private static final int SERVER_PORT = 3444;
+	private static final int SERVER_PORT = 3444;		// FIXME
 	
 	private Socket socket;
 	private BufferedReader in;
@@ -49,11 +46,6 @@ public class ChatThread extends Thread {
 			// Enable auto-flush:
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					socket.getOutputStream())), true);
-			
-			out.println(((Player) players.get(0)).getName());//username
-			out.println(((Player) players.get(0)).getName());//password
-//			randomAuthenticate();
-			
 		} catch (IOException e) {
 			System.out.println("Socket Error : " + e);
 			try {
@@ -62,16 +54,6 @@ public class ChatThread extends Thread {
 				System.err.println("Socket not closed");
 			}
 		}
-	}
-
-	private void randomAuthenticate() throws IOException {
-		// authentication, random handles
-		Random r = new Random();
-		int randint = r.nextInt(1000);
-		in.readLine();
-		out.println("User"+Integer.toString(randint));
-		in.readLine();
-		out.println("User"+Integer.toString(randint));
 	}
 	
 	public void setGui(Gui gui) {
