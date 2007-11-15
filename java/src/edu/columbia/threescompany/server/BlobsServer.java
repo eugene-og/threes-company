@@ -36,6 +36,9 @@ public class BlobsServer {
 		}
 		
 		_players = getPlayers();
+		if (_players.size() == 0)
+			throw new RuntimeException("No players found!");
+		
 		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_players));
 		sendStateToAllPlayers(gameState);
 		
