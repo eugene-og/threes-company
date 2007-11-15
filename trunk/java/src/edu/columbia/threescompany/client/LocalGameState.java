@@ -104,7 +104,7 @@ public class LocalGameState {
 	}
 
 	public static LocalGameState getInitialGameState(List<Player> players) {
-		// TODO some initial config of pieces
-		return null;
+		// TODO
+		return new LocalGameState();
 	}
 }
