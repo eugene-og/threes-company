@@ -26,9 +26,9 @@ public class BlobsClient {
 		_serverConnection = new ServerConnection();	// FIXME use port
 		doPlayerSetup();
 		
-		// TODO instantiate server connection - need to start MainGameThread -ek
+		// TODO serialize players over to Eugene via BlobsServerQuickAuthenticator
+		// (as a List<Player>)
 		
-		//TODO for EK: authentication should be done earlier to handle error conditions
 		_chatThread = new ChatThread(players);
 		_gui = Gui.getInstance(_chatThread);
 		_chatThread.setGui(_gui);
