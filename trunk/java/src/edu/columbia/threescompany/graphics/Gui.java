@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -34,6 +38,7 @@ import javax.swing.UIManager;
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.game.GameMove;
+import edu.columbia.threescompany.gameobjects.GameParameters;
 
 public class Gui extends JFrame {
 	
@@ -54,7 +59,7 @@ public class Gui extends JFrame {
 		if (_instance == null) _instance = new Gui(thread);
 		return _instance;
 	}
-	  
+
 	private Gui(ChatThread chatThread) {
 		super("Welcome to Blobs!");
 		try{ UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
@@ -189,6 +194,8 @@ public class Gui extends JFrame {
 	private JPanel getBoardPane() {
 		JPanel pane = new JPanel();
 		_board = new Board();
+		_board.addMouseListener(new BoardMouseListener());
+		_board.addMouseMotionListener(new BoardMouseMotionListener());
 		pane.add(_board);
 		
 		return pane;
@@ -262,6 +269,43 @@ public class Gui extends JFrame {
 													JOptionPane.INFORMATION_MESSAGE );
         }
     }
+    
+    private class BoardMouseListener implements MouseListener
+    {
+
+		public void mouseClicked(MouseEvent e) {
+			// TODO do something to game state/object after click
+			Point p = e.getPoint();
+			addChatLine("Clicked: ("+p.x+","+p.y+")");
+		}
+		
+		/** not needed */
+		public void mouseEntered(MouseEvent arg0) {}
+		public void mouseExited(MouseEvent arg0) {}
+		public void mousePressed(MouseEvent arg0) {}
+		public void mouseReleased(MouseEvent arg0) {}
+    }
+    
+    private class BoardMouseMotionListener implements MouseMotionListener {
+
+		public void mouseDragged(MouseEvent e) {
+			Point p = e.getPoint();
+			if (p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
+					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH) {
+				addChatLine("mouseDragged: ("+p.x+","+p.y+")");
+				
+				// TODO Send this Point to real-time physics engine for line drawing
+				
+				// TODO get data back from physics to draw line for projected path
+			}
+				
+			
+		}
+
+		public void mouseMoved(MouseEvent e) {}
+    	
+    }
+    
 	
 	public void addChatLine(String line) {
 		_txtArea.setText(_txtArea.getText() + line + "\n");
