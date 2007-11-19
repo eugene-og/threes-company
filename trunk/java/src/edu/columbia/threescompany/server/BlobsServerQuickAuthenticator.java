@@ -27,16 +27,20 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 	}
 
 	private boolean authenticatePlayer(Player player, ClientHandler clientHandler, BlobsGameState gameState) throws IOException {
+		boolean retval = false;
 		if(player.getName() == null) {
 			sendString(clientHandler, "Auth Failed - Username empty");
-			return false; 
-		} else if (gameState.isHandleTaken(player.getName())) {
+			retval = false;
+		} else if (gameState.isAlreadyAuthenticated(player.getName(), clientHandler.getHostAddress())) {
+			retval = true;
+		} else if (gameState.isHandleTaken(player.getName(), clientHandler.getHostAddress())) {
 			sendString(clientHandler, "Auth Failed - Handle in use");
-			return false;
+			retval = false;
 		} else {
 			sendString(clientHandler, "Auth OK");
 			PlayerServerData newPlayer = (PlayerServerData) clientHandler.getClientData();
 			newPlayer.setHandle(player.getName());
+			newPlayer.setHostAddress(clientHandler.getHostAddress());
 			newPlayer.setClient(clientHandler);
 			newPlayer.setIsReadyToPlay(false);
 			newPlayer.setHasTurn();
@@ -44,8 +48,9 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 			Player clientPlayer = null;	// TODO
 			newPlayer.setPlayer(clientPlayer);
 			
-			gameState.addPlayer(newPlayer.getClientId(), newPlayer);
-			return true;
+			gameState.addPlayerServerData(newPlayer.getClientId(), newPlayer);
+			retval = true;
 		}
+		return retval;
 	}
 }

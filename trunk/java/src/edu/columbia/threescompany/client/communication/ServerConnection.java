@@ -22,11 +22,11 @@ public class ServerConnection {
 	public ServerConnection() throws UnknownHostException, IOException {
 		/* FIXME: temporary, since port not known 
 		 * get from cmdline later */
-		this(3444);
+		this("localhost",3444);
 	}
 	
-	public ServerConnection(int port) throws UnknownHostException, IOException {
-		sock = new Socket(InetAddress.getLocalHost(), port);
+	public ServerConnection(String hostName, int port) throws UnknownHostException, IOException {
+		sock = new Socket(InetAddress.getByName(hostName), port);
 	}
 	
 	/* Block until a message is received from the server. */
