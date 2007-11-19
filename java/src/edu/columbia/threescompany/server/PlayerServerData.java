@@ -10,6 +10,7 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 	private static final long serialVersionUID = -2022551820772269910L;
 
 	private ClientHandler _client;
+	private String _hostAddress;
 
 	private Player _player;
 	
@@ -85,6 +86,14 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 
 	public String getClientKey() {
 		return getClientId() + " - key";
+	}
+
+	public String getHostAddress() {
+		return _hostAddress;
+	}
+
+	public void setHostAddress(String address) {
+		_hostAddress = address;
 	}
 
 }

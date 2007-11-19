@@ -11,12 +11,12 @@ public class BlobsCommandHandler implements ClientCommandHandler {
 	
 	public void lostConnection(ClientHandler handler) throws IOException {
 		handler.sendSystemMsg("Connection lost : "+handler.getHostAddress());
-		BlobsGameState.instance().removePlayer(handler.getClientData());
+		BlobsGameState.instance().removePlayerServerData(handler.getClientData());
 	}
 	
 	public void closingConnection(ClientHandler handler) throws IOException {
 		handler.sendSystemMsg("Connection closed: "+handler.getHostAddress());
-		BlobsGameState.instance().removePlayer(handler.getClientData());
+		BlobsGameState.instance().removePlayerServerData(handler.getClientData());
 	}
 	
 	public void handleCommand(ClientHandler handler, String command) 

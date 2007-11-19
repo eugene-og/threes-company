@@ -10,10 +10,10 @@ import org.quickserver.net.server.ClientData;
 public class BlobsGameState {
 	
 	private static BlobsGameState gameState = null;
-	private HashMap<String, PlayerServerData> playerMap;
+	private HashMap<String, PlayerServerData> playerServerDataMap;
 	
 	private BlobsGameState() {
-		playerMap = new HashMap<String, PlayerServerData>();
+		playerServerDataMap = new HashMap<String, PlayerServerData>();
 	}
 	
 	public static BlobsGameState instance() {
@@ -23,20 +23,20 @@ public class BlobsGameState {
 		return gameState;
 	}
 
-	public void addPlayer(String id, PlayerServerData player) {
-		playerMap.put(id, player);
+	public void addPlayerServerData(String id, PlayerServerData player) {
+		playerServerDataMap.put(id, player);
 	}
 	
-	public PlayerServerData getPlayer(String id) {
-		return (PlayerServerData) playerMap.get(id);
+	public PlayerServerData getPlayerServerData(String id) {
+		return (PlayerServerData) playerServerDataMap.get(id);
 	}
 
 	public List<PlayerServerData> getAllPlayers() {
-		return new ArrayList<PlayerServerData>(playerMap.values());
+		return new ArrayList<PlayerServerData>(playerServerDataMap.values());
 	}
 	
 	public int getPlayerCount() {
-		return playerMap.size();
+		return playerServerDataMap.size();
 	}
 	
 	public boolean allPlayersReady() {
@@ -52,17 +52,24 @@ public class BlobsGameState {
 		return true;
 	}
 
-	public void removePlayer(ClientData clientData) {
-		playerMap.remove(((PlayerServerData)clientData).getHandle());
+	public void removePlayerServerData(ClientData clientData) {
+		playerServerDataMap.remove(((PlayerServerData)clientData).getHandle());
 	}
 
-	public boolean isHandleTaken(String username) {
+	public boolean isHandleTaken(String username, String hostAddress) {
 		for (Iterator<PlayerServerData> iterator = getAllPlayers().iterator(); iterator.hasNext();) {
 			PlayerServerData currentPlayer = (PlayerServerData) iterator.next();
-			if (currentPlayer.getHandle().equals(username)) {
+			if (currentPlayer.getHandle().equals(username) && !currentPlayer.getHostAddress().equals(hostAddress)) {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	public boolean isAlreadyAuthenticated(String name, String hostAddress) {
+		PlayerServerData psd = getPlayerServerData(name);
+		if (psd != null && psd.getHostAddress().equals(hostAddress))
+			return true;
 		return false;
 	}
 }

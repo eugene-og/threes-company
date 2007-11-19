@@ -48,7 +48,7 @@ public class BlobsServer {
 			}
 		} while (_players.size() < 2);
 		
-		mainServerLoop();
+//		mainServerLoop();
 	}
 
 	private static void mainServerLoop() throws IOException {
@@ -110,7 +110,7 @@ public class BlobsServer {
 	}
 
 	private static ObjectOutputStream getObjectOutputStreamFor(String playerId) {
-		ClientHandler handler = BlobsGameState.instance().getPlayer(playerId).getClient();
+		ClientHandler handler = BlobsGameState.instance().getPlayerServerData(playerId).getClient();
 		return handler.getObjectOutputStream();
 	}
 }
