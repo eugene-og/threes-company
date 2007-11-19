@@ -23,9 +23,9 @@ public class BlobsClient {
 	private static List<Player> _players;
 	
 	public static void main(String[] args) throws Exception {
-		_serverConnection = new ServerConnection();	// FIXME use port
 		doPlayerSetup();
 		
+		_serverConnection = new ServerConnection();	// FIXME use port
 		_serverConnection.sendPlayers(_players);
 		
 		_chatThread = new ChatThread(_players);
@@ -34,8 +34,8 @@ public class BlobsClient {
 		_chatThread.start();
 		
 		ServerMessage message;
-		while ((message = _serverConnection.receiveMessage()) != null)
-			handleMessage(message);
+//		while ((message = _serverConnection.receiveMessage()) != null)
+//			handleMessage(message);
 		
 		gameOverDialog();
 	}
