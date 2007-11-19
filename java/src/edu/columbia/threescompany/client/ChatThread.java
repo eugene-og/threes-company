@@ -38,7 +38,6 @@ public class ChatThread extends Thread {
 		socket = new Socket(addr, SERVER_PORT);
 		ObjectOutputStream ooStream = new ObjectOutputStream(socket.getOutputStream());
 		ooStream.writeObject(players.toArray());
-//		ooStream.close();
 		
 		try {
 			startStreams();
@@ -55,8 +54,7 @@ public class ChatThread extends Thread {
 	private void startStreams() throws IOException {
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		// Enable auto-flush:
-		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-				socket.getOutputStream())), true);
+		out = new PrintWriter(socket.getOutputStream(), true);
 	}
 	
 	public void setGui(Gui gui) {
@@ -83,6 +81,7 @@ public class ChatThread extends Thread {
 	                	_gui.addChatLine(str);
 	                }
 	            } catch (InterruptedException e){
+	            	e.printStackTrace(System.out);
 	            }
 	        }
 

@@ -25,13 +25,13 @@ public class BlobsClient {
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
 		
-		_serverConnection = new ServerConnection();	// FIXME use port
-		_serverConnection.sendPlayers(_players);
-		
 		_chatThread = new ChatThread(_players);
 		_gui = Gui.getInstance(_chatThread);
 		_chatThread.setGui(_gui);
 		_chatThread.start();
+
+		_serverConnection = new ServerConnection();	// FIXME use port
+		_serverConnection.sendPlayers(_players);
 		
 		ServerMessage message;
 //		while ((message = _serverConnection.receiveMessage()) != null)
