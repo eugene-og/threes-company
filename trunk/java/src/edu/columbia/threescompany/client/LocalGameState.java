@@ -1,5 +1,6 @@
 package edu.columbia.threescompany.client;
 
+import java.io.Serializable;
 import java.util.List;
 
 import edu.columbia.threescompany.game.PhysicalMove;
@@ -12,7 +13,10 @@ import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
 import edu.columbia.threescompany.graphics.Gui;
 
-public class LocalGameState {
+public class LocalGameState implements Serializable {
+
+	private static final long serialVersionUID = 8708609010775403554L;
+	
 	private List<GameObject> _gameObjects;
 	private List<Player> _players;
 	private List<Player> _localPlayers;	// TODO move this
