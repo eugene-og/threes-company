@@ -34,8 +34,8 @@ public class BlobsClient {
 		_serverConnection.sendPlayers(_players);
 		
 		ServerMessage message;
-//		while ((message = _serverConnection.receiveMessage()) != null)
-//			handleMessage(message);
+		while ((message = _serverConnection.receiveMessage()) != null)
+			handleMessage(message);
 		
 		gameOverDialog();
 	}

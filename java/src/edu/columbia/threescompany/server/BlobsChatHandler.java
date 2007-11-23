@@ -7,7 +7,7 @@ import java.util.Iterator;
 import org.quickserver.net.server.ClientCommandHandler;
 import org.quickserver.net.server.ClientHandler;
 
-public class BlobsCommandHandler implements ClientCommandHandler {
+public class BlobsChatHandler implements ClientCommandHandler {
 	
 	public void lostConnection(ClientHandler handler) throws IOException {
 		handler.sendSystemMsg("Connection lost : "+handler.getHostAddress());
@@ -19,26 +19,33 @@ public class BlobsCommandHandler implements ClientCommandHandler {
 		BlobsGameState.instance().removePlayerServerData(handler.getClientData());
 	}
 	
-	public void handleCommand(ClientHandler handler, String command) 
+	public void handleCommand(ClientHandler handler, String msg) 
 			throws SocketTimeoutException, IOException {
 		BlobsGameState gameState = BlobsGameState.instance();
-		if(command.equals("quit")) {
-			handler.sendClientMsg("bye");
-			handler.closeConnection();
-		} else if (command.equals("ready")) {
-			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(true);
-		} else if (command.equals("not ready")) {
-			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(false);
-		} else if (command.equals("status")) {
-			sendPlayersReadyStatus(gameState, handler);
+		
+		if (msg.startsWith("$")) {
+			doCommand(gameState, handler, msg);
 		} else {
-			broadcastMessage(handler, ((PlayerServerData)handler.getClientData()).getHandle() + ": " + command);
+			broadcastMessage(handler, gameState, ((PlayerServerData)handler.getClientData()).getHandle() + ": " + msg);
 		}
 		
 		/* check if all players are ready */
 		if (gameState.allPlayersReady()) {
-			broadcastGameStart(handler);
+			broadcastGameStart(gameState, handler);
 		}
+	}
+
+	private void doCommand(BlobsGameState gameState, ClientHandler handler, String command) throws IOException {
+		if (command.equals("$ready")) {
+			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(true);
+		} else if (command.equals("$not ready")) {
+			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(false);
+		} else if (command.equals("$status")) {
+			sendPlayersReadyStatus(gameState, handler);
+		} else {
+			handler.sendClientMsg("Invalid command.");
+		}
+		
 	}
 
 	private void sendPlayersReadyStatus(BlobsGameState gameState, ClientHandler handler) throws IOException {
@@ -50,16 +57,18 @@ public class BlobsCommandHandler implements ClientCommandHandler {
 		handler.sendClientMsg(msg);
 	}
 	
-	private void broadcastGameStart(ClientHandler handler) throws IOException {
-		for (Iterator iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
-			ClientHandler toHandler = (ClientHandler) iterator.next();
+	private void broadcastGameStart(BlobsGameState gameState, ClientHandler handler) throws IOException {
+		for (Iterator iterator = gameState.getAllPlayers().iterator(); iterator.hasNext();) {
+			PlayerServerData toPlayer = (PlayerServerData) iterator.next();
+			ClientHandler toHandler = toPlayer.getChatClientHandler();
 			toHandler.sendClientMsg("START GAME!!");	
 		}
 	}
 	
-	private void broadcastMessage(ClientHandler handler, String msg) throws IOException {
-		for (Iterator iterator = handler.getServer().findAllClient(); iterator.hasNext();) {
-			ClientHandler toHandler = (ClientHandler) iterator.next();
+	private void broadcastMessage(ClientHandler handler, BlobsGameState gameState, String msg) throws IOException {
+		for (Iterator iterator = gameState.getAllPlayers().iterator(); iterator.hasNext();) {
+			PlayerServerData toPlayer = (PlayerServerData) iterator.next();
+			ClientHandler toHandler = toPlayer.getChatClientHandler();
 			if (!toHandler.equals(handler)) {
 				toHandler.sendClientMsg(msg);
 			}

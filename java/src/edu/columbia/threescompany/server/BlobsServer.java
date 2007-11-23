@@ -38,20 +38,19 @@ public class BlobsServer {
 			}
 		}
 		
-		
 		do {
-			_players = getPlayers();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException exception) {
 				/* nada */
 			}
-		} while (_players.size() < 2);
+		} while (!BlobsGameState.instance().allPlayersReady());
 		
-//		mainServerLoop();
+		mainServerLoop();
 	}
 
 	private static void mainServerLoop() throws IOException {
+		_players = getPlayers();
 		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_players));
 		sendStateToAllPlayers(gameState);
 		
@@ -110,7 +109,7 @@ public class BlobsServer {
 	}
 
 	private static ObjectOutputStream getObjectOutputStreamFor(String playerId) {
-		ClientHandler handler = BlobsGameState.instance().getPlayerServerData(playerId).getClient();
+		ClientHandler handler = BlobsGameState.instance().getPlayerServerData(playerId).getGameClientHandler();
 		return handler.getObjectOutputStream();
 	}
 }
