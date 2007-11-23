@@ -14,6 +14,7 @@ public class Player implements Serializable {
 	public Player(int id, String name) {
 		this.id = id;
 		this.name = name;
+		this._abilityPoints = 10;
 	}
 
 	public boolean equals(Player rhs) {

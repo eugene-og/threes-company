@@ -1,13 +1,14 @@
 package edu.columbia.threescompany.client;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import edu.columbia.threescompany.game.PhysicalMove;
+import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
+import edu.columbia.threescompany.game.PhysicalMove;
 import edu.columbia.threescompany.game.Player;
-import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
@@ -108,8 +109,11 @@ public class LocalGameState implements Serializable {
 	}
 
 	public static LocalGameState getInitialGameState(List<Player> players) {
-		// TODO
-		return new LocalGameState();
+		LocalGameState initialGameState =  new LocalGameState();
+		initialGameState._activePlayer = players.get(0);
+		initialGameState._localPlayers = players;
+		initialGameState._gameObjects = new ArrayList<GameObject>();
+		return initialGameState;
 	}
 	
 	public LocalGameState predictOutcome(GameMove move) {
