@@ -9,7 +9,8 @@ import edu.columbia.threescompany.game.Player;
 public class PlayerServerData implements ClientData, ClientIdentifiable {
 	private static final long serialVersionUID = -2022551820772269910L;
 
-	private ClientHandler _client;
+	private ClientHandler _gameClientHandler;
+	private ClientHandler _chatClientHandler;
 	private String _hostAddress;
 
 	private Player _player;
@@ -36,14 +37,22 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 		this._isReadyToPlay = isReady;
 	}
 
-	public ClientHandler getClient() {
-		return _client;
+	public ClientHandler getGameClientHandler() {
+		return _gameClientHandler;
 	}
 
-	public void setClient(ClientHandler client) {
-		this._client = client;
+	public void setGameClientHandler(ClientHandler client) {
+		this._gameClientHandler = client;
 	}
 
+	public ClientHandler getChatClientHandler() {
+		return _chatClientHandler;
+	}
+
+	public void setChatClientHandler(ClientHandler clientHandler) {
+		_chatClientHandler = clientHandler;
+	}
+	
 	public String getHandle() {
 		return _handle;
 	}
@@ -95,5 +104,6 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 	public void setHostAddress(String address) {
 		_hostAddress = address;
 	}
+
 
 }

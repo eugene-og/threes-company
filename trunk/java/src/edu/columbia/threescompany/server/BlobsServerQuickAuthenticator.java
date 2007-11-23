@@ -32,27 +32,38 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 	private boolean authenticatePlayer(Player player, ClientHandler clientHandler, BlobsGameState gameState) throws IOException {
 		boolean retval = false;
 		if(player.getName() == null) {
+			clientHandler.setDataMode(DataMode.STRING, DataType.IN); //set String data mode for this connection
+			clientHandler.setDataMode(DataMode.STRING, DataType.OUT);
 			sendString(clientHandler, "Auth Failed - Username empty");
 			retval = false;
 		} else if (gameState.isAlreadyAuthenticated(player.getName(), clientHandler.getHostAddress())) {
+			//this is the 2nd connection for the main game loop
+			clientHandler.setDataMode(DataMode.OBJECT, DataType.IN);
+			clientHandler.setDataMode(DataMode.OBJECT, DataType.OUT);
+			PlayerServerData playerServerData = gameState.getPlayerServerData(player.getName());
+			playerServerData.setGameClientHandler(clientHandler);
+			playerServerData.setIsReadyToPlay(false);
+			playerServerData.setHasTurn();
+			
+			Player clientPlayer = null;	// TODO
+			playerServerData.setPlayer(clientPlayer);
+			
 			retval = true;
 		} else if (gameState.isHandleTaken(player.getName(), clientHandler.getHostAddress())) {
+			clientHandler.setDataMode(DataMode.STRING, DataType.IN); //set String data mode for this connection
+			clientHandler.setDataMode(DataMode.STRING, DataType.OUT);
 			sendString(clientHandler, "Auth Failed - Handle in use");
 			retval = false;
 		} else {
-			sendString(clientHandler, "Auth OK");
+			//this is the 1st connection from ChatThread
 			clientHandler.setDataMode(DataMode.STRING, DataType.IN); //set String data mode for this connection
-			PlayerServerData newPlayer = (PlayerServerData) clientHandler.getClientData();
-			newPlayer.setHandle(player.getName());
-			newPlayer.setHostAddress(clientHandler.getHostAddress());
-			newPlayer.setClient(clientHandler);
-			newPlayer.setIsReadyToPlay(false);
-			newPlayer.setHasTurn();
-			
-			Player clientPlayer = null;	// TODO
-			newPlayer.setPlayer(clientPlayer);
-			
-			gameState.addPlayerServerData(newPlayer.getClientId(), newPlayer);
+			clientHandler.setDataMode(DataMode.STRING, DataType.OUT);
+			sendString(clientHandler, "Auth OK");
+			PlayerServerData newPlayerServerData = (PlayerServerData) clientHandler.getClientData();
+			newPlayerServerData.setHandle(player.getName());
+			newPlayerServerData.setHostAddress(clientHandler.getHostAddress());
+			newPlayerServerData.setChatClientHandler(clientHandler);
+			gameState.addPlayerServerData(newPlayerServerData.getClientId(), newPlayerServerData);
 			retval = true;
 		}
 		return retval;
