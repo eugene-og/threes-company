@@ -28,11 +28,6 @@ public class BlobsChatHandler implements ClientCommandHandler {
 		} else {
 			broadcastMessage(handler, gameState, ((PlayerServerData)handler.getClientData()).getHandle() + ": " + msg);
 		}
-		
-		/* check if all players are ready */
-		if (gameState.allPlayersReady()) {
-			broadcastGameStart(gameState, handler);
-		}
 	}
 
 	private void doCommand(BlobsGameState gameState, ClientHandler handler, String command) throws IOException {
@@ -55,14 +50,6 @@ public class BlobsChatHandler implements ClientCommandHandler {
 			msg += currentPlayer.getHandle() + " : " + String.valueOf(currentPlayer.isReadyToPlay());
 		}
 		handler.sendClientMsg(msg);
-	}
-	
-	private void broadcastGameStart(BlobsGameState gameState, ClientHandler handler) throws IOException {
-		for (Iterator iterator = gameState.getAllPlayers().iterator(); iterator.hasNext();) {
-			PlayerServerData toPlayer = (PlayerServerData) iterator.next();
-			ClientHandler toHandler = toPlayer.getChatClientHandler();
-			toHandler.sendClientMsg("START GAME!!");	
-		}
 	}
 	
 	private void broadcastMessage(ClientHandler handler, BlobsGameState gameState, String msg) throws IOException {

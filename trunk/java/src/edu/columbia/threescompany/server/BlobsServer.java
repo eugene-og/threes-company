@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.quickserver.net.AppException;
@@ -14,7 +15,6 @@ import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
 import edu.columbia.threescompany.client.communication.MoveStatePair;
 import edu.columbia.threescompany.client.communication.ServerMessage;
-import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
@@ -23,7 +23,7 @@ public class BlobsServer {
 	public static String VERSION = "0.1";
 	private static String _confFile = "conf" + File.separator + "BlobsServer.xml";
 	
-	private static List<PlayerServerData> _players;
+	private static List<PlayerServerData> _playerServerDataList;
 	
 	public static void main(String args[]) throws IOException {
 		QuickServer blobsServer = new QuickServer();
@@ -38,41 +38,57 @@ public class BlobsServer {
 			}
 		}
 		
+		BlobsGameState serverGameState = BlobsGameState.instance();
 		do {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException exception) {
 				/* nada */
 			}
-		} while (!BlobsGameState.instance().allPlayersReady());
+		} while (!serverGameState.allPlayersReady());
 		
+		broadcastGameStart(serverGameState, blobsServer);
 		mainServerLoop();
 	}
 
+	private static void broadcastGameStart(BlobsGameState gameState, QuickServer server) throws IOException {
+		for (Iterator iterator = gameState.getAllPlayers().iterator(); iterator.hasNext();) {
+			PlayerServerData toPlayer = (PlayerServerData) iterator.next();
+			ClientHandler toHandler = toPlayer.getChatClientHandler();
+			toHandler.sendClientMsg("START GAME!!");	
+		}
+	}
+	
 	private static void mainServerLoop() throws IOException {
-		_players = getPlayers();
-		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_players));
+		_playerServerDataList = getPlayers();
+		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_playerServerDataList));
 		sendStateToAllPlayers(gameState);
 		
 		int activePlayer = -1;
 		while (!gameState.gameOver()) {
-			activePlayer = (activePlayer + 1) % _players.size();
-			// TODO do this better -- Zach
-			String playerId = _players.get(activePlayer).getClientId();
-			sendMessage(playerId, new TurnChangeMessage(playerId));
-
-			MoveStatePair pair = receiveMoveAndState(playerId);
-			sendMoveToAllPlayersExcept(playerId, pair._move);
-
-			gameState = pair._state;
-			sendStateToAllPlayers(gameState);
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			activePlayer = (activePlayer + 1) % _playerServerDataList.size();
+//			// TODO do this better -- Zach
+//			String playerId = _playerServerDataList.get(activePlayer).getClientId();
+//			sendMessage(playerId, new TurnChangeMessage(playerId));
+//
+//			MoveStatePair pair = receiveMoveAndState(playerId);
+//			sendMoveToAllPlayersExcept(playerId, pair._move);
+//
+//			gameState = pair._state;
+//			sendStateToAllPlayers(gameState);
 		}
 	}
 	
-	private static List<Player> playersFrom(List<PlayerServerData> players) {
+	private static List<Player> playersFrom(List<PlayerServerData> playerServerDataList) {
 		List<Player> result = new ArrayList<Player>();
-		for (PlayerServerData player : players)
-			result.add(player.getPlayer());
+		for (PlayerServerData playerServerData : playerServerDataList)
+			result.add(playerServerData.getPlayer());
 		return result;
 	}
 
