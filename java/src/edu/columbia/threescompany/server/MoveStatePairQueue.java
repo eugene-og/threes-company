@@ -22,7 +22,7 @@ public class MoveStatePairQueue {
 		return !_objectQ.isEmpty();
 	}
 	
-	public MoveStatePair blockForNextPair() {
+	public synchronized MoveStatePair blockForNextPair() {
 		while (!hasPair()) {
 			try {
 				wait();
