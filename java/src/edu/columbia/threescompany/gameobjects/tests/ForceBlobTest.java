@@ -10,6 +10,7 @@ import edu.columbia.threescompany.tests.BaseTestCase;
 public class ForceBlobTest extends BaseTestCase {
 	public void testPullForceOrientation() {
 		ForceBlob actor = new PullBlob(0, 0, BlobTestTools.PLAYER);
+		actor.activate(true);
 		Blob victim = BlobTestTools.getBoringBlob(2, 0);
 		
 		Force force = actor.actOn(victim);
@@ -24,7 +25,8 @@ public class ForceBlobTest extends BaseTestCase {
 	}
 	
 	public void testPushForceOrientation() {
-		PushBlob actor = new PushBlob(0, 0, BlobTestTools.PLAYER);	
+		PushBlob actor = new PushBlob(0, 0, BlobTestTools.PLAYER);
+		actor.activate(true);
 		Blob victim = BlobTestTools.getBoringBlob(2, 0);
 		
 		Force force = actor.actOn(victim);
