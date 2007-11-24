@@ -25,12 +25,13 @@ public class ServerConnection {
 	public ServerConnection(String hostName, int port) throws UnknownHostException, IOException {
 		sock = new Socket(InetAddress.getByName(hostName), port);
 		_ooStream = new ObjectOutputStream(sock.getOutputStream());
-		_oiStream = new ObjectInputStream(sock.getInputStream());
 	}
 	
 	/* Block until a message is received from the server. */
 	public ServerMessage receiveMessage() throws IOException, ClassNotFoundException {
 		// TODO make sure we block
+		if (_oiStream == null)
+			_oiStream = new ObjectInputStream(sock.getInputStream());
 		ServerMessage msg = (ServerMessage) _oiStream.readObject();
 		return msg;
 	}

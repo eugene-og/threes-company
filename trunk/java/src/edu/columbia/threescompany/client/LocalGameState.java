@@ -97,12 +97,6 @@ public class LocalGameState implements Serializable {
 								   ", that player doesn't exist!");
 	}
 
-	public boolean isLocalPlayer(String id) {
-		for (Player player : _localPlayers)
-			if (id.equals(player.getName())) return true;
-		return false;
-	}
-
 	public boolean gameOver() {
 		// TODO
 		return false;
@@ -112,6 +106,7 @@ public class LocalGameState implements Serializable {
 		LocalGameState initialGameState =  new LocalGameState();
 		initialGameState._activePlayer = players.get(0);
 		initialGameState._localPlayers = players;
+		initialGameState._players = players;
 		initialGameState._gameObjects = new ArrayList<GameObject>();
 		return initialGameState;
 	}
