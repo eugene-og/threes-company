@@ -12,6 +12,7 @@ import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class LocalGameState implements Serializable {
@@ -20,7 +21,6 @@ public class LocalGameState implements Serializable {
 	
 	private List<GameObject> _gameObjects;
 	private List<Player> _players;
-	private List<Player> _localPlayers;	// TODO move this
 	private Player _activePlayer;
 	
 	public void executeMove(GameMove move, Gui gui) {
@@ -105,9 +105,12 @@ public class LocalGameState implements Serializable {
 	public static LocalGameState getInitialGameState(List<Player> players) {
 		LocalGameState initialGameState =  new LocalGameState();
 		initialGameState._activePlayer = players.get(0);
-		initialGameState._localPlayers = players;
 		initialGameState._players = players;
 		initialGameState._gameObjects = new ArrayList<GameObject>();
+		
+		initialGameState._gameObjects.add(new PushBlob(1, 1, players.get(0)));
+		initialGameState._gameObjects.add(new PushBlob(3, 3, players.get(1)));
+		
 		return initialGameState;
 	}
 	
