@@ -23,7 +23,7 @@ public class BlobsChatHandler implements ClientCommandHandler {
 			throws SocketTimeoutException, IOException {
 		BlobsGameState gameState = BlobsGameState.instance();
 		
-		if (msg.startsWith("$")) {
+		if (msg.startsWith(".")) {
 			doCommand(gameState, handler, msg);
 		} else {
 			broadcastMessage(handler, gameState, ((PlayerServerData)handler.getClientData()).getHandle() + ": " + msg);
@@ -31,11 +31,11 @@ public class BlobsChatHandler implements ClientCommandHandler {
 	}
 
 	private void doCommand(BlobsGameState gameState, ClientHandler handler, String command) throws IOException {
-		if (command.equals("$ready")) {
+		if (command.equals(".r")) {
 			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(true);
-		} else if (command.equals("$not ready")) {
+		} else if (command.equals(".nr")) {
 			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(false);
-		} else if (command.equals("$status")) {
+		} else if (command.equals(".s")) {
 			sendPlayersReadyStatus(gameState, handler);
 		} else {
 			handler.sendClientMsg("Invalid command.");
