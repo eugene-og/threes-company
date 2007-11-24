@@ -15,6 +15,7 @@ import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
 import edu.columbia.threescompany.client.communication.MoveStatePair;
 import edu.columbia.threescompany.client.communication.ServerMessage;
+import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
@@ -66,22 +67,22 @@ public class BlobsServer {
 		
 		int activePlayer = -1;
 		while (!gameState.gameOver()) {
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//			activePlayer = (activePlayer + 1) % _playerServerDataList.size();
-//			// TODO do this better -- Zach
-//			String playerId = _playerServerDataList.get(activePlayer).getClientId();
-//			sendMessage(playerId, new TurnChangeMessage(playerId));
-//
-//			MoveStatePair pair = receiveMoveAndState(playerId);
-//			sendMoveToAllPlayersExcept(playerId, pair._move);
-//
-//			gameState = pair._state;
-//			sendStateToAllPlayers(gameState);
+//			try {
+//				Thread.sleep(5000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			activePlayer = (activePlayer + 1) % _playerServerDataList.size();
+			// TODO do this better -- Zach
+			String playerId = _playerServerDataList.get(activePlayer).getClientId();
+			sendMessage(playerId, new TurnChangeMessage(playerId));
+
+			MoveStatePair pair = receiveMoveAndState(playerId);
+			sendMoveToAllPlayersExcept(playerId, pair._move);
+
+			gameState = pair._state;
+			sendStateToAllPlayers(gameState);
 		}
 	}
 	
