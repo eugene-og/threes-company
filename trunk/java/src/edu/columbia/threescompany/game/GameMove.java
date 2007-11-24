@@ -3,9 +3,26 @@ package edu.columbia.threescompany.game;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.columbia.threescompany.game.graphics.GUIGameMove;
+
 public class GameMove implements Serializable {
+	/* README FIRST
+	 * 
+	 * Hi Dan and John:
+	 * 
+	 * For the sake of simplifying the link between our two classes, please
+	 * don't use GameMove -- I'm changing it to handle all the simulation stuff.
+	 * GUIGameMove is now how our classes talk, and I've defined it roughly
+	 * (feel free to change the implementation). I figured I'd minimize the
+	 * amount of data we use to converse.
+	 */
+	
 	private static final long serialVersionUID = -6368788904877021374L;
 
+	public GameMove(GUIGameMove move) {
+		this._move = move;
+	}
+	
 	public List<EventMove> instantMovesAt(int i) {
 		// TODO Return the instant events happening at time i (which is an
 		// integer ranging from 0..(GRANULARITY_OF_PHYSICS-1)). This refers
@@ -23,7 +40,5 @@ public class GameMove implements Serializable {
 		return null;
 	}
 	
-	/* TODO: There's an email thread to determine the inner workings of this
-	 * class! Nobody implement it! -- ZvS
-	 */
+	private GUIGameMove _move;
 }

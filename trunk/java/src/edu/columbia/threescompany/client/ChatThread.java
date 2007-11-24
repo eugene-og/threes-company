@@ -1,17 +1,14 @@
 package edu.columbia.threescompany.client;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import edu.columbia.threescompany.graphics.Gui;
@@ -69,10 +66,8 @@ public class ChatThread extends Thread {
 	                Thread.sleep(500);
 	                //if there is text to send
 	                if (!sendBuffer.isEmpty()) {
-	                	for (Iterator<String> iterator = sendBuffer.iterator(); iterator.hasNext();) {
-							String line = (String) iterator.next();
+	                	for (String line : sendBuffer)
 							out.println(line);
-						}
 	                	sendBuffer.clear();
 	                }
 	                //if something was received

@@ -9,6 +9,7 @@ import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.PhysicalMove;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
@@ -114,8 +115,8 @@ public class LocalGameState implements Serializable {
 		return initialGameState;
 	}
 	
-	public LocalGameState predictOutcome(GameMove move) {
-		// TODO
+	public LocalGameState predictOutcome(GUIGameMove guiMove) {
+		GameMove move = new GameMove(guiMove);
 		return null;
 	}
 }
