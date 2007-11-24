@@ -31,7 +31,7 @@ public class MoveStatePairQueue {
 		return _objectQ.poll();
 	}
 	
-	public void add(MoveStatePair pair) {
+	public synchronized void add(MoveStatePair pair) {
 		_objectQ.add(pair);
 		notify();
 	}
