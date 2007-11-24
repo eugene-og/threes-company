@@ -16,6 +16,7 @@ public class AllTests {
 		suite.addTestSuite(CoordinateTest.class);
 		suite.addTestSuite(ForceBlobTest.class);
 		suite.addTestSuite(DeathRayBlobTest.class);
+		suite.addTestSuite(ServerAuthenticationTest.class);
 		//$JUnit-END$
 		
 		return suite;
