@@ -1,6 +1,10 @@
 package edu.columbia.threescompany.common;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable {
+	private static final long serialVersionUID = -9086984043560982108L;
+
 	public Coordinate(double x, double y) {
 		this.x = x;
 		this.y = y;
