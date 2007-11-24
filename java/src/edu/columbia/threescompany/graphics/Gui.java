@@ -32,13 +32,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.LocalGameState;
-import edu.columbia.threescompany.game.GameMove;
-import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.game.graphics.GUIGameMove;
 
 public class Gui extends JFrame {
 	
@@ -311,8 +309,8 @@ public class Gui extends JFrame {
 		_txtArea.setText(_txtArea.getText() + line + "\n");
 	}
 
-	public GameMove getMoveFor(int activePlayer) {
-		// TODO Dan and John, we need to discuss what GameMove is -- Zach
+	public GUIGameMove getMoveFor(int activePlayer) {
+		// TODO See GUIGameMove for move structure.
 		return null;
 	}
 	

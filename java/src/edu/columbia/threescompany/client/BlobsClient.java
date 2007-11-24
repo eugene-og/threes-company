@@ -94,7 +94,7 @@ public class BlobsClient {
 	}
 
 	private static void yourMove(int activePlayer) throws IOException {
-		GameMove move = _gui.getMoveFor(activePlayer);
+		GameMove move = new GameMove(_gui.getMoveFor(activePlayer));
 		_gameState.executeMove(move, _gui);
 		// TODO this will create a simulation pause!
 		_serverConnection.sendMove(move, _gameState);
