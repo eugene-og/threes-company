@@ -7,10 +7,7 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.collections.ListUtils;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.game.GameMove;
@@ -27,14 +24,14 @@ public class ServerConnection {
 	
 	public ServerConnection(String hostName, int port) throws UnknownHostException, IOException {
 		sock = new Socket(InetAddress.getByName(hostName), port);
+		_ooStream = new ObjectOutputStream(sock.getOutputStream());
+		_oiStream = new ObjectInputStream(sock.getInputStream());
 	}
 	
 	/* Block until a message is received from the server. */
 	public ServerMessage receiveMessage() throws IOException, ClassNotFoundException {
 		// TODO make sure we block
-		ObjectInputStream stream = new ObjectInputStream(sock.getInputStream());
-		ServerMessage msg = (ServerMessage) stream.readObject();
-
+		ServerMessage msg = (ServerMessage) _oiStream.readObject();
 		return msg;
 	}
 
@@ -43,8 +40,7 @@ public class ServerConnection {
 	}
 
 	private void writeObject(Serializable obj) throws IOException {
-		ObjectOutputStream stream = new ObjectOutputStream(sock.getOutputStream());
-		stream.writeObject(obj);
+		_ooStream.writeObject(obj);
 	}
 
 	public void sendPlayers(List<Player> players) throws IOException {
@@ -54,4 +50,7 @@ public class ServerConnection {
 			array[i] = players.get(i);
 		writeObject(array);
 	}
+	
+	private ObjectOutputStream _ooStream;
+	private ObjectInputStream _oiStream;
 }
