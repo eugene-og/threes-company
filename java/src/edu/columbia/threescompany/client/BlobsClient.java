@@ -64,7 +64,7 @@ public class BlobsClient {
 		} else if (message instanceof TurnChangeMessage) {
 			String activePlayer = ((TurnChangeMessage) message).whoseTurn();
 			_gameState.updateActivePlayer(activePlayer);
-			if (_gameState.isLocalPlayer(activePlayer)) {
+			if (isLocalPlayer(activePlayer)) {
 				yourMove(getIdForName(activePlayer));
 			} else {
 				notYourTurnDialog();
@@ -73,6 +73,12 @@ public class BlobsClient {
 			_gameState.executeMove(((ExecuteMoveMessage) message).getMove(),
 								   _gui);
 		}
+	}
+
+	private static boolean isLocalPlayer(String activePlayer) {
+		for (Player player : _players)
+		if (activePlayer.equals(player.getName())) return true;
+		return false;
 	}
 
 	private static int getIdForName(String activePlayer) {
