@@ -67,12 +67,6 @@ public class BlobsServer {
 		
 		int activePlayer = -1;
 		while (!gameState.gameOver()) {
-//			try {
-//				Thread.sleep(5000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			activePlayer = (activePlayer + 1) % _playerServerDataList.size();
 			// TODO do this better -- Zach
 			String playerId = _playerServerDataList.get(activePlayer).getClientId();
