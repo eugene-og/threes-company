@@ -24,4 +24,7 @@ public class SlipperyBlob extends Blob {
 		// TODO die and create an OilSlick [on deactivation]
 	}
 
+	public Blob clone() {
+		return new SlipperyBlob(_position.x, _position.y, _radius, _owner);
+	}
 }

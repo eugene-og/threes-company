@@ -26,6 +26,10 @@ public class BlobTestTools {
 		public void activate(boolean activated) {
 			/* nada */
 		}
+		
+		public Blob clone() {
+			return new BoringBlob(_position.x, _position.y);
+		}
 	}
 
 }

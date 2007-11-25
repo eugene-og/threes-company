@@ -9,7 +9,9 @@ import edu.columbia.threescompany.game.Player;
 public abstract class Blob extends GameObject {
 	public abstract Force actOn(GameObject obj);
 	public abstract void activate(boolean activated);
-
+	public abstract Blob clone();	/* make this explicit -- each Blob may need
+									 * to define it separately. */
+	
 	protected Blob(double x, double y, double radius, Player owner) {
 		_position = new Coordinate(x, y);
 		this._radius = radius;

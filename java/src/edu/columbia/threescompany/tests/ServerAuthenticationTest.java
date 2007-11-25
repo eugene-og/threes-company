@@ -36,8 +36,8 @@ public class ServerAuthenticationTest extends BaseTestCase {
 		ChatThread chatThread1 = new ChatThread(players1);
 		ChatThread chatThread2 = new ChatThread(players2);
 		
-		ServerConnection _conn1 = new ServerConnection("localhost", TEST_PORT);
-		ServerConnection _conn2 = new ServerConnection("localhost", TEST_PORT);
+		new ServerConnection("localhost", TEST_PORT);
+		new ServerConnection("localhost", TEST_PORT);
 		
 		chatThread1.sendLine(CommunicationConstants.READY);
 		chatThread2.sendLine(CommunicationConstants.READY);

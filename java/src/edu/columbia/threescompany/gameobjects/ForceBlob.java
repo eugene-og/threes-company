@@ -7,11 +7,11 @@ import edu.columbia.threescompany.game.Player;
 public abstract class ForceBlob extends Blob {
 	private boolean _activated;
 	
-	public ForceBlob(double x, double y, double radius, Player owner) {
+	protected ForceBlob(double x, double y, double radius, Player owner) {
 		super(x, y, radius, owner);
 	}
 
-	public ForceBlob(double x, double y, Player owner) {
+	protected ForceBlob(double x, double y, Player owner) {
 		super(x, y, owner);
 	}
 	

@@ -3,6 +3,7 @@ package edu.columbia.threescompany.common;
 import edu.columbia.threescompany.gameobjects.GameParameters;
 
 public class Force extends Coordinate {
+	private static final long serialVersionUID = 4919007009094730983L;
 	public static final Force NULL_FORCE = new Force(0, 0);
 
 	public Force(double Fx, double Fy) {

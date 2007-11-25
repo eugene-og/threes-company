@@ -5,13 +5,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.ImageIcon;
 
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;

@@ -2,8 +2,6 @@ package edu.columbia.threescompany.server;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.ClientObjectHandler;

@@ -23,4 +23,8 @@ public class ExplodingBlob extends Blob {
 		
 		// TODO die and create a Hole [on deactivation]
 	}
+	
+	public Blob clone() {
+		return new ExplodingBlob(_position.x, _position.y, _radius, _owner);
+	}
 }

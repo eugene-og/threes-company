@@ -44,10 +44,9 @@ public class BlobsChatHandler implements ClientCommandHandler {
 
 	private void sendPlayersReadyStatus(BlobsGameState gameState, ClientHandler handler) throws IOException {
 		String msg = "";
-		for (Iterator<PlayerServerData> iterator = gameState.getAllPlayers().iterator(); iterator.hasNext();) {
-			PlayerServerData currentPlayer = (PlayerServerData) iterator.next();
+		for (PlayerServerData currentPlayer : gameState.getAllPlayers())
 			msg += currentPlayer.getHandle() + " : " + String.valueOf(currentPlayer.isReadyToPlay());
-		}
+		
 		handler.sendClientMsg(msg);
 	}
 	

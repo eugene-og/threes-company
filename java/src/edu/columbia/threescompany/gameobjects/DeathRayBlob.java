@@ -71,6 +71,10 @@ public class DeathRayBlob extends Blob {
 		_strength = GameParameters.DEATH_RAY_RANGE_MULTIPLIER/_radius;
 	}
 	
+	public Blob clone() {
+		return new DeathRayBlob(_position.x, _position.y, _radius, _owner);
+	}
+	
 	private Coordinate _lastMove = null;
 	private double _strength;
 }

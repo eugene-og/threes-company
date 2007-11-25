@@ -9,4 +9,13 @@ public class PullBlob extends ForceBlob {
 		super(x, y, owner);
 		_directionModifier = 1;
 	}
+
+	public PullBlob(double x, double y, double radius, Player owner) {
+		super(x, y, radius, owner);
+		_directionModifier = 1;
+	}
+	
+	public Blob clone() {
+		return new PullBlob(_position.x, _position.y, _radius, _owner);
+	}
 }
