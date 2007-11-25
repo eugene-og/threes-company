@@ -29,7 +29,7 @@ public class AnchorPoint extends ImmovableGameObject {
 		blob.setAnchored(collidesWith(blob));
 	}
 
-	private boolean collidesWith(Blob blob) {
+	public boolean collidesWith(Blob blob) {
 		return _position.distanceFrom(blob.getPosition()) < blob.getRadius();
 	}
 

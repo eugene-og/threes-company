@@ -14,22 +14,6 @@ public class ForceBlobTest extends BaseTestCase {
 		Blob victim = BlobTestTools.getBoringBlob(2, 0);
 		
 		Force force = actor.actOn(victim);
-		assertPositive(force.x);
-		assertZero(force.y);
-		
-		victim = BlobTestTools.getBoringBlob(-3, -3);
-		force = actor.actOn(victim);
-		
-		assertNegative(force.x);
-		assertNegative(force.y);
-	}
-	
-	public void testPushForceOrientation() {
-		PushBlob actor = new PushBlob(0, 0, BlobTestTools.PLAYER);
-		actor.activate(true);
-		Blob victim = BlobTestTools.getBoringBlob(2, 0);
-		
-		Force force = actor.actOn(victim);
 		assertNegative(force.x);
 		assertZero(force.y);
 		
@@ -38,5 +22,21 @@ public class ForceBlobTest extends BaseTestCase {
 		
 		assertPositive(force.x);
 		assertPositive(force.y);
+	}
+	
+	public void testPushForceOrientation() {
+		PushBlob actor = new PushBlob(0, 0, BlobTestTools.PLAYER);
+		actor.activate(true);
+		Blob victim = BlobTestTools.getBoringBlob(2, 0);
+		
+		Force force = actor.actOn(victim);
+		assertPositive(force.x);
+		assertZero(force.y);
+		
+		victim = BlobTestTools.getBoringBlob(-3, -3);
+		force = actor.actOn(victim);
+		
+		assertNegative(force.x);
+		assertNegative(force.y);
 	}
 }

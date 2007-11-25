@@ -2,7 +2,7 @@ package edu.columbia.threescompany.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,30 +25,60 @@ public class GameMove implements Serializable {
 	private static final long serialVersionUID = -6368788904877021374L;
 
 	public GameMove(GUIGameMove move) {
-		activations = move.getBlobsToActivate();
-		moves = new ArrayList<PhysicalMove>();
-		
 		Map<Blob, Coordinate> finalPositions = move.getFinalPositions();
-		for (Blob blob : finalPositions.keySet()) {
-			// FIXME Moves should be a constant force!
-			Coordinate pos = finalPositions.get(blob);
-			moves.add(new PhysicalMove(pos, blob));
-		}
 		
-		// TODO figure out activation timing
+		_moves = new HashMap<Blob, PhysicalMove>();
+		for (Blob blob : finalPositions.keySet())
+			addPhysicalMove(finalPositions.get(blob), blob);
+		
+		_activations = new HashMap<Blob, EventMove>();
+		for (Blob blob : move.getBlobsToActivate())
+			addActivationTrigger(blob);
+	}
+
+	private void addPhysicalMove(Coordinate pos, Blob blob) {
+		PhysicalMove move = new PhysicalMove(pos, blob);
+		_moves.put(blob, move);
+		int duration = move.getDuration();
+		
+		if (duration > _duration) _duration = duration;
+	}
+
+	private void addActivationTrigger(Blob blob) {
+		int activationTime = 0;
+		
+		/* If a blob is moving physically, its activation time doesn't
+		 * occur until after its move is over. */
+		if (_moves.containsKey(blob))
+			activationTime = _moves.get(blob).getDuration() + 1;
+		
+		_activations.put(blob, new EventMove(blob, activationTime));
+		if (activationTime + 1 > _duration) _duration = activationTime + 1;
 	}
 
 	public List<PhysicalMove> granularMovesAt(int i) {
-		// FIXME: Are all moves really happening at all times? This isn't
-		//		  clearly spec'd right now.
-		return moves;
+		// FIXME uh, this is a lot of processing. use an approp. data struc instead.
+		List<PhysicalMove> result = new ArrayList<PhysicalMove>();
+		for (PhysicalMove move : _moves.values())
+			if (i <= move.getDuration()) result.add(move);
+		
+		return result;
 	}
 	
 	public List<EventMove> eventMovesAt(int i) {
-		// FIXME
-		return Collections.EMPTY_LIST;
+		// FIXME same as above FIXME
+		List<EventMove> result = new ArrayList<EventMove>();
+		for (EventMove move : _activations.values())
+			if (i == move.getActivationTime()) result.add(move);
+		
+		return result;
+	}
+
+	public int getDuration() {
+		return _duration;
 	}
 	
-	private List<PhysicalMove> moves;
-	private List<Blob> activations;
+	private Map<Blob, PhysicalMove> _moves;
+	private Map<Blob, EventMove> _activations;
+	private int _duration = 0;
 }

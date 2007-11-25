@@ -46,9 +46,13 @@ public class Coordinate implements Serializable {
 	}
 
 	public Coordinate rotate(int deg) {
-		double rad = (deg * Math.PI / 180) + Math.atan2(y, x);
+		double rad = (deg * Math.PI / 180) + theta();
 		double len = length();
 		return new Coordinate(len * Math.cos(rad), len * Math.sin(rad));
+	}
+
+	public double theta() {
+		return Math.atan2(y, x);
 	}
 	
 	public boolean equals(Coordinate rhs) {

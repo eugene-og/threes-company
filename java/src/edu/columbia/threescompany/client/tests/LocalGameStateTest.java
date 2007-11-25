@@ -33,6 +33,18 @@ public class LocalGameStateTest extends BaseTestCase {
 						   2, blob.getPosition().x);
 		assertRoughlyEqual("Blob should be in new position",
 				   		   3, blob.getPosition().y);
+		
+		finalPositions.put(blob, new Coordinate(5, 0));
+		guiMove = new GUIGameMove(finalPositions, new ArrayList<Blob>());
+		move = new GameMove(guiMove);
+		
+		state.executeMove(move);
+		
+		assertFalse("Blob should be alive", blob.isDead());
+		assertRoughlyEqual("Blob should be in new position",
+						   5, blob.getPosition().x);
+		assertRoughlyEqual("Blob should be in new position",
+				   		   0, blob.getPosition().y);
 	}
 	
 	public void testActivationTiming() {
@@ -70,7 +82,8 @@ public class LocalGameStateTest extends BaseTestCase {
 		assertFalse("Boring blob should be alive", boringBlob.isDead());
 		assertFalse("Push blob should be alive", pushBlob.isDead());
 		
-		assertTrue("Boring blob should have significantly deviated from x-axis",
+		assertTrue("Boring blob should have significantly deviated from x-axis" +
+				   " (y-position was " + boringBlob.getPosition().y + ")",
 				   boringBlob.getPosition().y > 2 * BaseTestCase.EPSILON);
 		assertTrue("Push blob should have been pushed backward by Newton's 3rd",
 				   pushBlob.getPosition().y < -2.2 + 2 * BaseTestCase.EPSILON);
