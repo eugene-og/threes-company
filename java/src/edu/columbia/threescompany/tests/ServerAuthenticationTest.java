@@ -7,6 +7,7 @@ import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.communication.ServerConnection;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.server.BlobsServer;
+import edu.columbia.threescompany.server.CommunicationConstants;
 
 public class ServerAuthenticationTest extends BaseTestCase {
 	public void testServerConnection() throws Exception {
@@ -38,8 +39,8 @@ public class ServerAuthenticationTest extends BaseTestCase {
 		ServerConnection _conn1 = new ServerConnection("localhost", TEST_PORT);
 		ServerConnection _conn2 = new ServerConnection("localhost", TEST_PORT);
 		
-		chatThread1.sendLine("$ready");
-		chatThread2.sendLine("$ready");
+		chatThread1.sendLine(CommunicationConstants.READY);
+		chatThread2.sendLine(CommunicationConstants.READY);
 		
 		Thread.sleep(2000);
 		serverThread.stop();

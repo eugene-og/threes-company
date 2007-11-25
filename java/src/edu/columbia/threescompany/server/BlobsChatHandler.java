@@ -8,7 +8,6 @@ import org.quickserver.net.server.ClientCommandHandler;
 import org.quickserver.net.server.ClientHandler;
 
 public class BlobsChatHandler implements ClientCommandHandler {
-	
 	public void lostConnection(ClientHandler handler) throws IOException {
 		handler.sendSystemMsg("Connection lost : "+handler.getHostAddress());
 		BlobsGameState.instance().removePlayerServerData(handler.getClientData());
@@ -31,11 +30,11 @@ public class BlobsChatHandler implements ClientCommandHandler {
 	}
 
 	private void doCommand(BlobsGameState gameState, ClientHandler handler, String command) throws IOException {
-		if (command.equals(".r")) {
+		if (command.equals(CommunicationConstants.READY)) {
 			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(true);
-		} else if (command.equals(".nr")) {
+		} else if (command.equals(CommunicationConstants.NOT_READY)) {
 			((PlayerServerData) handler.getClientData()).setIsReadyToPlay(false);
-		} else if (command.equals(".s")) {
+		} else if (command.equals(CommunicationConstants.STATUS)) {
 			sendPlayersReadyStatus(gameState, handler);
 		} else {
 			handler.sendClientMsg("Invalid command.");
