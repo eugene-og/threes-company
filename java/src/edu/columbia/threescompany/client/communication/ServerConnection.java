@@ -15,20 +15,26 @@ import edu.columbia.threescompany.game.Player;
 
 public class ServerConnection {
 	private Socket sock;
+	public static final int DEFAULT_PORT = 3444;
 	
 	public ServerConnection() throws UnknownHostException, IOException {
-		/* FIXME: temporary, since port not known 
-		 * get from cmdline later */
-		this("localhost",3444);
+		this("localhost", DEFAULT_PORT);
 	}
 	
-	public ServerConnection(String hostName, int port) throws UnknownHostException, IOException {
+	public ServerConnection(String hostName, int port)
+	throws UnknownHostException, IOException {
 		sock = new Socket(InetAddress.getByName(hostName), port);
 		_ooStream = new ObjectOutputStream(sock.getOutputStream());
 	}
 	
+	public ServerConnection(String host)
+	throws UnknownHostException, IOException {
+		this(host, DEFAULT_PORT);
+	}
+
 	/* Block until a message is received from the server. */
-	public ServerMessage receiveMessage() throws IOException, ClassNotFoundException {
+	public ServerMessage receiveMessage()
+	throws IOException, ClassNotFoundException {
 		// TODO make sure we block
 		if (_oiStream == null)
 			_oiStream = new ObjectInputStream(sock.getInputStream());

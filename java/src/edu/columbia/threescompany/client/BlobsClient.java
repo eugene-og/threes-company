@@ -2,6 +2,7 @@ package edu.columbia.threescompany.client;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -41,14 +42,34 @@ public class BlobsClient {
 		_chatThread.setGui(_gui);
 		_chatThread.start();
 
-		_serverConnection = new ServerConnection();	// FIXME use port
-		_serverConnection.sendPlayers(_players);
+		connectToServer(args);
 		
 		ServerMessage message;
 		while ((message = _serverConnection.receiveMessage()) != null)
 			handleMessage(message);
 		
 		gameOverDialog();
+	}
+
+	private static void connectToServer(String[] args) throws UnknownHostException, IOException {
+		if (args.length == 2)
+			_serverConnection = connectFromHostAndPort(args[0], args[1]);
+		else if (args.length == 1)
+			_serverConnection = connectFromHost(args[0]);
+		else
+			_serverConnection = new ServerConnection();
+
+		_serverConnection.sendPlayers(_players);
+	}
+
+	private static ServerConnection connectFromHost(String host)
+	throws IOException {
+		return new ServerConnection(host);
+	}
+
+	private static ServerConnection connectFromHostAndPort(String host, String port)
+	throws IOException {
+		return new ServerConnection(host, Integer.valueOf(port));
 	}
 
 	private static void gameOverDialog() {
