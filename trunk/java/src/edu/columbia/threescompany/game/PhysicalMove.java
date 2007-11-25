@@ -1,10 +1,17 @@
 package edu.columbia.threescompany.game;
 
+import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class PhysicalMove extends GameMoveComponent {
-	private double _fx, _fy, _duration = 0;
+	private double _fx, _fy;
+	
+	public PhysicalMove(Coordinate finalPos, GameObject target) {
+		this(finalPos.minus(target.getPosition()).x,
+             finalPos.minus(target.getPosition()).y,
+             target);
+	}
 	
 	public PhysicalMove(double dx, double dy, GameObject target) {
 		_target = target;
@@ -12,17 +19,8 @@ public class PhysicalMove extends GameMoveComponent {
 		_fy = dy * _target.getWeight();
 	}
 	
-	public void setDuration(int duration) {
-		// This is called once all moves for the turn are known
-		_duration = duration;
-	}
-	
 	public void execute() {
-		if (_duration == 0)
-			throw new RuntimeException("Duration of PhysicalMove must be set!");
-		
-		Force f = Force.newRawForce(_fx / _duration,
-									_fy / _duration);
+		Force f = new Force(_fx, _fy);
 		_target.applyForce(f);
 	}
 }

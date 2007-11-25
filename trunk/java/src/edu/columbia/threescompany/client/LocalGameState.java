@@ -24,16 +24,24 @@ public class LocalGameState implements Serializable {
 		 * moves, sequentially. */
 		for (int t = 0; t < GameParameters.GRANULARITY_OF_PHYSICS; t++)
 			executeMoveStep(move, gui, t);
+		
 		deactivateBlobs();
+		growBlobs();
+	}
+
+	public void executeMove(GameMove move) {
+		executeMove(move, null);
+	}
+
+	private void growBlobs() {
+		for (GameObject obj : _gameObjects) obj.grow();
 	}
 
 	private void executeMoveStep(GameMove move, Gui gui, int t) {
-		for (EventMove instantEvent : move.instantMovesAt(t))
-			// These will fire once
-			instantEvent.execute();
-		for (PhysicalMove granularEvent : move.granularMovesAt(t))
-			// These will fire over and over
-			granularEvent.execute();
+		for (PhysicalMove granularMove : move.granularMovesAt(t))
+			granularMove.execute();
+		for (EventMove eventMove : move.eventMovesAt(t))
+			eventMove.execute();
 		
 		applyForces();
 		checkCollisions();
@@ -98,22 +106,41 @@ public class LocalGameState implements Serializable {
 		return false;
 	}
 
+	private LocalGameState() {
+		_gameObjects = new ArrayList<GameObject>();
+		_players = new ArrayList<Player>();
+	}
+	
+	public static LocalGameState getSpecifiedGameState(List<GameObject> objects) {
+		LocalGameState state = new LocalGameState();
+		for (GameObject obj : objects) state.addObject(obj);
+		
+		return state;
+	}
+	
+	/* For spawning, hole/spot creation, and testing. */
+	public void addObject(GameObject obj) {
+		_gameObjects.add(obj);
+		Player owner = obj.getOwner();
+		if (owner != Player.NULL_PLAYER && !_players.contains(owner))
+			_players.add(owner);
+	}
+	
 	public static LocalGameState getInitialGameState(List<Player> players) {
 		LocalGameState initialGameState =  new LocalGameState();
 		initialGameState._activePlayer = players.get(0);
 		initialGameState._players = players;
 		initialGameState._gameObjects = new ArrayList<GameObject>();
 		
-		initialGameState._gameObjects.add(new PushBlob(1, 1, players.get(0)));
-		initialGameState._gameObjects.add(new PushBlob(3, 3, players.get(1)));
+		initialGameState.addObject(new PushBlob(1, 1, players.get(0)));
+		initialGameState.addObject(new PushBlob(3, 3, players.get(1)));
 		
 		return initialGameState;
 	}
 	
 	public LocalGameState predictOutcome(GUIGameMove guiMove) {
-		GameMove move = new GameMove(guiMove);
 		LocalGameState clonedState = clone();
-		clonedState.executeMove(move, null);
+		clonedState.executeMove(new GameMove(guiMove));
 		return clonedState;
 	}
 	
