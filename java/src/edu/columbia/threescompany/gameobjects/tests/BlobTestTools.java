@@ -1,7 +1,11 @@
 package edu.columbia.threescompany.gameobjects.tests;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
@@ -34,6 +38,14 @@ public class BlobTestTools {
 		public Blob clone() {
 			return new BoringBlob(_position.x, _position.y, _radius);
 		}
+	}
+
+	public static LocalGameState getSingleBlobState(double x, double y) {
+		Blob blob = getBoringBlob(x, y);
+		List<GameObject> objList = new ArrayList<GameObject>(1);
+		objList.add(blob);
+		LocalGameState state = LocalGameState.getSpecifiedGameState(objList);
+		return state;
 	}
 
 }

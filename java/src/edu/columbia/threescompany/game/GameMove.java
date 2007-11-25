@@ -1,9 +1,14 @@
 package edu.columbia.threescompany.game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
+import edu.columbia.threescompany.gameobjects.Blob;
 
 public class GameMove implements Serializable {
 	/* README FIRST
@@ -20,25 +25,30 @@ public class GameMove implements Serializable {
 	private static final long serialVersionUID = -6368788904877021374L;
 
 	public GameMove(GUIGameMove move) {
-		this._move = move;
-	}
-	
-	public List<EventMove> instantMovesAt(int i) {
-		// TODO Return the instant events happening at time i (which is an
-		// integer ranging from 0..(GRANULARITY_OF_PHYSICS-1)). This refers
-		// only to events like a blob exploding or activating.
+		activations = move.getBlobsToActivate();
+		moves = new ArrayList<PhysicalMove>();
 		
-		// This will only return move M for ONE value of i.
-		return null;
+		Map<Blob, Coordinate> finalPositions = move.getFinalPositions();
+		for (Blob blob : finalPositions.keySet()) {
+			// FIXME Moves should be a constant force!
+			Coordinate pos = finalPositions.get(blob);
+			moves.add(new PhysicalMove(pos, blob));
+		}
+		
+		// TODO figure out activation timing
 	}
 
 	public List<PhysicalMove> granularMovesAt(int i) {
-		// TODO Return the granular events happening at time i (same range.)
-		// This refers to BlobMoves, which are all motion-based.
-		
-		// This will return move M for MULTIPLE values of i.
-		return null;
+		// FIXME: Are all moves really happening at all times? This isn't
+		//		  clearly spec'd right now.
+		return moves;
 	}
 	
-	private GUIGameMove _move;
+	public List<EventMove> eventMovesAt(int i) {
+		// FIXME
+		return Collections.EMPTY_LIST;
+	}
+	
+	private List<PhysicalMove> moves;
+	private List<Blob> activations;
 }

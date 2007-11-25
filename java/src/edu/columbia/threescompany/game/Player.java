@@ -6,6 +6,7 @@ public class Player implements Serializable {
 	private static final long serialVersionUID = -8662542280020716885L;
 
 	public static final int NOBODY = -1;
+	public static final Player NULL_PLAYER = new Player(NOBODY, "Nobody");
 	
 	private String name;
 	private int id;
