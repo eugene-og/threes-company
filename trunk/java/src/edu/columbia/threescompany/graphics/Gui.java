@@ -218,7 +218,7 @@ public class Gui extends JFrame {
 	 */
 	public synchronized void drawState(LocalGameState gameState)
 	{
-		_board.drawState(gameState.getObjects());
+		_board.drawState(gameState);
 		setAP(gameState.getAP());
 	}
 

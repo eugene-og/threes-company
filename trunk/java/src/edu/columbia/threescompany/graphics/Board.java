@@ -3,13 +3,13 @@ package edu.columbia.threescompany.graphics;
 import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.List;
 
+import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
@@ -23,13 +23,14 @@ public class Board extends Canvas {
 	private static final long serialVersionUID = 3523741675646270283L;
 	
 	private BufferStrategy strategy;
-	private List<GameObject> gameObjects;
+	private LocalGameState _gameState;
 	
 	public Board()
 	{
 		setBounds(0,0, GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH);
-		gameObjects = new ArrayList<GameObject>();
+		_gameState = null;
 		//setIgnoreRepaint(true);
+		setFont(new Font("Arial", 0, 1)); // Default font is huge
 	}
 	
 	/**
@@ -49,7 +50,12 @@ public class Board extends Canvas {
 		surface.setColor(Color.black);
 		surface.setStroke(new BasicStroke(0.1f));
 		
-		for (GameObject item : gameObjects) {
+		if (_gameState == null) {
+			surface.drawString("Waiting for start...", 0, 10);
+			return;
+		}
+		
+		for (GameObject item : _gameState.getObjects()) {
 			if (item instanceof PushBlob)
 				surface.setColor(Color.blue);
 			else if (item instanceof PullBlob)
@@ -67,9 +73,9 @@ public class Board extends Canvas {
 //		surface.drawImage(icon.getImage(), 3, 5, 2, 2, icon.getImageObserver());
 	}
 	
-	public void drawState(List<GameObject> list)
+	public void drawState(LocalGameState gameState)
 	{
-		gameObjects = list;
+		_gameState = gameState;
 		repaint();
 	}
 }
