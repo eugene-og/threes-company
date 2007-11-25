@@ -1,9 +1,13 @@
 package edu.columbia.threescompany.tests;
 
+import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.gameobjects.GameParameters;
 import junit.framework.TestCase;
 
 public abstract class BaseTestCase extends TestCase {
-	public static final double EPSILON = .0001;
+	/* At low granularities (e.g., < 100), physics results start getting
+	 * super-crappy. So EPSILON depends on the game's internal accuracy. */
+	public static final double EPSILON = 2 / GameParameters.GRANULARITY_OF_PHYSICS;
 	
 	protected void assertNegative(int x) {
 		assertNegative((double) x);
@@ -37,4 +41,10 @@ public abstract class BaseTestCase extends TestCase {
 				   Math.abs(a - b) < EPSILON);
 	}
 
+	protected void assertEquals(String message, Coordinate expected, Coordinate actual) {
+		if (expected == null && actual == null);
+		if (expected != null && expected.equals(actual)) return;
+		fail("Coordinates should be equal (expected " + expected + ", got " + 
+				actual + ")");
+	}
 }

@@ -45,7 +45,11 @@ public abstract class Blob extends GameObject {
 	
 	public void applyForce(Force force) {
 		if (isAnchored()) return;
-		
+		applyIrresistibleForce(force);
+	}
+	
+	public void applyIrresistibleForce(Force force) {
+		// You can't fight the invisible hand of the player!
 		_position.x += force.x / _weight;
 		_position.y += force.y / _weight;
 	}

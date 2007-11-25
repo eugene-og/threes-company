@@ -21,11 +21,12 @@ public abstract class ForceBlob extends Blob {
 
 	public Force actOn(GameObject obj) {
 		if (!_activated) return Force.NULL_FORCE;
+		if (obj == this) return Force.NULL_FORCE;
 			
 		Coordinate pos = obj.getPosition();
 		double distance = _position.distanceFrom(pos);
 		
-		Force force = new Force(pos.x - _position.x, pos.y - _position.y);
+		Force force = new Force(_position.x - pos.x, _position.y - pos.y);
 		force.x *= _directionModifier;
 		force.y *= _directionModifier;
 		

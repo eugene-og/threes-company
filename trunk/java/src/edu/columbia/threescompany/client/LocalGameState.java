@@ -22,7 +22,8 @@ public class LocalGameState implements Serializable {
 	public void executeMove(GameMove move, Gui gui) {
 		/* t is our time variable -- basically, we execute GRANULARITY tiny
 		 * moves, sequentially. */
-		for (int t = 0; t < GameParameters.GRANULARITY_OF_PHYSICS; t++)
+		double turnLength = move.getDuration() + GameParameters.ADDITIONAL_SIMULATION_LENGTH;
+		for (int t = 0; t < turnLength; t++)
 			executeMoveStep(move, gui, t);
 		
 		deactivateBlobs();
