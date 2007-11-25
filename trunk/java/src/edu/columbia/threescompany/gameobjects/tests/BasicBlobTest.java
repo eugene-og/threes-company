@@ -18,7 +18,6 @@ public class BasicBlobTest extends BaseTestCase {
 		Force yForce = new Force(0, 2);
 		
 		blob.applyForce(xForce);
-		System.err.println(blob.getPosition());
 		assertTrue("Blob should have moved right", blob.getPosition().x > 1);
 		assertTrue("Blob should not have moved vertically", blob.getPosition().y == 1);
 		
