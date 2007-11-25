@@ -12,11 +12,15 @@ public class BlobTestTools {
 		return new BoringBlob(x, y);
 	}
 	
-	private static class BoringBlob extends Blob {
+	public static class BoringBlob extends Blob {
 		private static final long serialVersionUID = 8759393276598506236L;
 
 		public BoringBlob(double x, double y) {
 			super(x, y, BlobTestTools.PLAYER);
+		}
+		
+		public BoringBlob(double x, double y, double radius) {
+			super(x, y, radius, BlobTestTools.PLAYER);
 		}
 		
 		public Force actOn(GameObject obj) {
@@ -28,7 +32,7 @@ public class BlobTestTools {
 		}
 		
 		public Blob clone() {
-			return new BoringBlob(_position.x, _position.y);
+			return new BoringBlob(_position.x, _position.y, _radius);
 		}
 	}
 

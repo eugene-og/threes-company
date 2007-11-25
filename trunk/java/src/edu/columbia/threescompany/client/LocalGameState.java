@@ -24,6 +24,7 @@ public class LocalGameState implements Serializable {
 		 * moves, sequentially. */
 		for (int t = 0; t < GameParameters.GRANULARITY_OF_PHYSICS; t++)
 			executeMoveStep(move, gui, t);
+		deactivateBlobs();
 	}
 
 	private void executeMoveStep(GameMove move, Gui gui, int t) {
@@ -36,7 +37,6 @@ public class LocalGameState implements Serializable {
 		
 		applyForces();
 		checkCollisions();
-		deactivateBlobs();
 		
 		if (gui != null) {
 			gui.drawState(this);

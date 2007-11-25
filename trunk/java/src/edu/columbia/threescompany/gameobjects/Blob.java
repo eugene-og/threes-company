@@ -28,13 +28,13 @@ public abstract class Blob extends GameObject {
 	}
 
 	public Blob spawn() {
-		// TODO this can be done more cleverly
+		// TODO this positioning can be done more cleverly
 		_radius /= 2;
 		_position.x -= _radius;
 		
 		try {
 			Constructor<? extends Blob> con = getClass().getConstructor(
-					new Class[]{Double.class, Double.class, Double.class});
+					new Class[]{double.class, double.class, double.class});
 			return con.newInstance(_position.x + _radius * 1.1,
 								   _position.y,
 								   _radius);
