@@ -34,6 +34,8 @@ public abstract class GameObject implements Serializable {
 	public abstract void die();
 	public abstract boolean isDead();
 	
+	public abstract GameObject clone();
+	
 	public abstract void checkCollision(GameObject rhs);
 
 	protected Coordinate _position;

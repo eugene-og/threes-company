@@ -5,8 +5,17 @@ import edu.columbia.threescompany.game.Player;
 public class PushBlob extends ForceBlob {
 	private static final long serialVersionUID = -2875768398484308555L;
 
-	public PushBlob(double x, double y, Player player) {
-		super(x, y, player);
+	public PushBlob(double x, double y, Player owner) {
+		super(x, y, owner);
 		_directionModifier = -1;
+	}
+	
+	public PushBlob(double x, double y, double radius, Player owner) {
+		super(x, y, radius, owner);
+		_directionModifier = -1;
+	}
+	
+	public Blob clone() {
+		return new PushBlob(_position.x, _position.y, _radius, _owner);
 	}
 }

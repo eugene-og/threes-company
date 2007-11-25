@@ -17,12 +17,7 @@ import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class LocalGameState implements Serializable {
-
 	private static final long serialVersionUID = 8708609010775403554L;
-	
-	private List<GameObject> _gameObjects;
-	private List<Player> _players;
-	private Player _activePlayer;
 	
 	public void executeMove(GameMove move, Gui gui) {
 		/* t is our time variable -- basically, we execute GRANULARITY tiny
@@ -99,7 +94,7 @@ public class LocalGameState implements Serializable {
 	}
 
 	public boolean gameOver() {
-		// TODO
+		// TODO do all blobs on the board belong to one player?
 		return false;
 	}
 
@@ -117,6 +112,21 @@ public class LocalGameState implements Serializable {
 	
 	public LocalGameState predictOutcome(GUIGameMove guiMove) {
 		GameMove move = new GameMove(guiMove);
-		return null;
+		LocalGameState clonedState = clone();
+		clonedState.executeMove(move, null);
+		return clonedState;
 	}
+	
+	protected LocalGameState clone() {
+		LocalGameState state = new LocalGameState();
+		state._players = _players;
+		state._gameObjects = new ArrayList<GameObject>(_gameObjects.size());
+		for (GameObject object : _gameObjects)
+			state._gameObjects.add(object.clone());
+		return state;
+	}
+	
+	private List<GameObject> _gameObjects;
+	private List<Player> _players;
+	private Player _activePlayer;
 }

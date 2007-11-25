@@ -2,7 +2,6 @@ package edu.columbia.threescompany.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import org.quickserver.net.server.ClientData;
@@ -28,7 +27,7 @@ public class BlobsGameState {
 	}
 	
 	public PlayerServerData getPlayerServerData(String id) {
-		return (PlayerServerData) playerServerDataMap.get(id);
+		return playerServerDataMap.get(id);
 	}
 
 	public List<PlayerServerData> getAllPlayers() {
@@ -43,8 +42,7 @@ public class BlobsGameState {
 		if (getPlayerCount() < 2) {
 			return false;
 		}
-		for (Iterator<PlayerServerData> iterator = getAllPlayers().iterator(); iterator.hasNext();) {
-			PlayerServerData currentPlayer = (PlayerServerData) iterator.next();
+		for (PlayerServerData currentPlayer : getAllPlayers()) {
 			if (!currentPlayer.isReadyToPlay()) {
 				return false;
 			}
@@ -57,8 +55,7 @@ public class BlobsGameState {
 	}
 
 	public boolean isHandleTaken(String username, String hostAddress) {
-		for (Iterator<PlayerServerData> iterator = getAllPlayers().iterator(); iterator.hasNext();) {
-			PlayerServerData currentPlayer = (PlayerServerData) iterator.next();
+		for (PlayerServerData currentPlayer : getAllPlayers()) {
 			if (currentPlayer.getHandle().equals(username) && !currentPlayer.getHostAddress().equals(hostAddress)) {
 				return true;
 			}
