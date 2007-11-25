@@ -30,7 +30,10 @@ public abstract class BaseTestCase extends TestCase {
 	}
 
 	protected void assertRoughlyEqual(String message, double a, double b) {
-		assertTrue(message + " (values should be equal)",
+		/* We have a lot of things that aren't necessarily equal to the tiniest
+		 * degree.
+		 */
+		assertTrue(message + " (values " + a + " and " + b + " should be equal)",
 				   Math.abs(a - b) < EPSILON);
 	}
 
