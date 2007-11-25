@@ -1,6 +1,7 @@
 package edu.columbia.threescompany.client;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -25,7 +26,17 @@ public class BlobsClient {
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
 		
-		_chatThread = new ChatThread(_players);
+		Boolean connected = false;
+		while (!connected) {
+			try {
+				_chatThread = new ChatThread(_players);
+				connected = true;
+			} catch (ConnectException e) {
+				JOptionPane.showMessageDialog(null, "Blobs could not connect to the server. You need a server running " +
+				                              "even for a hotseat game.");
+				doPlayerSetup();
+			}
+		}
 		_gui = Gui.getInstance(_chatThread);
 		_chatThread.setGui(_gui);
 		_chatThread.start();

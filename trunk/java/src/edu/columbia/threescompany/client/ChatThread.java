@@ -22,6 +22,9 @@ public class ChatThread extends Thread {
 	private List<String> sendBuffer;
 	private Gui _gui;
 
+	/**
+	 * @throws IOException, java.net.ConnectException
+	 */
 	public ChatThread(List players) throws IOException {
 		InetAddress addr;
 		sendBuffer = new ArrayList<String>();
