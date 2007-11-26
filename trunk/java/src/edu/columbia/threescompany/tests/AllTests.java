@@ -10,7 +10,12 @@ import edu.columbia.threescompany.game.tests.PhysicalMoveTest;
 import edu.columbia.threescompany.gameobjects.tests.AnchorPointTest;
 import edu.columbia.threescompany.gameobjects.tests.BasicBlobTest;
 import edu.columbia.threescompany.gameobjects.tests.DeathRayBlobTest;
+import edu.columbia.threescompany.gameobjects.tests.ExplodingBlobTest;
 import edu.columbia.threescompany.gameobjects.tests.ForceBlobTest;
+import edu.columbia.threescompany.gameobjects.tests.SlipperyBlobTest;
+import edu.columbia.threescompany.gameobjects.tests.SlipperySpotTest;
+import edu.columbia.threescompany.gameobjects.tests.SpringTest;
+import edu.columbia.threescompany.gameobjects.tests.WallTest;
 
 public class AllTests {
 
@@ -19,16 +24,31 @@ public class AllTests {
 				"Tests for the Blobs game");
 		
 		//$JUnit-BEGIN$
+		
+		/* Basic game mechanics */
 		suite.addTestSuite(CoordinateTest.class);
-		suite.addTestSuite(ForceBlobTest.class);
-		suite.addTestSuite(DeathRayBlobTest.class);
-		suite.addTestSuite(ServerAuthenticationTest.class);
-		suite.addTestSuite(BasicBlobTest.class);
-		suite.addTestSuite(AnchorPointTest.class);
 		suite.addTestSuite(GameBoardTest.class);
+		
+		/* Blobs */
+		suite.addTestSuite(BasicBlobTest.class);
+		suite.addTestSuite(ForceBlobTest.class);
+		suite.addTestSuite(ExplodingBlobTest.class);
+		suite.addTestSuite(DeathRayBlobTest.class);
+		suite.addTestSuite(SlipperyBlobTest.class);
+		
+		/* Fancy objects */
+		suite.addTestSuite(WallTest.class);
+		suite.addTestSuite(SpringTest.class);
+		suite.addTestSuite(ActionPointCapIncreaserTest.class);
+		suite.addTestSuite(AnchorPointTest.class);
+		suite.addTestSuite(SlipperySpotTest.class);
+		
+		/* Simulation */
 		suite.addTestSuite(PhysicalMoveTest.class);
 		suite.addTestSuite(LocalGameStateTest.class);
-		suite.addTestSuite(ActionPointCapIncreaserTest.class);
+		
+		/* Standalone functionality */
+		suite.addTestSuite(ServerAuthenticationTest.class);
 		//$JUnit-END$
 		
 		return suite;
