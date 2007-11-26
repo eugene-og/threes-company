@@ -86,6 +86,7 @@ public abstract class Blob extends GameObject {
 	}
 
 	private boolean collidingWith(GameObject obj) {
+		// TODO Can we move this to GameObject and make it public? If so I'll use it in the gui
 		double distance = _position.distanceFrom(obj.getPosition());
 		return (distance <= _radius + obj.getRadius());
 	}
