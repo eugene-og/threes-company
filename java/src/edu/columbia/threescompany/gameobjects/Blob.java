@@ -1,12 +1,13 @@
 package edu.columbia.threescompany.gameobjects;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
-public abstract class Blob extends GameObject {
+public abstract class Blob extends GameObject implements Serializable {
 	public abstract Force actOn(GameObject obj);
 	public abstract void activate(boolean activated);
 	public abstract Blob clone();	/* make this explicit -- each Blob may need

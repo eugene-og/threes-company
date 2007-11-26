@@ -1,8 +1,10 @@
 package edu.columbia.threescompany.game;
 
+import java.io.Serializable;
+
 import edu.columbia.threescompany.gameobjects.GameObject;
 
-public abstract class GameMoveComponent {
+public abstract class GameMoveComponent implements Serializable {
 	protected GameObject _target;
 	
 	public GameObject getTarget() {
