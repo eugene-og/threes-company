@@ -43,7 +43,7 @@ public class ServerConnection {
 	}
 
 	public void sendMove(GameMove move, LocalGameState state) throws IOException {
-		writeObject(move);
+		writeObject(new MoveStatePair(move, state));
 	}
 
 	private void writeObject(Serializable obj) throws IOException {
