@@ -122,14 +122,22 @@ public class BlobsClient {
 	private static void updateState(ServerMessage message) {
 		// TODO confirm we already have this state.
 		_gameState = ((UpdateStateMessage) message).getGameState();
+		System.err.println("Received new state: " + _gameState);
 		_gui.drawState(_gameState);
 	}
 
 	private static void yourMove(int activePlayer) throws IOException {
-		GameMove move = new GameMove(_gui.getMoveFor(activePlayer));
+		final GameMove move = new GameMove(_gui.getMoveFor(activePlayer));
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					_serverConnection.sendMove(move, _gameState);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}).start();
 		_gameState.executeMove(move, _gui);
-		// TODO this will create a simulation pause!
-		_serverConnection.sendMove(move, _gameState);
 	}
 
 	private static void notYourTurnDialog() {

@@ -1,8 +1,10 @@
 package edu.columbia.threescompany.gameobjects;
 
+import java.io.Serializable;
+
 import edu.columbia.threescompany.game.Player;
 
-public class PullBlob extends ForceBlob {
+public class PullBlob extends ForceBlob implements Serializable {
 	private static final long serialVersionUID = 5430255748901796459L;
 
 	public PullBlob(double x, double y, Player owner) {

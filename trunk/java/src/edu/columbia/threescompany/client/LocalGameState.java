@@ -154,6 +154,14 @@ public class LocalGameState implements Serializable {
 		return state;
 	}
 	
+	public String toString() {
+		/* This is debug only */
+		StringBuilder s = new StringBuilder("GameState:\n");
+		for (GameObject obj : _gameObjects)
+			s.append(obj.toString() + " at " + obj.getPosition().toString() + "\n");
+		return s.toString();
+	}
+	
 	private List<GameObject> _gameObjects;
 	private List<Player> _players;
 	private Player _activePlayer;
