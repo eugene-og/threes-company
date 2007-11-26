@@ -18,6 +18,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -36,13 +39,18 @@ import javax.swing.UIManager;
 
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.LocalGameState;
+import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
+import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.gameobjects.GameParameters;
 
 public class Gui extends JFrame {
 	
 	private static final long serialVersionUID = -5234906655320340040L;
 	private int _xPos, _yPos;
 	private Board _board;
+	private BoardMouseListener _boardMouseListener;
 	private JTextField _txtLine;
 	private JTextArea _txtArea;
 	private JPanel[] _ap_panes;
@@ -50,7 +58,13 @@ public class Gui extends JFrame {
 			 Color.YELLOW, Color.YELLOW, Color.YELLOW,
 			 Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
 	private ChatThread _chatThread;
-
+	private LocalGameState _gameState;
+	private Map<Blob, Coordinate> _blobMoves; // final positions
+	private Blob _selectedBlob;
+	private Integer _activePlayer; // Null means no one's turn
+	public TurnEndCoordinator _turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
+	                                               // and notify across classes
+	
 	private static Gui _instance;
 	
 	public static Gui getInstance(ChatThread thread) {
@@ -60,6 +74,11 @@ public class Gui extends JFrame {
 
 	private Gui(ChatThread chatThread) {
 		super("Welcome to Blobs!");
+		
+		_gameState = null;
+		_turnEndCoordinator = new TurnEndCoordinator();
+		_activePlayer = null;
+		
 		try{ UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
         catch( Exception e ) { e.printStackTrace(); }
         
@@ -169,6 +188,7 @@ public class Gui extends JFrame {
 		donebutton.setMnemonic(KeyEvent.VK_D);
 		donebutton.setPreferredSize(new Dimension(160, 25));
 		donebutton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		donebutton.addActionListener(new DoneButtonListener());
 		buttonpane.add(donebutton);
 		buttonpane.setBorder(BorderFactory.createEmptyBorder(0, 0, 175, 0));
 		buttonpane.setBackground(GuiConstants.BG_COLOR);
@@ -192,7 +212,8 @@ public class Gui extends JFrame {
 	private JPanel getBoardPane() {
 		JPanel pane = new JPanel();
 		_board = new Board();
-		_board.addMouseListener(new BoardMouseListener());
+		_boardMouseListener = new BoardMouseListener();
+		_board.addMouseListener(_boardMouseListener);
 		_board.addMouseMotionListener(new BoardMouseMotionListener());
 		pane.add(_board);
 		
@@ -213,11 +234,9 @@ public class Gui extends JFrame {
 			_ap_panes[i].setBackground(_ap_colors[i]);
 	}
 	
-	/**
-	 * Is called from main game thread and gui processing thread.
-	 */
-	public synchronized void drawState(LocalGameState gameState)
+	public void drawState(LocalGameState gameState)
 	{
+		_gameState = gameState;
 		_board.drawState(gameState);
 		setAP(gameState.getAP());
 	}
@@ -270,11 +289,30 @@ public class Gui extends JFrame {
     
     private class BoardMouseListener implements MouseListener
     {
-
 		public void mouseClicked(MouseEvent e) {
-			// TODO do something to game state/object after click
+			// TODO Make movement input right. This is a very rough first pass to get things moving.
 			Point p = e.getPoint();
 			addChatLine("Clicked: ("+p.x+","+p.y+")");
+			if (_gameState == null) { // drawBoard hasn't been called yet
+				return;
+			}
+			if (_activePlayer == null) { // It's no one's turn
+				return;
+			}
+			// The world variables are locations in world/game space (as opposed to screen space)
+			double worldX = (double)p.x * (int)GameParameters.BOARD_SIZE / _board.getWidth();
+			double worldY = (double)p.y * (int)GameParameters.BOARD_SIZE / _board.getHeight();
+			Coordinate worldClick = new Coordinate(worldX, worldY);
+			// TODO have screen to world and world to screen in only one place
+			// TODO only allow selecting blobs belonging to activePlayer
+			Blob newSelection = blobClickedOn(worldClick);
+			if (newSelection != null) { // clicked a blob
+				_selectedBlob = newSelection;
+				addChatLine("Selected blob " + _selectedBlob.toString());
+			} else if (_selectedBlob != null) { // clicked a destination for a blob
+				_blobMoves.put(_selectedBlob, worldClick);
+				addChatLine("Queueing move of blob " + _selectedBlob.toString() + " to " + worldClick.toString());
+			}
 		}
 		
 		/** not needed */
@@ -282,6 +320,18 @@ public class Gui extends JFrame {
 		public void mouseExited(MouseEvent arg0) {}
 		public void mousePressed(MouseEvent arg0) {}
 		public void mouseReleased(MouseEvent arg0) {}
+		
+	    private Blob blobClickedOn(Coordinate worldClick) {
+			for (GameObject object : _gameState.getObjects()) {
+				if (object instanceof Blob) {
+					double clickObjectDistance = object.getPosition().distanceFrom(worldClick);
+					if (clickObjectDistance <= object.getRadius()) {
+						return (Blob)object;
+					}
+				}
+			}
+	    	return null;
+	    }
     }
     
     private class BoardMouseMotionListener implements MouseMotionListener {
@@ -304,14 +354,27 @@ public class Gui extends JFrame {
     	
     }
     
+	private class DoneButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			// I'm assuming this is only clicks. If not we need to check the event type.
+			_turnEndCoordinator.turnDone();
+		}
+	}
 	
 	public void addChatLine(String line) {
 		_txtArea.setText(_txtArea.getText() + line + "\n");
 	}
 
 	public GUIGameMove getMoveFor(int activePlayer) {
-		// TODO See GUIGameMove for move structure.
-		return null;
+		// TODO Moves need a lot of work
+		addChatLine("It's player " + activePlayer + "'s turn.");
+		_turnEndCoordinator.turnStart();
+		_blobMoves = new HashMap<Blob, Coordinate>();
+		_selectedBlob = null;
+		_activePlayer = activePlayer;
+		_turnEndCoordinator.waitUntilTurnDone();
+		_activePlayer = null;
+		return new GUIGameMove(_blobMoves, new ArrayList<Blob>());
 	}
 	
 }
