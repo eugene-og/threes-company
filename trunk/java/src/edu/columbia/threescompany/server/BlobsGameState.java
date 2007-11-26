@@ -9,6 +9,7 @@ import org.quickserver.net.server.ClientData;
 public class BlobsGameState {
 	
 	private static BlobsGameState gameState = null;
+	private static int playerCount = 0;
 	private HashMap<String, PlayerServerData> playerServerDataMap;
 	
 	private BlobsGameState() {
@@ -35,7 +36,11 @@ public class BlobsGameState {
 	}
 	
 	public int getPlayerCount() {
-		return playerServerDataMap.size();
+		return playerCount;
+	}
+	
+	public void increasePlayerCount() {
+		playerCount++;
 	}
 	
 	public boolean allPlayersReady() {

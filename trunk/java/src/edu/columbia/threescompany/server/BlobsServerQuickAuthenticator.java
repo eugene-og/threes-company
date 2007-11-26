@@ -45,7 +45,7 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 			playerServerData.setIsReadyToPlay(false);
 			playerServerData.setHasTurn();
 			playerServerData.setPlayer(player);
-			
+			gameState.increasePlayerCount();
 			retval = true;
 		} else if (gameState.isHandleTaken(player.getName(), clientHandler.getHostAddress())) {
 			clientHandler.setDataMode(DataMode.STRING, DataType.IN); //set String data mode for this connection
