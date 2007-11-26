@@ -12,7 +12,8 @@ public class BlobsClientObjectHandler implements ClientObjectHandler {
 	public void handleObject(ClientHandler handler, Object obj)
 	throws SocketTimeoutException, IOException {
 		if (!(obj instanceof MoveStatePair))
-			throw new RuntimeException("Incorrect object received over stream!");
+			throw new RuntimeException("Incorrect object received over stream! " +
+					obj);
 		
 		MoveStatePairQueue.instance().add((MoveStatePair) obj);
 	}
