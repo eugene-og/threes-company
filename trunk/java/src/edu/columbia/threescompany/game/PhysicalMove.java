@@ -1,12 +1,15 @@
 package edu.columbia.threescompany.game;
 
+import java.io.Serializable;
+
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
 
-public class PhysicalMove extends GameMoveComponent {
+public class PhysicalMove extends GameMoveComponent implements Serializable {
+	private static final long serialVersionUID = -8445815830982267666L;
 	private double _fx, _fy;
 	private int _duration;
 	
