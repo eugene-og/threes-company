@@ -306,7 +306,14 @@ public class Gui extends JFrame {
 			// TODO have screen to world and world to screen in only one place
 			// TODO only allow selecting blobs belonging to activePlayer
 			Blob newSelection = blobClickedOn(worldClick);
-			if (newSelection != null) { // clicked a blob
+			if (newSelection != null) {
+				// Debugging output
+				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getId());
+			}
+			if (newSelection != null && newSelection.getOwner().getId() != _activePlayer) {
+				newSelection = null;
+			}
+			if (newSelection != null) { // clicked a blob that player controls
 				_selectedBlob = newSelection;
 				addChatLine("Selected blob " + _selectedBlob.toString());
 			} else if (_selectedBlob != null) { // clicked a destination for a blob
