@@ -43,6 +43,7 @@ public class BlobsGameState {
 		playerCount++;
 	}
 	
+	// TODO delete this and the things supporting only it
 	public boolean allPlayersReady() {
 		if (getPlayerCount() < 2) {
 			return false;
