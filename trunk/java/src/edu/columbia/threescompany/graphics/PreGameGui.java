@@ -31,10 +31,6 @@ public class PreGameGui extends JFrame {
 		super("Welcome to Blobs");
 		JPanel mainPane = (JPanel)this.getContentPane();
 		mainPane.setLayout(new GridLayout(5, 1));
-		
-//		JLabel label = new JLabel("", SwingConstants.CENTER);
-//		label.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		mainPane.add(label);
 		mainPane.add(new JLabel(""));
 		
 		mainPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8), 
