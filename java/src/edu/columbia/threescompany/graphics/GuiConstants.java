@@ -18,6 +18,10 @@ public class GuiConstants {
 	
 	public static final int		PREGAME_GUI_HEIGHT = 200;
 	
+	public static final int		PLAYER_GUI_WIDTH = 320;
+	
+	public static final int		PLAYER_GUI_HEIGHT = 200;
+	
 	public static final Font	CHAT_FONT = new Font("Tahoma", Font.PLAIN, 9);
 	
 	public static final Color	BG_COLOR = Color.WHITE;
