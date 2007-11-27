@@ -46,7 +46,7 @@ public class BlobsServer {
 			} catch (InterruptedException exception) {
 				/* nada */
 			}
-		} while (!serverGameState.allPlayersReady());
+		} while (serverGameState.getPlayerCount() < 2);
 		
 		broadcastGameStart(serverGameState, blobsServer);
 		mainServerLoop();
