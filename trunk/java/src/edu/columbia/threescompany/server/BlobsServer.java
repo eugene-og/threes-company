@@ -46,14 +46,15 @@ public class BlobsServer {
 			}
 		} while (serverGameState.getPlayerCount() < 2);
 		
-		broadcastGameStart(serverGameState, blobsServer);
+		broadcastMessage(serverGameState, blobsServer, "Game Started!");
 		mainServerLoop();
+		broadcastMessage(serverGameState, blobsServer, "Game Over!");
 	}
 
-	private static void broadcastGameStart(BlobsGameState gameState, QuickServer server) throws IOException {
+	private static void broadcastMessage(BlobsGameState gameState, QuickServer server, String msg) throws IOException {
 		for (PlayerServerData toPlayer : gameState.getAllPlayerServerData()) {
 			ClientHandler toHandler = toPlayer.getChatClientHandler();
-			toHandler.sendClientMsg("START GAME!!");	
+			toHandler.sendClientMsg(msg);	
 		}
 	}
 	

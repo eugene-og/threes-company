@@ -11,13 +11,9 @@ import edu.columbia.threescompany.game.PhysicalMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
-import edu.columbia.threescompany.gameobjects.DeathRayBlob;
-import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
-import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
-import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class LocalGameState implements Serializable {
@@ -134,10 +130,21 @@ public class LocalGameState implements Serializable {
 	}
 
 	public boolean gameOver() {
-		// TODO do all blobs on the board belong to one player?
+		for (Player player : _players) {
+			if (!hasAnyBlobsLeft(player)) return true;
+		}
 		return false;
 	}
 
+	private boolean hasAnyBlobsLeft(Player player) {
+		for (GameObject obj : _gameObjects) {
+			if (obj instanceof Blob && !obj.isDead()&& obj.getOwner().equals(player)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private LocalGameState() {
 		_gameObjects = new ArrayList<GameObject>();
 		_players = new ArrayList<Player>();
@@ -165,20 +172,20 @@ public class LocalGameState implements Serializable {
 		initialGameState._gameObjects = new ArrayList<GameObject>();
 		
 		initialGameState.addObject(new PushBlob(1, 4, players.get(0)));
-		initialGameState.addObject(new PushBlob(1, 8, players.get(0)));
-		initialGameState.addObject(new PullBlob(1, 12, players.get(0)));
-		initialGameState.addObject(new PullBlob(1, 16, players.get(0)));
-		initialGameState.addObject(new DeathRayBlob(4, 6, players.get(0)));
-		initialGameState.addObject(new SlipperyBlob(4, 10, players.get(0)));
-		initialGameState.addObject(new ExplodingBlob(4, 14, players.get(0)));
+//		initialGameState.addObject(new PushBlob(1, 8, players.get(0)));
+//		initialGameState.addObject(new PullBlob(1, 12, players.get(0)));
+//		initialGameState.addObject(new PullBlob(1, 16, players.get(0)));
+//		initialGameState.addObject(new DeathRayBlob(4, 6, players.get(0)));
+//		initialGameState.addObject(new SlipperyBlob(4, 10, players.get(0)));
+//		initialGameState.addObject(new ExplodingBlob(4, 14, players.get(0)));
 		
 		initialGameState.addObject(new PushBlob(19, 4, players.get(1)));
-		initialGameState.addObject(new PushBlob(19, 8, players.get(1)));
-		initialGameState.addObject(new PullBlob(19, 12, players.get(1)));
-		initialGameState.addObject(new PullBlob(19, 16, players.get(1)));
-		initialGameState.addObject(new DeathRayBlob(16, 6, players.get(1)));
-		initialGameState.addObject(new SlipperyBlob(16, 10, players.get(1)));
-		initialGameState.addObject(new ExplodingBlob(16, 14, players.get(1)));
+//		initialGameState.addObject(new PushBlob(19, 8, players.get(1)));
+//		initialGameState.addObject(new PullBlob(19, 12, players.get(1)));
+//		initialGameState.addObject(new PullBlob(19, 16, players.get(1)));
+//		initialGameState.addObject(new DeathRayBlob(16, 6, players.get(1)));
+//		initialGameState.addObject(new SlipperyBlob(16, 10, players.get(1)));
+//		initialGameState.addObject(new ExplodingBlob(16, 14, players.get(1)));
 		
 		return initialGameState;
 	}
