@@ -59,15 +59,20 @@ public class ServerConnection {
 	}
 	
 	/**
-	 * @param player A new player to add to the game.
-	 * @throws InvalidPlayerNameException If the player's name is already in use.
-	 * @throws IOException
+	 * Associates a chat thread connection with the given player(s). 
+	 * @throws a PlayerDoesNotExistException if there isn't at least one player in the list which already exists in 
+	 * the server's player list. 
 	 */
-	public void newPlayer(Player player) throws InvalidPlayerNameException, IOException {
+	public void chatForPlayers(List<Player> players) throws PlayerDoesNotExistException {
+		
+	}
+	
+	/**
+	 * Checks if the given Player's name is not in use. If not, adds it to the server's list of players. 
+	 * Throws an exception if it's in use.
+	 */
+	public void addPlayer(Player player) throws PlayerNameInUseException, IOException {
 		// TODO
-//		if (something) {
-//			throw new InvalidPlayerNameException();
-//		}
 	}
 	
 	private ObjectOutputStream _ooStream;
