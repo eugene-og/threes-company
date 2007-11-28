@@ -59,7 +59,7 @@ public class DeathRayBlob extends Blob {
 		recalculateStrength();
 	}
 	
-	public Blob spawn() {
+	public GameObject spawn() {
 		DeathRayBlob spawnedBlob = (DeathRayBlob) super.spawn();
 		
 		recalculateStrength();
@@ -71,7 +71,7 @@ public class DeathRayBlob extends Blob {
 		_strength = GameParameters.DEATH_RAY_RANGE_MULTIPLIER/_radius;
 	}
 	
-	public Blob clone() {
+	public GameObject clone() {
 		return new DeathRayBlob(_position.x, _position.y, _radius, _owner);
 	}
 	

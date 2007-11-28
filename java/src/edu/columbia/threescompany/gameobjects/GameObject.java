@@ -38,6 +38,13 @@ public abstract class GameObject implements Serializable {
 	
 	public abstract void checkCollision(GameObject rhs);
 
+	public boolean collidingWith(GameObject obj) {
+		if (obj == this) return false;
+		// TODO Can we move this to GameObject and make it public? If so I'll use it in the gui
+		double distance = _position.distanceFrom(obj.getPosition());
+		return (distance <= _radius + obj.getRadius());
+	}
+
 	protected Coordinate _position;
 	protected double _weight;
 	protected double _radius;

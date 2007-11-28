@@ -10,7 +10,7 @@ import edu.columbia.threescompany.game.Player;
 public abstract class Blob extends GameObject implements Serializable {
 	public abstract Force actOn(GameObject obj);
 	public abstract void activate(boolean activated);
-	public abstract Blob clone();	/* make this explicit -- each Blob may need
+	public abstract GameObject clone();	/* make this explicit -- each Blob may need
 									 * to define it separately. */
 	
 	protected Blob(double x, double y, double radius, Player owner) {
@@ -28,7 +28,7 @@ public abstract class Blob extends GameObject implements Serializable {
 		_weight = _radius * _radius;
 	}
 
-	public Blob spawn() {
+	public GameObject spawn() {
 		// TODO this positioning can be done more cleverly
 		_radius /= 2;
 		_position.x -= _radius;
@@ -75,6 +75,7 @@ public abstract class Blob extends GameObject implements Serializable {
 	}
 	
 	public void checkCollision(GameObject rhs) {
+		if (rhs == this) return;
 		if (!collidingWith(rhs)) return;
 		if (rhs.getOwner() == _owner)
 			elasticReboundFrom(rhs);
@@ -86,12 +87,6 @@ public abstract class Blob extends GameObject implements Serializable {
 		// TODO Figure out the physics of this
 	}
 
-	private boolean collidingWith(GameObject obj) {
-		// TODO Can we move this to GameObject and make it public? If so I'll use it in the gui
-		double distance = _position.distanceFrom(obj.getPosition());
-		return (distance <= _radius + obj.getRadius());
-	}
-	
 	public boolean isAnchored() {
 		return _anchored;
 	}

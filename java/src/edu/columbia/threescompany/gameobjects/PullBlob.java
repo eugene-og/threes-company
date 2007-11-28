@@ -17,7 +17,7 @@ public class PullBlob extends ForceBlob implements Serializable {
 		_directionModifier = 1;
 	}
 	
-	public Blob clone() {
+	public GameObject clone() {
 		return new PullBlob(_position.x, _position.y, _radius, _owner);
 	}
 }
