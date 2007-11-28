@@ -43,9 +43,8 @@ public class Board extends Canvas {
 	/**
 	 * Board must be added to the frame or windows before this is called. 
 	 */
-	public void initGraphicsBuffer()
-	{
-		createBufferStrategy(2);
+	public void initGraphicsBuffer() {
+		// I'm leaving the method here because we may need it to initialize some better double buffering stuff.
 	}
 	
 	/**
@@ -64,7 +63,9 @@ public class Board extends Canvas {
 		// create the offscreen buffer and associated Graphics
 		offscreenImage = createImage(getWidth(), getHeight());
 		offscreenSurface = offscreenImage.getGraphics();
-		Rectangle clippingRegion = g.getClipBounds();
+		//Rectangle clippingRegion = g.getClipBounds();
+		// We'll redraw the whole thing for now to make sure we're not leaving junk around we shouldn't be
+		Rectangle clippingRegion = new Rectangle(getWidth(), getHeight());
 		// clear the exposed area
 		offscreenSurface.setColor(getBackground());
 		offscreenSurface.fillRect(0, 0, clippingRegion.width, clippingRegion.height);
