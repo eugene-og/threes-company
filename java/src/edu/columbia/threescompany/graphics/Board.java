@@ -64,7 +64,7 @@ public class Board extends Canvas {
 		offscreenImage = createImage(getWidth(), getHeight());
 		offscreenSurface = offscreenImage.getGraphics();
 		//Rectangle clippingRegion = g.getClipBounds();
-		// We'll redraw the whole thing for now to make sure we're not leaving junk around we shouldn't be
+		// TODO We'll redraw the whole thing for now to make sure we're not leaving junk around we shouldn't be
 		Rectangle clippingRegion = new Rectangle(getWidth(), getHeight());
 		// clear the exposed area
 		offscreenSurface.setColor(getBackground());
