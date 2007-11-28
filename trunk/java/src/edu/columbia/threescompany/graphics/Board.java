@@ -52,7 +52,7 @@ public class Board extends Canvas {
 	 * center, so this takes them in our form and returns the appropriate Ellipse2D.
 	 */
 	private Ellipse2D circle(double centerX, double centerY, double radius) {
-		return new Ellipse2D.Double(centerX - radius, centerY - radius, radius, radius);
+		return new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2);
 	}
 	
 	public void paint(Graphics g)
@@ -81,7 +81,7 @@ public class Board extends Canvas {
 			else if (item instanceof SlipperyBlob)
 				surface.setColor(Color.yellow);
 			Coordinate pos = item.getPosition();
-			Ellipse2D.Double blobToDraw = new Ellipse2D.Double(pos.x, pos.y, item.getRadius(), item.getRadius());
+			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
 			surface.setStroke(new BasicStroke(0.3f));
 			surface.draw(blobToDraw);
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
@@ -93,7 +93,7 @@ public class Board extends Canvas {
 			
 			if (_graphicalState.getSelectedBlob() == item) {
 				surface.setColor(Color.orange);
-				Ellipse2D.Double selectionIndicator = new Ellipse2D.Double(pos.x, pos.y, item.getRadius() + 0.8, item.getRadius() + 0.8);
+				Ellipse2D selectionIndicator = circle(pos.x, pos.y, item.getRadius() + 0.8);
 				surface.setStroke(new BasicStroke(0.1f));
 				surface.draw(selectionIndicator);
 			}
