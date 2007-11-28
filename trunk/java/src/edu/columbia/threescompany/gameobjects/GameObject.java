@@ -45,6 +45,14 @@ public abstract class GameObject implements Serializable {
 		return (distance <= _radius + obj.getRadius());
 	}
 
+	public String toString() {
+		String type = this.getClass().toString();
+		type = type.substring(type.lastIndexOf('.') + 1);
+		return "Game object of type " + type + 
+				" with position " + this._position + 
+				" and radius " + this._radius;
+	}
+	
 	protected Coordinate _position;
 	protected double _weight;
 	protected double _radius;
