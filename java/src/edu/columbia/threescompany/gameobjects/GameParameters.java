@@ -21,4 +21,7 @@ public class GameParameters {
 	/* How hard does a move push? This probably shouldn't be messed with, as
 	 * GUI framerate is going to be affected by it. */
 	public static final double FORCE_OF_USERS_HAND = 3;
+	
+	/* How many milliseconds between average animation frames? (Variable!) */
+	public static final int AVERAGE_MS_FRAME_GAP = 10;
 }

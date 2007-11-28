@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
@@ -88,6 +87,7 @@ public class GameMove implements Serializable {
 	}
 
 	public int getDuration() {
+		System.err.println("Reporting move duration of " + _duration);
 		return _duration;
 	}
 	

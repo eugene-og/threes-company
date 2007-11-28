@@ -31,7 +31,7 @@ public class LocalGameState implements Serializable {
 			turnLength += GameParameters.ADDITIONAL_SIMULATION_LENGTH;
 		
 		for (int t = 0; t < turnLength; t++)
-			executeMoveStep(move, gui, t);
+			executeMoveStep(move, gui, t, (int) turnLength);
 		
 		deactivateBlobs();
 		growBlobs();
@@ -45,7 +45,7 @@ public class LocalGameState implements Serializable {
 		for (GameObject obj : _gameObjects) obj.grow();
 	}
 
-	private void executeMoveStep(GameMove move, Gui gui, int t) {
+	private void executeMoveStep(GameMove move, Gui gui, int t, int tmax) {
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
 			granularMove.execute(this);
 		for (EventMove eventMove : move.eventMovesAt(t))
@@ -58,11 +58,16 @@ public class LocalGameState implements Serializable {
 			gui.drawState(this);
 			try {
 				/* TODO: Adjust this value so moves animate nicely. */
-				Thread.sleep(20);
+				Thread.sleep(sleepTimeForFrame(t, tmax));
 			} catch (InterruptedException exception) {}
 		}
 	}
 	
+	private long sleepTimeForFrame(int t, int tmax) {
+		int averageWait = GameParameters.AVERAGE_MS_FRAME_GAP;
+		return (long) (averageWait * (1.5 - (t / tmax)));
+	}
+
 	private void checkCollisions() {
 		for (GameObject obj1 : _gameObjects)
 		for (GameObject obj2 : _gameObjects)
