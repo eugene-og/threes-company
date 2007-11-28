@@ -74,8 +74,8 @@ public class Gui extends JFrame {
 			 								  Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
 	private ChatThread 			_chatThread;
 	private LocalGameState 		_gameState;
+	private GraphicalGameState	_graphicalState;
 	private Map<Blob, Coordinate> _blobMoves; // final positions
-	private Blob 				_selectedBlob;
 	private int 				_selectedAction	= -1;
 	private String 				_activePlayer; // Null means no one's turn
 	public TurnEndCoordinator 	_turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
@@ -96,6 +96,7 @@ public class Gui extends JFrame {
 		super();
 		setTitle(getPlayerNamesString(players) + " - Welcome to Blobs!");
 		_gameState = null;
+		_graphicalState = new GraphicalGameState();
 		_turnEndCoordinator = new TurnEndCoordinator();
 		_activePlayer = null;
 		
@@ -285,7 +286,7 @@ public class Gui extends JFrame {
 
 	private JPanel getBoardPane() {
 		JPanel pane = new JPanel();
-		_board = new Board();
+		_board = new Board(_graphicalState);
 		_boardMouseListener = new BoardMouseListener();
 		_board.addMouseListener(_boardMouseListener);
 		_board.addMouseMotionListener(new BoardMouseMotionListener());
@@ -389,17 +390,19 @@ public class Gui extends JFrame {
 				addChatLine("Blob does not belong to you.");
 			}
 			if (newSelection != null) { // clicked a blob that player controls
-				_selectedBlob = newSelection;
+				_graphicalState.setSelectedBlob(newSelection);
 				updateAvailableActions();
-				addChatLine("Selected blob " + _selectedBlob.toString());
-			} else if (_selectedBlob != null) { // clicked a destination for a blob
+				_board.repaint();
+				addChatLine("Selected blob " + _graphicalState.getSelectedBlob());
+			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
 				if (_selectedAction == 0) { // move action
-					_blobMoves.put(_selectedBlob, worldClick);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString() + " to " + worldClick.toString());
+					_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
 					_selectedAction = -1; // reset selectedAction
 				}
 				else if (_selectedAction == -1) {
-					JOptionPane.showMessageDialog(null, "You must select an action first for blob "+_selectedBlob.toString(), 
+					JOptionPane.showMessageDialog(null, "You must select an action first.", 
 							"No action selected",
 							JOptionPane.INFORMATION_MESSAGE );
 				}
@@ -414,11 +417,11 @@ public class Gui extends JFrame {
 			_buttons.get(ACTION_SLIPPERY).setEnabled(false);
 			_buttons.get(ACTION_EXPLODE).setEnabled(false);
 			
-			if (_selectedBlob instanceof DeathRayBlob)
+			if (_graphicalState.getSelectedBlob() instanceof DeathRayBlob)
 				_buttons.get(ACTION_DEATH).setEnabled(true);
-			else if (_selectedBlob instanceof ExplodingBlob)
+			else if (_graphicalState.getSelectedBlob() instanceof ExplodingBlob)
 				_buttons.get(ACTION_EXPLODE).setEnabled(true);
-			else if (_selectedBlob instanceof SlipperyBlob)
+			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob)
 				_buttons.get(ACTION_SLIPPERY).setEnabled(true);	
 		}
 		
@@ -457,7 +460,7 @@ public class Gui extends JFrame {
     
 	private class DoneButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			// I'm assuming this is only clicks. If not we need to check the event type.
+			_graphicalState.setSelectedBlob(null);
 			_turnEndCoordinator.turnDone();
 		}
 	}
@@ -473,9 +476,10 @@ public class Gui extends JFrame {
 			else if (cmd.equals("Split blob")) {
 				addChatLine(text+="split a blob");
 				_selectedAction = ACTION_SPLIT;
-				if (_selectedBlob != null) {
-					_blobsToActivate.add(_selectedBlob);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				if (_graphicalState.getSelectedBlob() != null) {
+					_blobsToActivate.add(_graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -484,9 +488,10 @@ public class Gui extends JFrame {
 			else if (cmd.equals("Fill hole")) {
 				addChatLine(text+="file a hole");
 				_selectedAction = ACTION_FILL;
-				if (_selectedBlob != null) {
-					_blobsToActivate.add(_selectedBlob);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				if (_graphicalState.getSelectedBlob() != null) {
+					_blobsToActivate.add(_graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -495,9 +500,10 @@ public class Gui extends JFrame {
 			else if (cmd.equals("Fire Death Ray")) {
 				addChatLine(text+="fire a day ray");
 				_selectedAction = ACTION_DEATH;
-				if (_selectedBlob != null) {
-					_blobsToActivate.add(_selectedBlob);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				if (_graphicalState.getSelectedBlob() != null) {
+					_blobsToActivate.add(_graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -506,9 +512,10 @@ public class Gui extends JFrame {
 			else if (cmd.equals("Fire Slippery")) {
 				addChatLine(text+="fire slippery goop");
 				_selectedAction = ACTION_SLIPPERY;
-				if (_selectedBlob != null) {
-					_blobsToActivate.add(_selectedBlob);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				if (_graphicalState.getSelectedBlob() != null) {
+					_blobsToActivate.add(_graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -517,9 +524,10 @@ public class Gui extends JFrame {
 			else if (cmd.equals("Explode")) {
 				addChatLine(text+="explode a blob");
 				_selectedAction = ACTION_EXPLODE;
-				if (_selectedBlob != null) {
-					_blobsToActivate.add(_selectedBlob);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				if (_graphicalState.getSelectedBlob() != null) {
+					_blobsToActivate.add(_graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + _graphicalState.getSelectedBlob().toString());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -559,7 +567,7 @@ public class Gui extends JFrame {
 		_turnEndCoordinator.turnStart();
 		_blobMoves = new HashMap<Blob, Coordinate>();
 		_blobsToActivate = new ArrayList<Blob>();
-		_selectedBlob = null;
+		_graphicalState.setSelectedBlob(null);
 		_activePlayer = activePlayer;
 		_turnEndCoordinator.waitUntilTurnDone();
 		_activePlayer = null;
