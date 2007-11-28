@@ -36,7 +36,7 @@ public abstract class GameObject implements Serializable {
 	
 	public abstract GameObject clone();
 	
-	public abstract void checkCollision(GameObject rhs);
+	public abstract boolean checkCollision(GameObject rhs);
 
 	public boolean collidingWith(GameObject obj) {
 		if (obj == this) return false;

@@ -22,15 +22,16 @@ public class AnchorPoint extends ImmovableGameObject {
 		return false;
 	}
 
-	public void checkCollision(GameObject rhs) {
-		if (!(rhs instanceof Blob)) return;	/* We don't care. */
+	public boolean checkCollision(GameObject rhs) {
+		if (!(rhs instanceof Blob)) return false;	/* We don't care. */
 		Blob blob = (Blob) rhs;
 		
 		blob.setAnchored(collidesWith(blob));
+		return false;
 	}
 
 	public boolean collidesWith(GameObject blob) {
-		return _position.distanceFrom(blob.getPosition()) < blob.getRadius();
+		return _position.distanceFrom(blob.getPosition()) <= blob.getRadius();
 	}
 
 	public GameObject clone() {

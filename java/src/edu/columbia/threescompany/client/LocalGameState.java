@@ -41,12 +41,6 @@ public class LocalGameState implements Serializable {
 		for (GameObject item : _gameObjects) {
 			System.out.println(item);			
 		}
-		System.out.println("The following objects are dead:");
-		for (GameObject item : _gameObjects) {
-			if (item.isDead()) {
-				System.out.println(item);
-			}
-		}
 	}
 
 	public void executeMove(GameMove move) {
@@ -81,21 +75,23 @@ public class LocalGameState implements Serializable {
 	}
 
 	private void checkCollisions() {
+		List<GameObject> killList = new ArrayList<GameObject>();
 		for (GameObject obj1 : _gameObjects)
 			for (GameObject obj2 : _gameObjects)
-				obj1.checkCollision(obj2);
-		// Clean up dead objects
-		for (int i = 0; i < _gameObjects.size(); ++i) {
-			if (_gameObjects.get(i).isDead()) {
-				_gameObjects.remove(i);
-				--i;
-			}
+				if (!obj1.isDead() && !obj2.isDead())
+					if (obj1.checkCollision(obj2))
+						killList.add(obj1);
+		
+		for (GameObject obj : killList) {
+			System.out.println("KILLING " + obj);
+			obj.die();
 		}
 	}
-
+	
 	private void applyForces() {
 		for (GameObject obj1 : _gameObjects)
 		for (GameObject obj2 : _gameObjects) {
+			if (obj1.isDead() || obj2.isDead()) continue;
 			Force f = obj1.actOn(obj2);
 			
 			/* Newton's 3rd law: */

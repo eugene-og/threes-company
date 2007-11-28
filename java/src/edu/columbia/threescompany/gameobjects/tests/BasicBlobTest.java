@@ -34,6 +34,12 @@ public class BasicBlobTest extends BaseTestCase {
 		
 		assertTrue("Blob1 should have small radius", blob.getRadius() < oldRad);
 		assertTrue("Blob2 should have small radius", blob2.getRadius() < oldRad);
+		
+		blob.grow();
+		blob2.grow();
+		
+		assertFalse("Blobs shouldn't collide after growing once", blob.collidingWith(blob2));
+		assertFalse("Blobs shouldn't collide after growing once", blob2.collidingWith(blob));
 	}
 	
 	public void testCollidesWith() {
