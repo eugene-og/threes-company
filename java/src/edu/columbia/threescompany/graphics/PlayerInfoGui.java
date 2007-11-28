@@ -49,7 +49,7 @@ public class PlayerInfoGui extends JFrame {
 		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				for (int i = 0; i < numPlayers; i++)
-					_players.add(new Player(i, _playerNames.get(i).getText()));
+					_players.add(new Player(_playerNames.get(i).getText()));
 				dispose();
 			}
 		});

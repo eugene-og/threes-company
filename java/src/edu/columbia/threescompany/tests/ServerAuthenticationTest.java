@@ -29,9 +29,9 @@ public class ServerAuthenticationTest extends BaseTestCase {
 		Thread.sleep(1000);	// FIXME dumb
 		
 		List<Player> players1 = new ArrayList<Player>();
-		players1.add(new Player(0, "Mike"));
+		players1.add(new Player("Mike"));
 		List<Player> players2 = new ArrayList<Player>();
-		players2.add(new Player(1, "Bill"));
+		players2.add(new Player("Bill"));
 		
 		ChatThread chatThread1 = new ChatThread(players1);
 		ChatThread chatThread2 = new ChatThread(players2);
