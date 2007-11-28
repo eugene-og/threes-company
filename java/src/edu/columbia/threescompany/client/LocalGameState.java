@@ -65,6 +65,13 @@ public class LocalGameState implements Serializable {
 		
 		applyForces();
 		checkCollisions();
+		// Clean up dead objects
+		for (int i = 0; i < _gameObjects.size(); ++i) {
+			if (_gameObjects.get(i).isDead()) {
+				_gameObjects.remove(i);
+				--i;
+			}
+		}
 		
 		if (gui != null) {
 			gui.drawState(this);
@@ -82,8 +89,8 @@ public class LocalGameState implements Serializable {
 
 	private void checkCollisions() {
 		for (GameObject obj1 : _gameObjects)
-		for (GameObject obj2 : _gameObjects)
-			obj1.checkCollision(obj2);
+			for (GameObject obj2 : _gameObjects)
+				obj1.checkCollision(obj2);
 	}
 
 	private void applyForces() {
