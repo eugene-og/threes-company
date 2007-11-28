@@ -69,7 +69,8 @@ public class Gui extends JFrame {
 	private Board 				_board;
 	private BoardMouseListener	_boardMouseListener;
 	private JTextField			_txtLine;
-	private JTextArea			_txtArea;
+	private JTextArea			_txtAreaChat;
+	private JTextArea			_txtAreaQueue;
 	private JPanel[] 			_ap_panes;
 	private Color[] 			_ap_colors = {Color.RED, Color.RED, Color.RED, 
 			 								  Color.YELLOW, Color.YELLOW, Color.YELLOW,
@@ -87,7 +88,6 @@ public class Gui extends JFrame {
 	private List<JButton>		_buttons = new ArrayList<JButton>();
 	private List<Blob> 			_blobsToActivate = new ArrayList<Blob>();
 	private List<Blob> 			_blobsToSpawn = new ArrayList<Blob>();
-	private JLabel 				_queueLabel;
 	
 	private static Gui 			_instance;
 	
@@ -142,14 +142,7 @@ public class Gui extends JFrame {
 		controlsPane.add(actionsPane, BorderLayout.SOUTH);
 		
 		/* setup Done button pane */
-		JPanel buttonpane = new JPanel();
-		JButton donebutton = new JButton("Done");
-		donebutton.setMnemonic(KeyEvent.VK_D);
-		donebutton.setPreferredSize(new Dimension(160, 25));
-		donebutton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		donebutton.addActionListener(new DoneButtonListener());
-		buttonpane.add(donebutton);
-		buttonpane.setBackground(GuiConstants.BG_COLOR);
+		JPanel buttonpane = getButtonPane();
 		
 		mainControlsPane.add(controlsPane, BorderLayout.NORTH);
 		mainControlsPane.add(buttonpane, BorderLayout.SOUTH);
@@ -170,12 +163,36 @@ public class Gui extends JFrame {
 		_board.initGraphicsBuffer();
 	}
 
+	private JPanel getButtonPane() {
+		JPanel pane = new JPanel(new BorderLayout());
+		JButton clearButton = new JButton("Clear Queue");
+		clearButton.setMnemonic(KeyEvent.VK_C);
+		clearButton.setPreferredSize(new Dimension(80, 20));
+		clearButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		clearButton.addActionListener(new MainButtonListener());
+		
+		JButton donebutton = new JButton("Done");
+		donebutton.setMnemonic(KeyEvent.VK_D);
+		donebutton.setPreferredSize(new Dimension(80, 20));
+		donebutton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		donebutton.addActionListener(new MainButtonListener());
+		
+		pane.add(clearButton, BorderLayout.NORTH);
+		pane.add(donebutton, BorderLayout.SOUTH);
+		pane.setBackground(GuiConstants.BG_COLOR);
+		return pane;
+	}
+
 	private JPanel getQueuePanel() {
 		JPanel pane = new JPanel(new BorderLayout());
-		_queueLabel = new JLabel("");
-		_queueLabel.setFont(GuiConstants.CHAT_FONT);
-		_queueLabel.setForeground(Color.BLACK);
-		JScrollPane scrollPane = new JScrollPane(_queueLabel);
+		_txtAreaQueue = new JTextArea();
+		_txtAreaQueue.setRows(5);
+		_txtAreaQueue.setColumns(25);
+		_txtAreaQueue.setEditable(false);
+		_txtAreaQueue.setFont(GuiConstants.CHAT_FONT);
+		_txtAreaQueue.setForeground(Color.BLACK);
+		_txtAreaQueue.setBackground(Color.WHITE);
+		JScrollPane scrollPane = new JScrollPane(_txtAreaQueue);
 		pane.add(scrollPane, BorderLayout.CENTER);
 		
 		pane.setBorder(BorderFactory.createCompoundBorder(
@@ -251,13 +268,13 @@ public class Gui extends JFrame {
 
 	private JPanel getChatPane() {
 		JPanel pane = new JPanel(new BorderLayout());
-		_txtArea = new JTextArea();
-		_txtArea.setRows(8);
-		_txtArea.setColumns(25);
-		_txtArea.setEditable(false);
-		_txtArea.setFont(GuiConstants.CHAT_FONT);
-		_txtArea.setForeground(Color.GRAY);
-		JScrollPane scrollPane = new JScrollPane(_txtArea);
+		_txtAreaChat = new JTextArea();
+		_txtAreaChat.setRows(5);
+		_txtAreaChat.setColumns(25);
+		_txtAreaChat.setEditable(false);
+		_txtAreaChat.setFont(GuiConstants.CHAT_FONT);
+		_txtAreaChat.setForeground(Color.GRAY);
+		JScrollPane scrollPane = new JScrollPane(_txtAreaChat);
 		pane.add(scrollPane, BorderLayout.NORTH);
 		
 		pane.add(new JLabel("<html>&nbsp;</html>"), BorderLayout.CENTER);
@@ -425,8 +442,7 @@ public class Gui extends JFrame {
 			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
 				if (_selectedAction == 0) { // move action
 					_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
-					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
+					addQueueLine("Moving blob to " + worldClick.toString());
 					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
 							" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
 				}
@@ -488,11 +504,20 @@ public class Gui extends JFrame {
 		public void mouseMoved(MouseEvent e) {}	
     }
     
-	private class DoneButtonListener implements ActionListener {
+	private class MainButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			_graphicalState.setSelectedBlob(null);
-			_queueLabel.setText("");
-			_turnEndCoordinator.turnDone();
+			if (event.getActionCommand().equals("Done")) {
+				_graphicalState.setSelectedBlob(null);
+				_txtAreaQueue.setText("");
+				_turnEndCoordinator.turnDone();
+			}
+			else { // clear queue
+				_blobMoves = new HashMap<Blob, Coordinate>();
+				_blobsToActivate = new ArrayList<Blob>();
+				_blobsToSpawn = new ArrayList<Blob>();
+				_graphicalState.setSelectedBlob(null);
+				_txtAreaQueue.setText("");
+			}
 		}
 	}
 	
@@ -537,7 +562,7 @@ public class Gui extends JFrame {
 			else
 				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 				
-			_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+			addQueueLine("Activate blob " + _buttonCmds.get(_selectedAction));
 			addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 		}
 
@@ -567,10 +592,6 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_FORCE)));
 	}
 	
-	public void addChatLine(String line) {
-		_txtArea.setText(_txtArea.getText() + line + "\n");
-	}
-
 	public GUIGameMove getMoveFor(String activePlayer) {
 		// TODO Moves need a lot of work
 		addChatLine("It's player " + activePlayer + "'s turn.");
@@ -584,6 +605,14 @@ public class Gui extends JFrame {
 		_activePlayer = null;
 
 		return new GUIGameMove(_blobMoves, _blobsToActivate, _blobsToSpawn);
+	}
+
+	public void addChatLine(String line) {
+		_txtAreaChat.setText(_txtAreaChat.getText() + line + "\n");
+	}
+
+	private void addQueueLine(String str) {
+		_txtAreaQueue.setText(_txtAreaQueue.getText()+str+"\n");
 	}
 	
 }
