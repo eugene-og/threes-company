@@ -10,11 +10,11 @@ public class GuiConstants {
 
 	public static final String	VERSION = "0.1";
 	
-	public static final int		BOARD_LENGTH = 400;
+	public static final int		BOARD_LENGTH = 600;
 	
-	public static final int		GUI_WIDTH = 640;
+	public static final int		GUI_WIDTH = 840;
 	
-	public static final int		GUI_HEIGHT = 480;
+	public static final int		GUI_HEIGHT = 680;
 	
 	public static final int		PREGAME_GUI_WIDTH = 320;
 	
