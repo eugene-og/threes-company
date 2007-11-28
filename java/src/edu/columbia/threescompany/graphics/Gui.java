@@ -500,43 +500,43 @@ public class Gui extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 			String cmd = event.getActionCommand();
 			String text = "you've selected to ";
+			boolean isSpawn = false;
 			
 			if (_graphicalState.getSelectedBlob() == null) {
 				showBlobNotSelectedDialog();
 				return;
 			}
-			
 			if (cmd.equals(_buttonCmds.get(ACTION_SPLIT))) {
 				addChatLine(text+="split a blob");
 				_selectedAction = ACTION_SPLIT;
-				_blobsToSpawn.add(_graphicalState.getSelectedBlob());
+				isSpawn = true;
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_FILL))) {
 				addChatLine(text+="file a hole");
 				_selectedAction = ACTION_FILL;
-				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_DEATH))) {
 				addChatLine(text+="fire a death ray");
 				_selectedAction = ACTION_DEATH;
-				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_SLIPPERY))) {
 				addChatLine(text+="fire slippery goop");
 				_selectedAction = ACTION_SLIPPERY;
-				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_EXPLODE))) {
 				addChatLine(text+="explode a blob");
 				_selectedAction = ACTION_EXPLODE;
-				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_FORCE))) {
 				addChatLine(text+="apply a blob force");
 				_selectedAction = ACTION_FORCE;
-				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
 			
+			if (isSpawn)
+				_blobsToSpawn.add(_graphicalState.getSelectedBlob());
+			else
+				_blobsToActivate.add(_graphicalState.getSelectedBlob());
+				
 			_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 			addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 		}
