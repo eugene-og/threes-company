@@ -22,7 +22,6 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -609,6 +608,7 @@ public class Gui extends JFrame {
 		_turnEndCoordinator.turnStart();
 		_blobMoves = new HashMap<Blob, Coordinate>();
 		_blobsToActivate = new ArrayList<Blob>();
+		_blobsToSpawn = new ArrayList<Blob>();
 		_graphicalState.setSelectedBlob(null);
 		_activePlayer = activePlayer;
 		_turnEndCoordinator.waitUntilTurnDone();
