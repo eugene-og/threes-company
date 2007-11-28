@@ -89,6 +89,7 @@ public class Gui extends JFrame {
 	private List<Blob> 			_blobsToSpawn = new ArrayList<Blob>();
 	
 	private static Gui 			_instance;
+	private String				_username;
 	
 	public static Gui getInstance(ChatThread thread, List<Player> players) {
 		if (_instance == null) _instance = new Gui(thread, players);
@@ -98,6 +99,7 @@ public class Gui extends JFrame {
 	private Gui(ChatThread chatThread, List<Player> players) {
 		super();
 		setTitle(getPlayerNamesString(players) + " - Welcome to Blobs!");
+		_username = getPlayerNamesString(players);
 		_gameState = null;
 		_graphicalState = new GraphicalGameState();
 		_turnEndCoordinator = new TurnEndCoordinator();
@@ -377,7 +379,7 @@ public class Gui extends JFrame {
 		
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				addChatLine(_txtLine.getText());
+				addChatLine(_username + ": " + _txtLine.getText());
 				_chatThread.sendLine(_txtLine.getText());
 				_txtLine.setText("");
 				// TODO: pass off text to new chat event
