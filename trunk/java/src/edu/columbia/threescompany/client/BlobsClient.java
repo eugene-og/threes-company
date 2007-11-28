@@ -16,6 +16,7 @@ import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.graphics.PlayerInfoGui;
 import edu.columbia.threescompany.graphics.PreGameGui;
+import edu.columbia.threescompany.server.BlobsServer;
 
 public class BlobsClient {
 	private static LocalGameState _gameState;
@@ -79,6 +80,16 @@ public class BlobsClient {
 		GameType gameType = PreGameGui.getGameType();
 		
 		if (gameType == GameType.HOTSEAT) {
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						BlobsServer.main(new String[0]);
+					} catch (IOException e) {
+						System.err.println("Embedded server crashed.");
+						e.printStackTrace();
+					}
+				}
+			}).start();
 			_players = PlayerInfoGui.getPlayers(2);
 		} else if (gameType == GameType.NETWORK) {
 			_players = PlayerInfoGui.getPlayers(1);
