@@ -71,7 +71,9 @@ public class Board extends Canvas {
 		}
 		
 		for (GameObject item : _gameState.getObjects()) {
-			
+			if (item.isDead()) {
+				continue;
+			}
 			if (item instanceof PushBlob)
 				surface.setColor(Color.blue);
 			else if (item instanceof PullBlob)
