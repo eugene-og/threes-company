@@ -7,9 +7,17 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+
+import javax.swing.ImageIcon;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
@@ -81,6 +89,7 @@ public class Board extends Canvas {
 	{
 		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
+		
 		surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 		surface.setColor(Color.black);
 		surface.setStroke(new BasicStroke(0.1f));
@@ -105,6 +114,7 @@ public class Board extends Canvas {
 			else if (item instanceof SlipperyBlob)
 				surface.setColor(Color.yellow);
 			Coordinate pos = item.getPosition();
+			//System.out.println("x: "+pos.x+", y: "+pos.y);
 			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
 			surface.setStroke(new BasicStroke(0.3f));
 			surface.draw(blobToDraw);
@@ -122,8 +132,30 @@ public class Board extends Canvas {
 				surface.draw(selectionIndicator);
 			}
 		}
-//		ImageIcon icon = new ImageIcon("Bsdfall.png");
-//		surface.drawImage(icon.getImage(), 3, 5, 2, 2, icon.getImageObserver());
+		
+//		MediaTracker media = new MediaTracker(this);
+//		Image image = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_DIR+"boom_black.png");
+//		media.addImage(image, 0);
+//		try { media.waitForID(0); }
+//		catch (Exception e) {}
+//		//surface.drawImage(image, 0, 0, this);
+
+//		Image tmp = createImage(1000, 1000);
+//		Graphics2D tmpgraphic = (Graphics2D)tmp.getGraphics();
+		//tmpgraphic.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
+		//tmpgraphic.drawImage(image, 0, 0, null);
+		
+//		try {
+//			// TODO make function that takes image and 0-20 board units and draws it.
+//			BufferedImage image = javax.imageio.ImageIO.read(new File(GuiConstants.IMAGES_DIR+"boom_black.png")); 
+//			AffineTransform xtrans = AffineTransform.getScaleInstance((double)GameParameters.BOARD_SIZE/this.getWidth(),
+//																	  (double)GameParameters.BOARD_SIZE/this.getHeight());
+//			AffineTransform xtranslate = AffineTransform.getTranslateInstance(5, 5);
+//			xtranslate.concatenate(xtrans);
+//			surface.drawRenderedImage(image, xtranslate);
+//		}
+//		catch (Exception e) {e.printStackTrace();}
+		
 	}
 	
 	public void drawState(LocalGameState gameState)
