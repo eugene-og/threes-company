@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 
+import javax.swing.JButton;
+
 public class GuiConstants {
 
 	public static final String	VERSION = "0.1";
@@ -23,6 +25,8 @@ public class GuiConstants {
 	public static final int		PLAYER_GUI_HEIGHT = 200;
 	
 	public static final Font	CHAT_FONT = new Font("Tahoma", Font.PLAIN, 9);
+	
+	public static final Font	BUTTON_FONT = new Font("Tahoma", Font.PLAIN, 10);
 	
 	public static final Color	BG_COLOR = Color.WHITE;
 	
