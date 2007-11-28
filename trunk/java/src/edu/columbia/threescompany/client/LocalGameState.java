@@ -36,6 +36,17 @@ public class LocalGameState implements Serializable {
 		deactivateBlobs();
 		growBlobs();
 		checkCollisions();
+		
+		System.out.println("Game objects after executing move:");
+		for (GameObject item : _gameObjects) {
+			System.out.println(item);			
+		}
+		System.out.println("The following objects are dead:");
+		for (GameObject item : _gameObjects) {
+			if (item.isDead()) {
+				System.out.println(item);
+			}
+		}
 	}
 
 	public void executeMove(GameMove move) {
