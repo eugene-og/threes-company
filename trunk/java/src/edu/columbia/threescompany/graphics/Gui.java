@@ -59,8 +59,9 @@ public class Gui extends JFrame {
 	private static final int 	ACTION_SPLIT	= 1;
 	private static final int 	ACTION_FILL		= 2;
 	private static final int 	ACTION_DEATH	= 3;
-	private static final int 	ACTION_SLIPPERY	= 4;
-	private static final int 	ACTION_EXPLODE	= 5;
+	private static final int 	ACTION_ROTATE	= 4;
+	private static final int 	ACTION_SLIPPERY	= 5;
+	private static final int 	ACTION_EXPLODE	= 6;
 	
 	private static final long 	serialVersionUID = -5234906655320340040L;
 	private int 				_xPos, _yPos;
@@ -76,14 +77,17 @@ public class Gui extends JFrame {
 	private LocalGameState 		_gameState;
 	private GraphicalGameState	_graphicalState;
 	private Map<Blob, Coordinate> _blobMoves; // final positions
-	private int 				_selectedAction	= -1;
+	private Blob 				_selectedBlob;
+	private int 				_selectedAction	= 0;
 	private String 				_activePlayer; // Null means no one's turn
 	public TurnEndCoordinator 	_turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
 	                                               // and notify across classes
 	
 	private List<String> 		_buttonCmds = new ArrayList<String>();
 	private List<JButton>		_buttons = new ArrayList<JButton>();
-	private List<Blob> 			_blobsToActivate;
+	private List<Blob> 			_blobsToActivate = new ArrayList<Blob>();
+	private List<Blob> 			_blobsToSpawn = new ArrayList<Blob>();
+	private JLabel 				_queueLabel;
 	
 	private static Gui 			_instance;
 	
@@ -127,9 +131,15 @@ public class Gui extends JFrame {
 		JPanel insideControlsPane = getChatPane();
 		controlsPane.add(insideControlsPane, BorderLayout.CENTER);
 		
-		/* setup available actions pane */
-		insideControlsPane = getActionsPanel();
-		controlsPane.add(insideControlsPane, BorderLayout.SOUTH);
+		/* setup actions and queue pane */
+		JPanel actionsPane = new JPanel(new GridLayout(1,2));
+		
+		JPanel actionButtonsPane = getActionsPanel();
+		actionsPane.add(actionButtonsPane, BorderLayout.WEST);
+		
+		JPanel actionQueuePane = getQueuePanel();
+		actionsPane.add(actionQueuePane, BorderLayout.EAST);
+		controlsPane.add(actionsPane, BorderLayout.SOUTH);
 		
 		/* setup Done button pane */
 		JPanel buttonpane = new JPanel();
@@ -158,6 +168,22 @@ public class Gui extends JFrame {
 		setVisible(true);
 
 		_board.initGraphicsBuffer();
+	}
+
+	private JPanel getQueuePanel() {
+		JPanel pane = new JPanel(new BorderLayout());
+		_queueLabel = new JLabel("");
+		_queueLabel.setFont(GuiConstants.CHAT_FONT);
+		_queueLabel.setForeground(Color.BLACK);
+		JScrollPane scrollPane = new JScrollPane(_queueLabel);
+		pane.add(scrollPane, BorderLayout.CENTER);
+		
+		pane.setBorder(BorderFactory.createCompoundBorder(
+										BorderFactory.createTitledBorder(
+										BorderFactory.createLineBorder(Color.GRAY), "Action Queue"),
+										BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		pane.setBackground(Color.WHITE);
+		return pane;
 	}
 
 	private JMenuBar getNewMenuBar() {
@@ -260,7 +286,8 @@ public class Gui extends JFrame {
 										BorderFactory.createLineBorder(Color.GRAY), "Available Actions"),
 										BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		
-		for (int i=0; i < _buttonCmds.size(); i++)
+		// start from 1 to ignore move button
+		for (int i=1; i < _buttonCmds.size(); i++)
 			pane.add(getActionButton(_buttonCmds.get(i), i));
 		return pane;
 	}
@@ -390,6 +417,7 @@ public class Gui extends JFrame {
 				addChatLine("Blob does not belong to you.");
 			}
 			if (newSelection != null) { // clicked a blob that player controls
+				_selectedAction = 0;
 				_graphicalState.setSelectedBlob(newSelection);
 				updateAvailableActions();
 				_board.repaint();
@@ -397,14 +425,10 @@ public class Gui extends JFrame {
 			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
 				if (_selectedAction == 0) { // move action
 					_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
+					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
 					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
 							" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
-					_selectedAction = -1; // reset selectedAction
-				}
-				else if (_selectedAction == -1) {
-					JOptionPane.showMessageDialog(null, "You must select an action first.", 
-							"No action selected",
-							JOptionPane.INFORMATION_MESSAGE );
 				}
 			}
 		}
@@ -414,11 +438,14 @@ public class Gui extends JFrame {
 			_buttons.get(ACTION_SPLIT).setEnabled(true);
 			_buttons.get(ACTION_FILL).setEnabled(true);
 			_buttons.get(ACTION_DEATH).setEnabled(false);
+			_buttons.get(ACTION_ROTATE).setEnabled(false);
 			_buttons.get(ACTION_SLIPPERY).setEnabled(false);
 			_buttons.get(ACTION_EXPLODE).setEnabled(false);
 			
-			if (_graphicalState.getSelectedBlob() instanceof DeathRayBlob)
+			if (_graphicalState.getSelectedBlob() instanceof DeathRayBlob) {
 				_buttons.get(ACTION_DEATH).setEnabled(true);
+				_buttons.get(ACTION_ROTATE).setEnabled(true);
+			}
 			else if (_graphicalState.getSelectedBlob() instanceof ExplodingBlob)
 				_buttons.get(ACTION_EXPLODE).setEnabled(true);
 			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob)
@@ -461,6 +488,7 @@ public class Gui extends JFrame {
 	private class DoneButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			_graphicalState.setSelectedBlob(null);
+			_queueLabel.setText("");
 			_turnEndCoordinator.turnDone();
 		}
 	}
@@ -477,9 +505,21 @@ public class Gui extends JFrame {
 				addChatLine(text+="split a blob");
 				_selectedAction = ACTION_SPLIT;
 				if (_graphicalState.getSelectedBlob() != null) {
-					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + _graphicalState.getSelectedBlob());
+					_blobsToSpawn.add(_graphicalState.getSelectedBlob());
+					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+				}
+				else {
+					showBlobNotSelectedDialog();
+				}
+			}
+			else if (cmd.equals("Split blob")) {
+				addChatLine(text+="split a blob");
+				_selectedAction = ACTION_SPLIT;
+				if (_graphicalState.getSelectedBlob() != null) {
+					_blobsToSpawn.add(_graphicalState.getSelectedBlob());
+					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -490,8 +530,8 @@ public class Gui extends JFrame {
 				_selectedAction = ACTION_FILL;
 				if (_graphicalState.getSelectedBlob() != null) {
 					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + _graphicalState.getSelectedBlob());
+					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -502,8 +542,8 @@ public class Gui extends JFrame {
 				_selectedAction = ACTION_DEATH;
 				if (_graphicalState.getSelectedBlob() != null) {
 					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + _graphicalState.getSelectedBlob());
+					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -514,8 +554,8 @@ public class Gui extends JFrame {
 				_selectedAction = ACTION_SLIPPERY;
 				if (_graphicalState.getSelectedBlob() != null) {
 					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + _graphicalState.getSelectedBlob());
+					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -526,8 +566,8 @@ public class Gui extends JFrame {
 				_selectedAction = ACTION_EXPLODE;
 				if (_graphicalState.getSelectedBlob() != null) {
 					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + _graphicalState.getSelectedBlob().toString());
+					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 				}
 				else {
 					showBlobNotSelectedDialog();
@@ -551,6 +591,8 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_FILL)));
 		_buttonCmds.add("Fire Death Ray");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_DEATH)));
+		_buttonCmds.add("Rotate blob");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_ROTATE)));
 		_buttonCmds.add("Fire Slippery");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_SLIPPERY)));
 		_buttonCmds.add("Explode");
@@ -572,7 +614,7 @@ public class Gui extends JFrame {
 		_turnEndCoordinator.waitUntilTurnDone();
 		_activePlayer = null;
 
-		return new GUIGameMove(_blobMoves, _blobsToActivate, new ArrayList<Blob>());
+		return new GUIGameMove(_blobMoves, _blobsToActivate, _blobsToSpawn);
 	}
 	
 }
