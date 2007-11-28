@@ -36,7 +36,7 @@ public abstract class Blob extends GameObject implements Serializable {
 		try {
 			Constructor<? extends Blob> con = getClass().getConstructor(
 					new Class[]{double.class, double.class, double.class, Player.class});
-			return con.newInstance(_position.x + _radius * 1.1,
+			return con.newInstance(_position.x + _radius * ((GameParameters.BLOB_GROWTH_FACTOR) * 3 - 2),
 								   _position.y, _radius, _owner);
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't spawn blob in Java!", e);
@@ -73,14 +73,12 @@ public abstract class Blob extends GameObject implements Serializable {
 		_dead = true;
 	}
 	
-	public void checkCollision(GameObject rhs) {
-		if (rhs == this) return;
-		if (!collidingWith(rhs)) return;
-		if (rhs.getRadius() <= _radius) rhs.die();
-	}
-
-	private void elasticReboundFrom(GameObject rhs) {
-		// TODO Figure out the physics of this
+	public boolean checkCollision(GameObject rhs) {
+		/* Return true if RHS should be killed */
+		if (rhs == this) return false;
+		if (!(rhs instanceof Blob)) return false;
+		if (!collidingWith(rhs)) return false;
+		return (rhs.getRadius() >= _radius);
 	}
 
 	public boolean isAnchored() {

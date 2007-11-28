@@ -14,7 +14,7 @@ public class BlobTestTools {
 	public static final Player PLAYER2 = new Player("Test Player 2");
 
 	public static Blob getBoringBlob(double x, double y) {
-		return new BoringBlob(x, y);
+		return new BoringBlob(x, y, 1);
 	}
 	
 	public static class BoringBlob extends Blob {

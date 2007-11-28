@@ -110,6 +110,9 @@ public class BlobsClient {
 				notYourTurnDialog();
 			}
 		} else if (message instanceof ExecuteMoveMessage) {
+			if (_players.size() > 1)
+				throw new RuntimeException("Shouldn't be receiving ExecuteMoveMessages in hotseat play!");
+			
 			GameMove move = ((ExecuteMoveMessage) message).getMove();
 			_gameState = ((ExecuteMoveMessage) message).getInitialState();
 			System.err.println("Received move: " + move);
