@@ -52,6 +52,8 @@ public class Board extends Canvas {
 	 * center, so this takes them in our form and returns the appropriate Ellipse2D.
 	 */
 	private Ellipse2D circle(double centerX, double centerY, double radius) {
+		// TODO We might need to subtract sqrt(radius ^ 2 + radius ^ 2) instead of radius to properly align them. 
+		// Needs testing to check. 
 		return new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2);
 	}
 	
