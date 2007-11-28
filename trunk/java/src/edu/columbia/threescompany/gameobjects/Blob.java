@@ -31,12 +31,13 @@ public abstract class Blob extends GameObject implements Serializable {
 	public GameObject spawn() {
 		// TODO this positioning can be done more cleverly
 		_radius /= 2;
-		_position.x -= _radius;
+		double dRadius = _radius * ((GameParameters.BLOB_GROWTH_FACTOR) * 3 - 2);
+		_position.x -= dRadius;
 		
 		try {
 			Constructor<? extends Blob> con = getClass().getConstructor(
 					new Class[]{double.class, double.class, double.class, Player.class});
-			return con.newInstance(_position.x + _radius * ((GameParameters.BLOB_GROWTH_FACTOR) * 3 - 2),
+			return con.newInstance(_position.x + 2 * dRadius,
 								   _position.y, _radius, _owner);
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't spawn blob in Java!", e);
