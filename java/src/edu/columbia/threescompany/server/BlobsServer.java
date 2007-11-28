@@ -11,6 +11,7 @@ import org.quickserver.net.server.QuickServer;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
+import edu.columbia.threescompany.client.communication.GameOverMessage;
 import edu.columbia.threescompany.client.communication.MoveStatePair;
 import edu.columbia.threescompany.client.communication.ServerMessage;
 import edu.columbia.threescompany.client.communication.TurnChangeMessage;
@@ -73,17 +74,24 @@ public class BlobsServer {
 			MoveStatePair pair = receiveMoveAndState();
 			int sent = sendMoveToAllPlayersExcept(playerName, pair._move, pair._state);
 
-			if (sent == 0) continue;
+			//if (sent == 0) continue;
 			gameState = pair._state;
 			gameState.executeMove(pair._move, null);
 			sendStateToAllPlayers(gameState);
 		}
+		sendGameOver();
+	}
+
+	private static void sendGameOver() throws IOException {
+		sendMessageToAllPlayers(new GameOverMessage());
 	}
 
 	public static void sendStateToAllPlayers(LocalGameState gameState) throws IOException {
-		ServerMessage msg = new UpdateStateMessage(gameState);
-		List<Player> players = getPlayers();
-		for (Player player : players) {
+		sendMessageToAllPlayers(new UpdateStateMessage(gameState));
+	}
+
+	private static void sendMessageToAllPlayers(ServerMessage msg) throws IOException {
+		for (Player player : getPlayers()) {
 			sendMessage(player.getName(), msg);
 		}
 	}
