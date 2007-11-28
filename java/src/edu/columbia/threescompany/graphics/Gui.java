@@ -48,6 +48,7 @@ import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
+import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
@@ -61,6 +62,7 @@ public class Gui extends JFrame {
 	private static final int 	ACTION_ROTATE	= 4;
 	private static final int 	ACTION_SLIPPERY	= 5;
 	private static final int 	ACTION_EXPLODE	= 6;
+	private static final int 	ACTION_FORCE	= 7;
 	
 	private static final long 	serialVersionUID = -5234906655320340040L;
 	private int 				_xPos, _yPos;
@@ -76,7 +78,6 @@ public class Gui extends JFrame {
 	private LocalGameState 		_gameState;
 	private GraphicalGameState	_graphicalState;
 	private Map<Blob, Coordinate> _blobMoves; // final positions
-	private Blob 				_selectedBlob;
 	private int 				_selectedAction	= 0;
 	private String 				_activePlayer; // Null means no one's turn
 	public TurnEndCoordinator 	_turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
@@ -131,7 +132,7 @@ public class Gui extends JFrame {
 		controlsPane.add(insideControlsPane, BorderLayout.CENTER);
 		
 		/* setup actions and queue pane */
-		JPanel actionsPane = new JPanel(new GridLayout(1,2));
+		JPanel actionsPane = new JPanel(new GridLayout(2,1));
 		
 		JPanel actionButtonsPane = getActionsPanel();
 		actionsPane.add(actionButtonsPane, BorderLayout.WEST);
@@ -277,8 +278,8 @@ public class Gui extends JFrame {
 	
 	private JPanel getActionsPanel() {
 		setupButtons();
-		JPanel pane = new JPanel();
-		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		JPanel pane = new JPanel(new GridLayout(3,3));
+		//pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		pane.setBackground(GuiConstants.BG_COLOR);
 		pane.setBorder(	BorderFactory.createCompoundBorder(
 										BorderFactory.createTitledBorder(
@@ -293,7 +294,7 @@ public class Gui extends JFrame {
 
 	private JButton getActionButton(String label, int i) {
 		_buttons.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
-		//button.setPreferredSize(new Dimension(260, 20));
+		_buttons.get(i).setPreferredSize(new Dimension(70, 20));
 		_buttons.get(i).setEnabled(false);
 		_buttons.get(i).setFont(GuiConstants.BUTTON_FONT);
 		_buttons.get(i).setBackground(Color.WHITE);
@@ -440,6 +441,7 @@ public class Gui extends JFrame {
 			_buttons.get(ACTION_ROTATE).setEnabled(false);
 			_buttons.get(ACTION_SLIPPERY).setEnabled(false);
 			_buttons.get(ACTION_EXPLODE).setEnabled(false);
+			_buttons.get(ACTION_FORCE).setEnabled(false);
 			
 			if (_graphicalState.getSelectedBlob() instanceof DeathRayBlob) {
 				_buttons.get(ACTION_DEATH).setEnabled(true);
@@ -449,6 +451,8 @@ public class Gui extends JFrame {
 				_buttons.get(ACTION_EXPLODE).setEnabled(true);
 			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob)
 				_buttons.get(ACTION_SLIPPERY).setEnabled(true);	
+			else if (_graphicalState.getSelectedBlob() instanceof ForceBlob)
+				_buttons.get(ACTION_FORCE).setEnabled(true);
 		}
 		
 		/** not needed */
@@ -496,82 +500,45 @@ public class Gui extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 			String cmd = event.getActionCommand();
 			String text = "you've selected to ";
-			if (cmd.equals("Move blob")) {
-				addChatLine(text+="move a blob");
-				_selectedAction = ACTION_MOVE;
+			
+			if (_graphicalState.getSelectedBlob() == null) {
+				showBlobNotSelectedDialog();
+				return;
 			}
-			else if (cmd.equals("Split blob")) {
+			
+			if (cmd.equals(_buttonCmds.get(ACTION_SPLIT))) {
 				addChatLine(text+="split a blob");
 				_selectedAction = ACTION_SPLIT;
-				if (_graphicalState.getSelectedBlob() != null) {
-					_blobsToSpawn.add(_graphicalState.getSelectedBlob());
-					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-				}
-				else {
-					showBlobNotSelectedDialog();
-				}
+				_blobsToSpawn.add(_graphicalState.getSelectedBlob());
 			}
-			else if (cmd.equals("Split blob")) {
-				addChatLine(text+="split a blob");
-				_selectedAction = ACTION_SPLIT;
-				if (_graphicalState.getSelectedBlob() != null) {
-					_blobsToSpawn.add(_graphicalState.getSelectedBlob());
-					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-				}
-				else {
-					showBlobNotSelectedDialog();
-				}
-			}
-			else if (cmd.equals("Fill hole")) {
+			else if (cmd.equals(_buttonCmds.get(ACTION_FILL))) {
 				addChatLine(text+="file a hole");
 				_selectedAction = ACTION_FILL;
-				if (_graphicalState.getSelectedBlob() != null) {
-					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-				}
-				else {
-					showBlobNotSelectedDialog();
-				}
+				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
-			else if (cmd.equals("Fire Death Ray")) {
-				addChatLine(text+="fire a day ray");
+			else if (cmd.equals(_buttonCmds.get(ACTION_DEATH))) {
+				addChatLine(text+="fire a death ray");
 				_selectedAction = ACTION_DEATH;
-				if (_graphicalState.getSelectedBlob() != null) {
-					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-				}
-				else {
-					showBlobNotSelectedDialog();
-				}
+				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
-			else if (cmd.equals("Fire Slippery")) {
+			else if (cmd.equals(_buttonCmds.get(ACTION_SLIPPERY))) {
 				addChatLine(text+="fire slippery goop");
 				_selectedAction = ACTION_SLIPPERY;
-				if (_graphicalState.getSelectedBlob() != null) {
-					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-				}
-				else {
-					showBlobNotSelectedDialog();
-				}
+				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
-			else if (cmd.equals("Explode")) {
+			else if (cmd.equals(_buttonCmds.get(ACTION_EXPLODE))) {
 				addChatLine(text+="explode a blob");
 				_selectedAction = ACTION_EXPLODE;
-				if (_graphicalState.getSelectedBlob() != null) {
-					_blobsToActivate.add(_graphicalState.getSelectedBlob());
-					_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
-				}
-				else {
-					showBlobNotSelectedDialog();
-				}
+				_blobsToActivate.add(_graphicalState.getSelectedBlob());
 			}
+			else if (cmd.equals(_buttonCmds.get(ACTION_FORCE))) {
+				addChatLine(text+="apply a blob force");
+				_selectedAction = ACTION_FORCE;
+				_blobsToActivate.add(_graphicalState.getSelectedBlob());
+			}
+			
+			_queueLabel.setText(_queueLabel.getText()+"\nQueueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+			addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 		}
 
 		private void showBlobNotSelectedDialog() {
@@ -582,20 +549,22 @@ public class Gui extends JFrame {
 	}
 	
 	private void setupButtons() {
-		_buttonCmds.add("Move blob");
+		_buttonCmds.add("Move");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_MOVE)));
-		_buttonCmds.add("Split blob");
+		_buttonCmds.add("Split");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_SPLIT)));
-		_buttonCmds.add("Fill hole");
+		_buttonCmds.add("Fill");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_FILL)));
-		_buttonCmds.add("Fire Death Ray");
+		_buttonCmds.add("Fire");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_DEATH)));
-		_buttonCmds.add("Rotate blob");
+		_buttonCmds.add("Rotate");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_ROTATE)));
-		_buttonCmds.add("Fire Slippery");
+		_buttonCmds.add("Slippery");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_SLIPPERY)));
 		_buttonCmds.add("Explode");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_EXPLODE)));
+		_buttonCmds.add("Force");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_FORCE)));
 	}
 	
 	public void addChatLine(String line) {
