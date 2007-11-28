@@ -48,7 +48,7 @@ public abstract class GameObject implements Serializable {
 	public String toString() {
 		String type = this.getClass().toString();
 		type = type.substring(type.lastIndexOf('.') + 1);
-		return "Game object of type " + type + 
+		return (isDead() ? "DEAD " : "") + "Game object of type " + type + 
 				" with position " + this._position + 
 				" and radius " + this._radius;
 	}

@@ -114,6 +114,10 @@ public class LocalGameStateTest extends BaseTestCase {
 		
 		assertTrue("Left blob should die", blob1.isDead());
 		assertFalse("Right blob shouldn't die", blob2.isDead());
+		
+		blob2.die();
+		
+		assertTrue("Game should be over", state.gameOver());
 	}
 	
 	public void testSpawning() {

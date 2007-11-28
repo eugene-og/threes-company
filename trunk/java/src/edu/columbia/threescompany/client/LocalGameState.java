@@ -130,18 +130,17 @@ public class LocalGameState implements Serializable {
 	}
 
 	public boolean gameOver() {
-		for (Player player : _players) {
-			if (!hasAnyBlobsLeft(player)) return true;
-		}
-		return false;
+		for (Player player : _players)
+			if (hasAnyBlobsLeft(player)) return false;
+		
+		return true;
 	}
 
 	private boolean hasAnyBlobsLeft(Player player) {
-		for (GameObject obj : _gameObjects) {
-			if (obj instanceof Blob && !obj.isDead()&& obj.getOwner().equals(player)) {
+		for (GameObject obj : _gameObjects)
+			if (obj instanceof Blob && !obj.isDead() && obj.getOwner().equals(player))
 				return true;
-			}
-		}
+		
 		return false;
 	}
 	
