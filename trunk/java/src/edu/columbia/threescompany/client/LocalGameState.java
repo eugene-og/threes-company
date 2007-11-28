@@ -35,6 +35,7 @@ public class LocalGameState implements Serializable {
 		
 		deactivateBlobs();
 		growBlobs();
+		checkCollisions();
 	}
 
 	public void executeMove(GameMove move) {

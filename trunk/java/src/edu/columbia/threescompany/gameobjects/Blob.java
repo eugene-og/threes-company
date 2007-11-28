@@ -35,10 +35,9 @@ public abstract class Blob extends GameObject implements Serializable {
 		
 		try {
 			Constructor<? extends Blob> con = getClass().getConstructor(
-					new Class[]{double.class, double.class, double.class});
+					new Class[]{double.class, double.class, double.class, Player.class});
 			return con.newInstance(_position.x + _radius * 1.1,
-								   _position.y,
-								   _radius);
+								   _position.y, _radius, _owner);
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't spawn blob in Java!", e);
 		}
