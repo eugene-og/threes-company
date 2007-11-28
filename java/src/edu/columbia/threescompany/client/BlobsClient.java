@@ -100,6 +100,7 @@ public class BlobsClient {
 			}
 		} else if (message instanceof ExecuteMoveMessage) {
 			GameMove move = ((ExecuteMoveMessage) message).getMove();
+			_gameState = ((ExecuteMoveMessage) message).getInitialState();
 			System.err.println("Received move: " + move);
 			_gameState.executeMove(move, _gui);
 		}

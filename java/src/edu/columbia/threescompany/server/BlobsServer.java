@@ -73,9 +73,10 @@ public class BlobsServer {
 			sendMessage(playerId, new TurnChangeMessage(playerId));
 
 			MoveStatePair pair = receiveMoveAndState(playerId);
-			sendMoveToAllPlayersExcept(playerId, pair._move);
+			sendMoveToAllPlayersExcept(playerId, pair._move, pair._state);
 
 			gameState = pair._state;
+			gameState.executeMove(pair._move, null);
 			sendStateToAllPlayers(gameState);
 		}
 	}
@@ -99,8 +100,8 @@ public class BlobsServer {
 		return BlobsGameState.instance().getAllPlayers();
 	}
 	
-	public static void sendMoveToAllPlayersExcept(String playerId, GameMove move) throws IOException {
-		ServerMessage msg = new ExecuteMoveMessage(move);
+	public static void sendMoveToAllPlayersExcept(String playerId, GameMove move, LocalGameState initialState) throws IOException {
+		ServerMessage msg = new ExecuteMoveMessage(move, initialState);
 		List<PlayerServerData> players = getPlayers();
 		for (PlayerServerData player : players) {
 			String id = player.getClientId();
