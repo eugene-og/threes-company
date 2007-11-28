@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferStrategy;
 
@@ -22,10 +24,11 @@ import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 public class Board extends Canvas {
 	private static final long serialVersionUID = 3523741675646270283L;
 	
-	private BufferStrategy strategy;
 	private LocalGameState _gameState;
 	private GraphicalGameState _graphicalState;
-	
+	Graphics offscreenSurface;
+	Image offscreenImage = null;
+
 	public Board(GraphicalGameState graphicalState)
 	{
 		if (graphicalState == null) {
@@ -34,7 +37,6 @@ public class Board extends Canvas {
 		setBounds(0,0, GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH);
 		_gameState = null;
 		_graphicalState = graphicalState;
-		//setIgnoreRepaint(true);
 		setFont(new Font("Arial", 0, 1)); // Default font is huge
 	}
 	
@@ -44,7 +46,6 @@ public class Board extends Canvas {
 	public void initGraphicsBuffer()
 	{
 		createBufferStrategy(2);
-		strategy = getBufferStrategy();
 	}
 	
 	/**
@@ -57,9 +58,27 @@ public class Board extends Canvas {
 		return new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2);
 	}
 	
+    public void update(Graphics g) {
+    	// Adapted from http://home.comcast.net/~jml3on/java/tricks/double-buffering.html
+    	// TODO Do this more efficiently - don't create a new back buffer each time
+		// create the offscreen buffer and associated Graphics
+		offscreenImage = createImage(getWidth(), getHeight());
+		offscreenSurface = offscreenImage.getGraphics();
+		Rectangle clippingRegion = g.getClipRect();
+		// clear the exposed area
+		offscreenSurface.setColor(getBackground());
+		offscreenSurface.fillRect(0, 0, clippingRegion.width, clippingRegion.height);
+		offscreenSurface.setColor(getForeground());
+		// do normal redraw
+		offscreenSurface.translate(-clippingRegion.x, -clippingRegion.y);
+		paint(offscreenSurface);
+		// transfer offscreen to window
+		g.drawImage(offscreenImage, clippingRegion.x, clippingRegion.y, this);
+	}
+    
 	public void paint(Graphics g)
 	{
-		//Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
+		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
 		surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 		surface.setColor(Color.black);
