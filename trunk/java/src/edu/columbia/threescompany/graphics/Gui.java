@@ -480,7 +480,7 @@ public class Gui extends JFrame {
 		
 	    private Blob blobClickedOn(Coordinate worldClick) {
 			for (GameObject object : _gameState.getObjects()) {
-				if (object instanceof Blob) {
+				if (object instanceof Blob && !object.isDead()) {
 					double clickObjectDistance = object.getPosition().distanceFrom(worldClick);
 					if (clickObjectDistance <= object.getRadius()) {
 						return (Blob)object;
