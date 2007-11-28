@@ -563,7 +563,8 @@ public class Gui extends JFrame {
 		_activePlayer = activePlayer;
 		_turnEndCoordinator.waitUntilTurnDone();
 		_activePlayer = null;
-		return new GUIGameMove(_blobMoves, _blobsToActivate);
+
+		return new GUIGameMove(_blobMoves, _blobsToActivate, new ArrayList<Blob>());
 	}
 	
 }

@@ -21,16 +21,24 @@ public class GUIGameMove {
 
 	private Map<Blob, Coordinate> _finalPositions;
 	private List<Blob> _blobsToActivate;
+	private List<Blob> _blobsToSpawn;
 	
-	public GUIGameMove(Map<Blob, Coordinate> finalPositions, List<Blob> blobsToActivate) {
+	public GUIGameMove(Map<Blob, Coordinate> finalPositions, List<Blob> blobsToActivate,
+					   List<Blob> blobsToSpawn) {
 		_finalPositions = finalPositions;
 		_blobsToActivate = blobsToActivate;
+		_blobsToSpawn = blobsToSpawn;
 	}
 	
 	public Map<Blob, Coordinate> getFinalPositions() {
 		return _finalPositions;
 	}
+	
 	public List<Blob> getBlobsToActivate() {
 		return _blobsToActivate;
+	}
+	
+	public List<Blob> getBlobsToSpawn() {
+		return _blobsToSpawn;
 	}
 }
