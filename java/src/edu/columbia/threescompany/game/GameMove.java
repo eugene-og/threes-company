@@ -113,6 +113,9 @@ public class GameMove implements Serializable {
 	private int _duration = 0;
 
 	public boolean hasActivations() {
-		return !(_events.isEmpty());
+		for (Blob blob : _events.keySet())
+			if (_events.get(blob).getMoveType() == EventMove.MOVE_TYPE.ACTIVATE)
+				return true;
+		return false;
 	}
 }
