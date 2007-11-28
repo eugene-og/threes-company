@@ -2,6 +2,7 @@ package edu.columbia.threescompany.game;
 
 import java.io.Serializable;
 
+import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.Blob;
@@ -35,7 +36,7 @@ public class PhysicalMove extends GameMoveComponent implements Serializable {
 							GameParameters.FORCE_OF_USERS_HAND);
 	}
 	
-	public void execute() {
+	public void execute(LocalGameState state) {
 		Force f = new Force(_fx, _fy);
 		((Blob) _target).applyIrresistibleForce(f);
 	}

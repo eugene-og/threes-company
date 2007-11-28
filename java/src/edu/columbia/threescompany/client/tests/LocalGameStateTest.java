@@ -11,6 +11,7 @@ import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.gameobjects.GameParameters;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.tests.BlobTestTools;
 import edu.columbia.threescompany.tests.BaseTestCase;
@@ -113,5 +114,23 @@ public class LocalGameStateTest extends BaseTestCase {
 		
 		assertTrue("Left blob should die", blob1.isDead());
 		assertFalse("Right blob shouldn't die", blob2.isDead());
+	}
+	
+	public void testSpawning() {
+		List<GameObject> blobs = new ArrayList<GameObject>(1);
+		BlobTestTools.BoringBlob blob = new BlobTestTools.BoringBlob(0, 0, GameParameters.BLOB_SIZE_LIMIT);
+		blobs.add(blob);
+		
+		LocalGameState state = LocalGameState.getSpecifiedGameState(blobs);
+		
+		List<Blob> spawnList = new ArrayList<Blob>(1);
+		spawnList.add(blob);
+		
+		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(),
+										   new ArrayList<Blob>(),
+										   spawnList);
+		state.executeMove(new GameMove(move));
+		
+		assertEquals("Should have spawned", 2, state.getObjects().size());
 	}
 }

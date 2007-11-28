@@ -33,20 +33,31 @@ public class GameMove implements Serializable {
 		for (GameObject blob : finalPositions.keySet())
 			addPhysicalMove(finalPositions.get(blob), (Blob) blob);
 		
-		_activations = new HashMap<Blob, EventMove>();
+		_events = new HashMap<Blob, EventMove>();
 		for (GameObject blob : move.getBlobsToActivate())
 			addActivationTrigger((Blob) blob);
+		
+		for (GameObject blob : move.getBlobsToSpawn())
+			addSpawnTrigger((Blob) blob);
 	}
 
 	private void addPhysicalMove(Coordinate pos, Blob blob) {
 		PhysicalMove move = new PhysicalMove(pos, blob);
 		_moves.put(blob, move);
 		int duration = move.getDuration();
-		
+	
 		if (duration > _duration) _duration = duration;
 	}
 
+	private void addSpawnTrigger(Blob blob) {
+		addEventMove(blob, EventMove.MOVE_TYPE.SPAWN);
+	}
+	
 	private void addActivationTrigger(Blob blob) {
+		addEventMove(blob, EventMove.MOVE_TYPE.ACTIVATE);
+	}
+
+	private void addEventMove(Blob blob, EventMove.MOVE_TYPE moveType) {
 		int activationTime = 0;
 		
 		/* If a blob is moving physically, its activation time doesn't
@@ -54,7 +65,7 @@ public class GameMove implements Serializable {
 		if (_moves.containsKey(blob))
 			activationTime = _moves.get(blob).getDuration() + 1;
 		
-		_activations.put(blob, new EventMove(blob, activationTime));
+		_events.put(blob, new EventMove(blob, activationTime, moveType));
 		if (activationTime + 1 > _duration) _duration = activationTime + 1;
 	}
 
@@ -70,7 +81,7 @@ public class GameMove implements Serializable {
 	public List<EventMove> eventMovesAt(int i) {
 		// FIXME same as above FIXME
 		List<EventMove> result = new ArrayList<EventMove>();
-		for (EventMove move : _activations.values())
+		for (EventMove move : _events.values())
 			if (i == move.getActivationTime()) result.add(move);
 		
 		return result;
@@ -88,16 +99,20 @@ public class GameMove implements Serializable {
 			s.append(_moves.get(b).toString());
 			s.append("\n");
 		}
-		for (GameObject b : _activations.keySet()) {
+		for (GameObject b : _events.keySet()) {
 			s.append(b.toString());
 			s.append(" event: ");
-			s.append(_activations.get(b).toString());
+			s.append(_events.get(b).toString());
 			s.append("\n");
 		}
 		return s.toString();
 	}
 	
 	private Map<Blob, PhysicalMove> _moves;
-	private Map<Blob, EventMove> _activations;
+	private Map<Blob, EventMove> _events;
 	private int _duration = 0;
+
+	public boolean hasActivations() {
+		return !(_events.isEmpty());
+	}
 }

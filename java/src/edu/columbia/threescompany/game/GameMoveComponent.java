@@ -2,6 +2,7 @@ package edu.columbia.threescompany.game;
 
 import java.io.Serializable;
 
+import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public abstract class GameMoveComponent implements Serializable {
@@ -11,5 +12,5 @@ public abstract class GameMoveComponent implements Serializable {
 		return _target;
 	}
 	
-	public abstract void execute();
+	public abstract void execute(LocalGameState state);
 }

@@ -53,8 +53,7 @@ public class BlobsServer {
 	}
 
 	private static void broadcastGameStart(BlobsGameState gameState, QuickServer server) throws IOException {
-		for (Iterator iterator = gameState.getAllPlayers().iterator(); iterator.hasNext();) {
-			PlayerServerData toPlayer = (PlayerServerData) iterator.next();
+		for (PlayerServerData toPlayer : gameState.getAllPlayers()) {
 			ClientHandler toHandler = toPlayer.getChatClientHandler();
 			toHandler.sendClientMsg("START GAME!!");	
 		}

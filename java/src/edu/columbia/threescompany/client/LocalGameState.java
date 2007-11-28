@@ -26,7 +26,10 @@ public class LocalGameState implements Serializable {
 	public void executeMove(GameMove move, Gui gui) {
 		/* t is our time variable -- basically, we execute GRANULARITY tiny
 		 * moves, sequentially. */
-		double turnLength = move.getDuration() + GameParameters.ADDITIONAL_SIMULATION_LENGTH;
+		double turnLength = move.getDuration();
+		if (move.hasActivations())
+			turnLength += GameParameters.ADDITIONAL_SIMULATION_LENGTH;
+		
 		for (int t = 0; t < turnLength; t++)
 			executeMoveStep(move, gui, t);
 		
@@ -44,9 +47,9 @@ public class LocalGameState implements Serializable {
 
 	private void executeMoveStep(GameMove move, Gui gui, int t) {
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
-			granularMove.execute();
+			granularMove.execute(this);
 		for (EventMove eventMove : move.eventMovesAt(t))
-			eventMove.execute();
+			eventMove.execute(this);
 		
 		applyForces();
 		checkCollisions();

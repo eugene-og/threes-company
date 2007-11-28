@@ -15,7 +15,7 @@ public class PhysicalMoveTest extends BaseTestCase {
 		PhysicalMove move = new PhysicalMove(new Coordinate(2, 3), blob);
 		
 		for (int i = 0; i < move.getDuration(); i++)
-			move.execute();
+			move.execute(null);
 		
 		assertRoughlyEqual("Blob should have moved to specified position",
 				   2.0, blob.getPosition().x);

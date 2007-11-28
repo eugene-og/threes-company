@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class ChatThread extends Thread {
@@ -25,7 +26,7 @@ public class ChatThread extends Thread {
 	/**
 	 * @throws IOException, java.net.ConnectException
 	 */
-	public ChatThread(List players) throws IOException {
+	public ChatThread(List<Player> players) throws IOException {
 		InetAddress addr;
 		sendBuffer = new ArrayList<String>();
 		try {
