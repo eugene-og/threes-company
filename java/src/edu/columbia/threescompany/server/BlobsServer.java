@@ -94,8 +94,8 @@ public class BlobsServer {
 		ServerMessage msg = new ExecuteMoveMessage(move, initialState);
 		List<Player> players = getPlayers();
 		for (Player player : players) {
-			String playerName = player.getName();
-			if (!playerName.equals(playerId)) sendMessage(playerName, msg);
+			List<String> playerNames = BlobsGameState.instance().getPlayerServerData(player.getName()).getHandlesList();
+			if (!playerNames.contains(playerId)) sendMessage(player.getName(), msg);
 		}
 	}
 	
