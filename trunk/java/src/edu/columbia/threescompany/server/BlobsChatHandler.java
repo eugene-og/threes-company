@@ -2,7 +2,6 @@ package edu.columbia.threescompany.server;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.Iterator;
 
 import org.quickserver.net.server.ClientCommandHandler;
 import org.quickserver.net.server.ClientHandler;
@@ -25,7 +24,7 @@ public class BlobsChatHandler implements ClientCommandHandler {
 		if (msg.startsWith(".")) {
 			doCommand(gameState, handler, msg);
 		} else {
-			broadcastMessage(handler, gameState, ((PlayerServerData)handler.getClientData()).getHandle() + ": " + msg);
+			broadcastMessage(handler, gameState, ((PlayerServerData)handler.getClientData()).getHandles() + ": " + msg);
 		}
 	}
 
@@ -44,16 +43,15 @@ public class BlobsChatHandler implements ClientCommandHandler {
 
 	private void sendPlayersReadyStatus(BlobsGameState gameState, ClientHandler handler) throws IOException {
 		String msg = "";
-		for (PlayerServerData currentPlayer : gameState.getAllPlayers())
-			msg += currentPlayer.getHandle() + " : " + String.valueOf(currentPlayer.isReadyToPlay());
+		for (PlayerServerData currentPlayer : gameState.getAllPlayerServerData())
+			msg += currentPlayer.getHandles() + " : " + String.valueOf(currentPlayer.isReadyToPlay());
 		
 		handler.sendClientMsg(msg);
 	}
 	
 	private void broadcastMessage(ClientHandler handler, BlobsGameState gameState, String msg) throws IOException {
-		for (Iterator iterator = gameState.getAllPlayers().iterator(); iterator.hasNext();) {
-			PlayerServerData toPlayer = (PlayerServerData) iterator.next();
-			ClientHandler toHandler = toPlayer.getChatClientHandler();
+		for (PlayerServerData toClient : gameState.getAllPlayerServerData()) {
+			ClientHandler toHandler = toClient.getChatClientHandler();
 			if (!toHandler.equals(handler)) {
 				toHandler.sendClientMsg(msg);
 			}

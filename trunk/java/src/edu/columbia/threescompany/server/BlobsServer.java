@@ -3,8 +3,6 @@ package edu.columbia.threescompany.server;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.quickserver.net.AppException;
@@ -24,7 +22,7 @@ public class BlobsServer {
 	public static String VERSION = "0.1";
 	private static String _confFile = "conf" + File.separator + "BlobsServer.xml";
 	
-	private static List<PlayerServerData> _playerServerDataList;
+	private static List<Player> _playerList;
 	
 	public static void main(String args[]) throws IOException {
 		QuickServer blobsServer = new QuickServer();
@@ -53,74 +51,67 @@ public class BlobsServer {
 	}
 
 	private static void broadcastGameStart(BlobsGameState gameState, QuickServer server) throws IOException {
-		for (PlayerServerData toPlayer : gameState.getAllPlayers()) {
+		for (PlayerServerData toPlayer : gameState.getAllPlayerServerData()) {
 			ClientHandler toHandler = toPlayer.getChatClientHandler();
 			toHandler.sendClientMsg("START GAME!!");	
 		}
 	}
 	
 	private static void mainServerLoop() throws IOException {
-		_playerServerDataList = getPlayers();
-		LocalGameState gameState = LocalGameState.getInitialGameState(playersFrom(_playerServerDataList));
+		_playerList = getPlayers();
+		LocalGameState gameState = LocalGameState.getInitialGameState(_playerList);
 		sendStateToAllPlayers(gameState);
 		
 		int activePlayer = -1;
 		while (!gameState.gameOver()) {
-			activePlayer = (activePlayer + 1) % _playerServerDataList.size();
+			activePlayer = (activePlayer + 1) % _playerList.size();
 			// TODO do this better -- Zach
-			String playerId = _playerServerDataList.get(activePlayer).getClientId();
-			sendMessage(playerId, new TurnChangeMessage(playerId));
+			String playerName = _playerList.get(activePlayer).getName();
+			sendMessage(playerName, new TurnChangeMessage(playerName));
 
-			MoveStatePair pair = receiveMoveAndState(playerId);
-			sendMoveToAllPlayersExcept(playerId, pair._move, pair._state);
+			MoveStatePair pair = receiveMoveAndState();
+			sendMoveToAllPlayersExcept(playerName, pair._move, pair._state);
 
 			gameState = pair._state;
 			gameState.executeMove(pair._move, null);
 			sendStateToAllPlayers(gameState);
 		}
 	}
-	
-	private static List<Player> playersFrom(List<PlayerServerData> playerServerDataList) {
-		List<Player> result = new ArrayList<Player>();
-		for (PlayerServerData playerServerData : playerServerDataList)
-			result.add(playerServerData.getPlayer());
-		return result;
-	}
 
 	public static void sendStateToAllPlayers(LocalGameState gameState) throws IOException {
 		ServerMessage msg = new UpdateStateMessage(gameState);
-		List<PlayerServerData> players = getPlayers();
-		for (PlayerServerData player : players) {
-			sendMessage(player.getClientId(), msg);
+		List<Player> players = getPlayers();
+		for (Player player : players) {
+			sendMessage(player.getName(), msg);
 		}
 	}
 
-	private static List<PlayerServerData> getPlayers() {
+	private static List<Player> getPlayers() {
 		return BlobsGameState.instance().getAllPlayers();
 	}
 	
 	public static void sendMoveToAllPlayersExcept(String playerId, GameMove move, LocalGameState initialState) throws IOException {
 		ServerMessage msg = new ExecuteMoveMessage(move, initialState);
-		List<PlayerServerData> players = getPlayers();
-		for (PlayerServerData player : players) {
-			String id = player.getClientId();
-			if (!id.equals(playerId)) sendMessage(id, msg);
+		List<Player> players = getPlayers();
+		for (Player player : players) {
+			String playerName = player.getName();
+			if (!playerName.equals(playerId)) sendMessage(playerName, msg);
 		}
 	}
 	
-	public static MoveStatePair receiveMoveAndState(String playerId) {
+	public static MoveStatePair receiveMoveAndState() {
 		return MoveStatePairQueue.instance().blockForNextPair();
 	}
 
-	public static void sendMessage(String playerId, ServerMessage msg) throws IOException {
-		ObjectOutputStream ooStream = getObjectOutputStreamFor(playerId);
+	public static void sendMessage(String playerName, ServerMessage msg) throws IOException {
+		ObjectOutputStream ooStream = getObjectOutputStreamFor(playerName);
 		if (ooStream == null)
-			throw new RuntimeException("Player " + playerId + "doesn't have an output stream!");
+			throw new RuntimeException("Player " + playerName + "doesn't have an output stream!");
 		ooStream.writeObject(msg);
 	}
 
-	private static ObjectOutputStream getObjectOutputStreamFor(String playerId) {
-		ClientHandler handler = BlobsGameState.instance().getPlayerServerData(playerId).getGameClientHandler();
+	private static ObjectOutputStream getObjectOutputStreamFor(String playerName) {
+		ClientHandler handler = BlobsGameState.instance().getPlayerServerData(playerName).getGameClientHandler();
 		return handler.getObjectOutputStream();
 	}
 }
