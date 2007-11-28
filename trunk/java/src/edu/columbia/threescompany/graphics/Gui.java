@@ -83,6 +83,7 @@ public class Gui extends JFrame {
 	
 	private List<String> 		_buttonCmds = new ArrayList<String>();
 	private List<JButton>		_buttons = new ArrayList<JButton>();
+	private List<Blob> 			_blobsToActivate;
 	
 	private static Gui 			_instance;
 	
@@ -391,12 +392,15 @@ public class Gui extends JFrame {
 				updateAvailableActions();
 				addChatLine("Selected blob " + _selectedBlob.toString());
 			} else if (_selectedBlob != null) { // clicked a destination for a blob
-				if (_selectedAction != -1) {
+				if (_selectedAction == 0) { // move action
 					_blobMoves.put(_selectedBlob, worldClick);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " of blob " + _selectedBlob.toString() + " to " + worldClick.toString());
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString() + " to " + worldClick.toString());
+					_selectedAction = -1; // reset selectedAction
 				}
-				else {
-					addChatLine("You must select an action for blob " + _selectedBlob.toString());
+				else if (_selectedAction == -1) {
+					JOptionPane.showMessageDialog(null, "You must select an action first for blob "+_selectedBlob.toString(), 
+							"No action selected",
+							JOptionPane.INFORMATION_MESSAGE );
 				}
 			}
 		}
@@ -468,23 +472,64 @@ public class Gui extends JFrame {
 			else if (cmd.equals("Split blob")) {
 				addChatLine(text+="split a blob");
 				_selectedAction = ACTION_SPLIT;
+				if (_selectedBlob != null) {
+					_blobsToActivate.add(_selectedBlob);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				}
+				else {
+					showBlobNotSelectedDialog();
+				}
 			}
 			else if (cmd.equals("Fill hole")) {
 				addChatLine(text+="file a hole");
 				_selectedAction = ACTION_FILL;
+				if (_selectedBlob != null) {
+					_blobsToActivate.add(_selectedBlob);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				}
+				else {
+					showBlobNotSelectedDialog();
+				}
 			}
 			else if (cmd.equals("Fire Death Ray")) {
 				addChatLine(text+="fire a day ray");
 				_selectedAction = ACTION_DEATH;
+				if (_selectedBlob != null) {
+					_blobsToActivate.add(_selectedBlob);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				}
+				else {
+					showBlobNotSelectedDialog();
+				}
 			}
 			else if (cmd.equals("Fire Slippery")) {
 				addChatLine(text+="fire slippery goop");
 				_selectedAction = ACTION_SLIPPERY;
+				if (_selectedBlob != null) {
+					_blobsToActivate.add(_selectedBlob);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				}
+				else {
+					showBlobNotSelectedDialog();
+				}
 			}
 			else if (cmd.equals("Explode")) {
 				addChatLine(text+="explode a blob");
 				_selectedAction = ACTION_EXPLODE;
+				if (_selectedBlob != null) {
+					_blobsToActivate.add(_selectedBlob);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _selectedBlob.toString());
+				}
+				else {
+					showBlobNotSelectedDialog();
+				}
 			}
+		}
+
+		private void showBlobNotSelectedDialog() {
+			JOptionPane.showMessageDialog(null, "You must select a blob before clicking on an action", 
+					"No blob selected",
+					JOptionPane.INFORMATION_MESSAGE );
 		}
 	}
 	
@@ -512,11 +557,12 @@ public class Gui extends JFrame {
 		addChatLine("It's player " + activePlayer + "'s turn.");
 		_turnEndCoordinator.turnStart();
 		_blobMoves = new HashMap<Blob, Coordinate>();
+		_blobsToActivate = new ArrayList<Blob>();
 		_selectedBlob = null;
 		_activePlayer = activePlayer;
 		_turnEndCoordinator.waitUntilTurnDone();
 		_activePlayer = null;
-		return new GUIGameMove(_blobMoves, new ArrayList<Blob>());
+		return new GUIGameMove(_blobMoves, _blobsToActivate);
 	}
 	
 }
