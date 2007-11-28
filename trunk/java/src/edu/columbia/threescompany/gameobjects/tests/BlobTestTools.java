@@ -11,6 +11,7 @@ import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class BlobTestTools {
 	public static final Player PLAYER = new Player("Test Player");
+	public static final Player PLAYER2 = new Player("Test Player 2");
 
 	public static Blob getBoringBlob(double x, double y) {
 		return new BoringBlob(x, y);
@@ -27,6 +28,10 @@ public class BlobTestTools {
 			super(x, y, radius, BlobTestTools.PLAYER);
 		}
 		
+		public BoringBlob(double x, double y, double radius, Player player) {
+			super(x, y, radius, player);
+		}
+		
 		public Force actOn(GameObject obj) {
 			return new Force(0, 0);
 		}
@@ -35,13 +40,13 @@ public class BlobTestTools {
 			/* nada */
 		}
 		
-		public Blob clone() {
+		public GameObject clone() {
 			return new BoringBlob(_position.x, _position.y, _radius);
 		}
 	}
 
 	public static LocalGameState getSingleBlobState(double x, double y) {
-		Blob blob = getBoringBlob(x, y);
+		GameObject blob = getBoringBlob(x, y);
 		List<GameObject> objList = new ArrayList<GameObject>(1);
 		objList.add(blob);
 		LocalGameState state = LocalGameState.getSpecifiedGameState(objList);

@@ -10,6 +10,7 @@ import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.tests.BlobTestTools;
 import edu.columbia.threescompany.tests.BaseTestCase;
@@ -92,5 +93,25 @@ public class LocalGameStateTest extends BaseTestCase {
 		 * all that easily, since Newton's 3 means that PushBlob was initially
 		 * moving to the right (and resisting BoringBlob's attempt to reach x=1)
 		 */
+	}
+	
+	public void testCollision() {
+		/* Initial:		Final:
+		 * ==B===B==    ======B==
+		 */
+		LocalGameState state = BlobTestTools.getSingleBlobState(-1.2, 0);
+		GameObject blob2 = new BlobTestTools.BoringBlob(2, 0, 1, BlobTestTools.PLAYER2);
+		blob2.grow();
+		state.addObject(blob2);
+		
+		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
+		Blob blob1 = (Blob) state.getObjects().get(0);
+		finalPositions.put(blob1, new Coordinate(2, 0));
+		
+		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
+		state.executeMove(new GameMove(move));
+		
+		assertTrue("Left blob should die", blob1.isDead());
+		assertFalse("Right blob shouldn't die", blob2.isDead());
 	}
 }

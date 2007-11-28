@@ -10,6 +10,7 @@ import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class GameMove implements Serializable {
 	/* README FIRST
@@ -29,12 +30,12 @@ public class GameMove implements Serializable {
 		Map<Blob, Coordinate> finalPositions = move.getFinalPositions();
 		
 		_moves = new HashMap<Blob, PhysicalMove>();
-		for (Blob blob : finalPositions.keySet())
-			addPhysicalMove(finalPositions.get(blob), blob);
+		for (GameObject blob : finalPositions.keySet())
+			addPhysicalMove(finalPositions.get(blob), (Blob) blob);
 		
 		_activations = new HashMap<Blob, EventMove>();
-		for (Blob blob : move.getBlobsToActivate())
-			addActivationTrigger(blob);
+		for (GameObject blob : move.getBlobsToActivate())
+			addActivationTrigger((Blob) blob);
 	}
 
 	private void addPhysicalMove(Coordinate pos, Blob blob) {
@@ -81,13 +82,13 @@ public class GameMove implements Serializable {
 	
 	public String toString() {
 		StringBuilder s = new StringBuilder("GameMove: ");
-		for (Blob b : _moves.keySet()) {
+		for (GameObject b : _moves.keySet()) {
 			s.append(b.toString());
 			s.append(" move: ");
 			s.append(_moves.get(b).toString());
 			s.append("\n");
 		}
-		for (Blob b : _activations.keySet()) {
+		for (GameObject b : _activations.keySet()) {
 			s.append(b.toString());
 			s.append(" event: ");
 			s.append(_activations.get(b).toString());

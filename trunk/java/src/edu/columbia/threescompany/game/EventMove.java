@@ -3,6 +3,7 @@ package edu.columbia.threescompany.game;
 import java.io.Serializable;
 
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class EventMove extends GameMoveComponent implements Serializable {
 	public enum MOVE_TYPE {
@@ -11,7 +12,7 @@ public class EventMove extends GameMoveComponent implements Serializable {
 	private static final long serialVersionUID = -4695883001161759780L;
 	private MOVE_TYPE _type;
 
-	public EventMove(Blob target, int activationTime) {
+	public EventMove(GameObject target, int activationTime) {
 		_target = target;
 		_activationTime = activationTime;
 		_type = MOVE_TYPE.ACTIVATE;	// TODO

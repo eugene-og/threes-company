@@ -11,12 +11,13 @@ import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.AnchorPoint;
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.tests.BaseTestCase;
 
 public class AnchorPointTest extends BaseTestCase {
 	public void testCollision() {
-		Blob blob = BlobTestTools.getBoringBlob(0, 0);
+		GameObject blob = BlobTestTools.getBoringBlob(0, 0);
 		AnchorPoint point = new AnchorPoint(0.8, 0);
 		assertTrue("Should collide", point.collidesWith(blob));
 		blob = BlobTestTools.getBoringBlob(-0.5, 0);
@@ -33,7 +34,7 @@ public class AnchorPointTest extends BaseTestCase {
 		 */
 		
 		LocalGameState state = BlobTestTools.getSingleBlobState(0, 0);
-		Blob boringBlob = (Blob) state.getObjects().get(0);
+		GameObject boringBlob = (GameObject) state.getObjects().get(0);
 		Blob pushBlob = new PushBlob(-1.5, 0.0, 1.0, BlobTestTools.PLAYER);
 		AnchorPoint anchorPoint = new AnchorPoint(1.5, 0);
 		
