@@ -26,7 +26,7 @@ public class GuiConstants {
 	
 	public static final Font	CHAT_FONT = new Font("Tahoma", Font.PLAIN, 9);
 	
-	public static final Font	BUTTON_FONT = new Font("Tahoma", Font.PLAIN, 10);
+	public static final Font	BUTTON_FONT = new Font("Tahoma", Font.PLAIN, 9);
 	
 	public static final Color	BG_COLOR = Color.WHITE;
 	
