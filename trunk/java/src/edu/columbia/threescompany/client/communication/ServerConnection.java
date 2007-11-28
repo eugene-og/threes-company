@@ -58,6 +58,18 @@ public class ServerConnection {
 		writeObject(array);
 	}
 	
+	/**
+	 * @param player A new player to add to the game.
+	 * @throws InvalidPlayerNameException If the player's name is already in use.
+	 * @throws IOException
+	 */
+	public void newPlayer(Player player) throws InvalidPlayerNameException, IOException {
+		// TODO
+//		if (something) {
+//			throw new InvalidPlayerNameException();
+//		}
+	}
+	
 	private ObjectOutputStream _ooStream;
 	private ObjectInputStream _oiStream;
 }
