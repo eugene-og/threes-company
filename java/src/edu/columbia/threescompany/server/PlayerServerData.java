@@ -1,5 +1,11 @@
 package edu.columbia.threescompany.server;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.quickserver.net.server.ClientData;
 import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.ClientIdentifiable;
@@ -13,24 +19,20 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 	private ClientHandler _chatClientHandler;
 	private String _hostAddress;
 
-	private Player _player;
-	
-	private String _handle;
+	private Map<String, Player> _players = new HashMap<String, Player>();
 	
 	private boolean _isReadyToPlay;
-	private boolean _isSimulating;
-	private boolean _hasTurn;
 
 	public boolean isReadyToPlay() {
 		return _isReadyToPlay;
 	}
 
-	public void setPlayer(Player player) {
-		_player = player;
+	public void addPlayer(Player player) {
+		_players.put(player.getName(), player);
 	}
 	
-	public Player getPlayer() {
-		return _player;
+	public void removePlayer(String handle) {
+		_players.remove(handle);
 	}
 	
 	public void setIsReadyToPlay(boolean isReady) {
@@ -52,41 +54,21 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 	public void setChatClientHandler(ClientHandler clientHandler) {
 		_chatClientHandler = clientHandler;
 	}
-	
-	public String getHandle() {
-		return _handle;
-	}
 
-	public void setHandle(String handle) {
-		this._handle = handle;
-	}
-
-	public boolean isSimulating() {
-		return _isSimulating;
-	}
-
-	public void setIsSimulating(boolean simulating) {
-		_isSimulating = simulating;
-	}
-
-	public boolean hasTurn() {
-		return _hasTurn;
-	}
-
-	public void setHasTurn() {
-		if (BlobsGameState.instance().getPlayerCount() == 0) {
-			_hasTurn = true;
-		} else {
-			_hasTurn = false;
-		}
+	public String getHandles() {
+		return getClientId();
 	}
 	
-	public void setHasTurn(boolean turn) {
-		_hasTurn = turn;
+	public List<String> getHandlesList() {
+		return new ArrayList<String>(_players.keySet());
 	}
-
+	
 	public String getClientId() {
-		return _handle;
+		String result = "";
+		for (String key : _players.keySet()) {
+			result +=key + ",";
+		}
+		return result.substring(0, result.length()-1);
 	}
 
 	public String getClientInfo() {
@@ -103,6 +85,10 @@ public class PlayerServerData implements ClientData, ClientIdentifiable {
 
 	public void setHostAddress(String address) {
 		_hostAddress = address;
+	}
+
+	public Collection<Player> getPlayers() {
+		return _players.values();
 	}
 
 

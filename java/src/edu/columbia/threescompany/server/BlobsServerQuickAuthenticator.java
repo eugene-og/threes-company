@@ -31,7 +31,7 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 
 	private boolean authenticatePlayer(Player player, ClientHandler clientHandler, BlobsGameState gameState) throws IOException {
 		boolean retval = false;
-		if(player.getName() == null) {
+		if(player.getName() == null || player.getName().equals("")) {
 			clientHandler.setDataMode(DataMode.STRING, DataType.IN); //set String data mode for this connection
 			clientHandler.setDataMode(DataMode.STRING, DataType.OUT);
 			sendString(clientHandler, "Auth Failed - Username empty");
@@ -43,8 +43,7 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 			PlayerServerData playerServerData = gameState.getPlayerServerData(player.getName());
 			playerServerData.setGameClientHandler(clientHandler);
 			playerServerData.setIsReadyToPlay(false);
-			playerServerData.setHasTurn();
-			playerServerData.setPlayer(player);
+			playerServerData.addPlayer(player);
 			gameState.increasePlayerCount();
 			retval = true;
 		} else if (gameState.isHandleTaken(player.getName(), clientHandler.getHostAddress())) {
@@ -58,10 +57,9 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 			clientHandler.setDataMode(DataMode.STRING, DataType.OUT);
 			sendString(clientHandler, "Auth OK");
 			PlayerServerData newPlayerServerData = (PlayerServerData) clientHandler.getClientData();
-			newPlayerServerData.setHandle(player.getName());
 			newPlayerServerData.setHostAddress(clientHandler.getHostAddress());
 			newPlayerServerData.setChatClientHandler(clientHandler);
-			gameState.addPlayerServerData(newPlayerServerData.getClientId(), newPlayerServerData);
+			gameState.addPlayerServerData(player.getName(), newPlayerServerData);
 			retval = true;
 		}
 		return retval;
