@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 
-import javax.swing.JButton;
-
 public class GuiConstants {
 
 	public static final String	VERSION = "0.1";
