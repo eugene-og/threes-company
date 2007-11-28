@@ -27,18 +27,15 @@ public class BlobsClient {
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
 		
-		Boolean connected = false;
-		while (!connected) {
-			try {
+		try {
 				_chatThread = new ChatThread(_players);
-				connected = true;
-			} catch (ConnectException e) {
+		} catch (ConnectException e) {
 				JOptionPane.showMessageDialog(null, "Blobs could not connect to the server. You need a server running " +
 				                              "even for a hotseat game.");
-				doPlayerSetup();
-			}
+				return;
 		}
 		_gui = Gui.getInstance(_chatThread, _players);
+
 		_chatThread.setGui(_gui);
 		_chatThread.start();
 
