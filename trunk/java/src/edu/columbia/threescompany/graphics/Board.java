@@ -24,11 +24,16 @@ public class Board extends Canvas {
 	
 	private BufferStrategy strategy;
 	private LocalGameState _gameState;
+	private GraphicalGameState _graphicalState;
 	
-	public Board()
+	public Board(GraphicalGameState graphicalState)
 	{
+		if (graphicalState == null) {
+			throw new NullPointerException();
+		}
 		setBounds(0,0, GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH);
 		_gameState = null;
+		_graphicalState = graphicalState;
 		//setIgnoreRepaint(true);
 		setFont(new Font("Arial", 0, 1)); // Default font is huge
 	}
@@ -40,6 +45,14 @@ public class Board extends Canvas {
 	{
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
+	}
+	
+	/**
+	 * The x and y that Ellipse2D takes are its upper left corner. It's more convenient for us to specify them as the
+	 * center, so this takes them in our form and returns the appropriate Ellipse2D.
+	 */
+	private Ellipse2D circle(double centerX, double centerY, double radius) {
+		return new Ellipse2D.Double(centerX - radius, centerY - radius, radius, radius);
 	}
 	
 	public void paint(Graphics g)
@@ -77,6 +90,13 @@ public class Board extends Canvas {
 				surface.setColor(Color.darkGray);
 			}
 			surface.fill(blobToDraw);
+			
+			if (_graphicalState.getSelectedBlob() == item) {
+				surface.setColor(Color.orange);
+				Ellipse2D.Double selectionIndicator = new Ellipse2D.Double(pos.x, pos.y, item.getRadius() + 0.8, item.getRadius() + 0.8);
+				surface.setStroke(new BasicStroke(0.1f));
+				surface.draw(selectionIndicator);
+			}
 		}
 //		ImageIcon icon = new ImageIcon("Bsdfall.png");
 //		surface.drawImage(icon.getImage(), 3, 5, 2, 2, icon.getImageObserver());
