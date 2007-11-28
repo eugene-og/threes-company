@@ -10,6 +10,7 @@ import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.PhysicalMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
+import edu.columbia.threescompany.gameobjects.AnchorPoint;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
@@ -70,8 +71,9 @@ public class LocalGameState implements Serializable {
 	}
 	
 	private long sleepTimeForFrame(int t, int tmax) {
-		int averageWait = GameParameters.AVERAGE_MS_FRAME_GAP;
-		return (long) (averageWait * (1.5 - (t / tmax)));
+		return GameParameters.AVERAGE_MS_FRAME_GAP;
+		//int averageWait = GameParameters.AVERAGE_MS_FRAME_GAP;
+		//return (long) (averageWait * (1.5 - (t / tmax)));
 	}
 
 	private void checkCollisions() {
@@ -185,6 +187,8 @@ public class LocalGameState implements Serializable {
 		initialGameState.addObject(new DeathRayBlob(16, 6, players.get(1)));
 		initialGameState.addObject(new SlipperyBlob(16, 10, players.get(1)));
 		initialGameState.addObject(new ExplodingBlob(16, 14, players.get(1)));
+		
+		initialGameState.addObject(new AnchorPoint(8, 8));
 		
 		return initialGameState;
 	}
