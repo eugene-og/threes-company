@@ -2,6 +2,7 @@ package edu.columbia.threescompany.graphics;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -20,11 +21,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -45,30 +47,44 @@ import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.DeathRayBlob;
+import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 
 public class Gui extends JFrame {
 	
-	private static final long serialVersionUID = -5234906655320340040L;
-	private int _xPos, _yPos;
-	private Board _board;
-	private BoardMouseListener _boardMouseListener;
-	private JTextField _txtLine;
-	private JTextArea _txtArea;
-	private JPanel[] _ap_panes;
-	private Color[] _ap_colors = {Color.RED, Color.RED, Color.RED, 
-			 Color.YELLOW, Color.YELLOW, Color.YELLOW,
-			 Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
-	private ChatThread _chatThread;
-	private LocalGameState _gameState;
+	private static final int 	ACTION_MOVE		= 0;
+	private static final int 	ACTION_SPLIT	= 1;
+	private static final int 	ACTION_FILL		= 2;
+	private static final int 	ACTION_DEATH	= 3;
+	private static final int 	ACTION_SLIPPERY	= 4;
+	private static final int 	ACTION_EXPLODE	= 5;
+	
+	private static final long 	serialVersionUID = -5234906655320340040L;
+	private int 				_xPos, _yPos;
+	private Board 				_board;
+	private BoardMouseListener	_boardMouseListener;
+	private JTextField			_txtLine;
+	private JTextArea			_txtArea;
+	private JPanel[] 			_ap_panes;
+	private Color[] 			_ap_colors = {Color.RED, Color.RED, Color.RED, 
+			 								  Color.YELLOW, Color.YELLOW, Color.YELLOW,
+			 								  Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
+	private ChatThread 			_chatThread;
+	private LocalGameState 		_gameState;
 	private Map<Blob, Coordinate> _blobMoves; // final positions
-	private Blob _selectedBlob;
-	private Integer _activePlayer; // Null means no one's turn
-	public TurnEndCoordinator _turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
+	private Blob 				_selectedBlob;
+	private int 				_selectedAction	= -1;
+	private Integer 			_activePlayer; // Null means no one's turn
+	public TurnEndCoordinator 	_turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
 	                                               // and notify across classes
 	
-	private static Gui _instance;
+	private List<String> 		_buttonCmds = new ArrayList<String>();
+	private List<JButton>		_buttons = new ArrayList<JButton>();
+	
+	private static Gui 			_instance;
 	
 	public static Gui getInstance(ChatThread thread, List<Player> players) {
 		if (_instance == null) _instance = new Gui(thread, players);
@@ -92,10 +108,59 @@ public class Gui extends JFrame {
 		_xPos = (int)(rect.getWidth() - GuiConstants.GUI_WIDTH)/2;
 		_yPos = (int)(rect.getHeight() - GuiConstants.GUI_HEIGHT)/2;
 		
+		JPanel mainControlsPane = new JPanel(new BorderLayout());
+		JPanel controlsPane = new JPanel(new BorderLayout());
+		
 		// TODO canvas draws on top of menus?? wtf
-		// Begin creating the File menu
-        JMenuBar menubar = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
+		/* setup menubar, main pane, and board pane */
+		JMenuBar menubar = getNewMenuBar();
+		JPanel mainpane = getMainPane(); 
+		JPanel boardpane = getBoardPane();
+		
+		/* setup AP bar pane */
+		JPanel ap_pane = getAPPane();
+		controlsPane.add(ap_pane, BorderLayout.NORTH);
+		
+		/* setup Chat pane */
+		JPanel insideControlsPane = getChatPane();
+		controlsPane.add(insideControlsPane, BorderLayout.CENTER);
+		
+		/* setup available actions pane */
+		insideControlsPane = getActionsPanel();
+		controlsPane.add(insideControlsPane, BorderLayout.SOUTH);
+		
+		/* setup Done button pane */
+		JPanel buttonpane = new JPanel();
+		JButton donebutton = new JButton("Done");
+		donebutton.setMnemonic(KeyEvent.VK_D);
+		donebutton.setPreferredSize(new Dimension(160, 25));
+		donebutton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		donebutton.addActionListener(new DoneButtonListener());
+		buttonpane.add(donebutton);
+		buttonpane.setBackground(GuiConstants.BG_COLOR);
+		
+		mainControlsPane.add(controlsPane, BorderLayout.NORTH);
+		mainControlsPane.add(buttonpane, BorderLayout.SOUTH);
+		mainControlsPane.setBackground(GuiConstants.BG_COLOR);
+		mainControlsPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		
+		mainpane.add(boardpane, BorderLayout.WEST);
+		mainpane.add(mainControlsPane, BorderLayout.EAST);
+		mainpane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));		
+		
+		setJMenuBar(menubar);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocation(_xPos, _yPos);
+		setResizable(false);
+		pack();
+		setVisible(true);
+
+		_board.initGraphicsBuffer();
+	}
+
+	private JMenuBar getNewMenuBar() {
+		JMenuBar menubar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic('F');
 
         // Setup exit menuitem with 'X' icon
@@ -134,16 +199,11 @@ public class Gui extends JFrame {
         helpMenu.add(menuitem);
 
         menubar.add(helpMenu);
+        return menubar;
+	}
 
-		// TODO: variable naming sucks here. Put gui creation into methods for each UI piece.
-        JPanel mainpane = getMainPane(); 
-		JPanel boardpane = getBoardPane();
-		
-		mainpane.add(boardpane, BorderLayout.WEST);
-		mainpane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
-		JPanel controlspane = new JPanel(new BorderLayout());
-		JPanel ap_pane = new JPanel(new GridLayout(1,10));
+	private JPanel getAPPane() {
+		JPanel pane = new JPanel(new GridLayout(1,10));
 		_ap_panes = new JPanel[10];
 		
 		for (int i=0; i<10; i++) {
@@ -151,16 +211,18 @@ public class Gui extends JFrame {
 			_ap_panes[i].setPreferredSize(new Dimension(20,20));
 			_ap_panes[i].setBackground(_ap_colors[i]);
 			_ap_panes[i].setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-			ap_pane.add(_ap_panes[i]);
+			pane.add(_ap_panes[i]);
 		}
-		ap_pane.setBorder(	BorderFactory.createCompoundBorder(
+		pane.setBorder(	BorderFactory.createCompoundBorder(
 							BorderFactory.createTitledBorder(
 							BorderFactory.createLineBorder(Color.GRAY), "AP"),
 							BorderFactory.createEmptyBorder(0, 5, 5, 0)));
-		ap_pane.setBackground(GuiConstants.BG_COLOR);
-		controlspane.add(ap_pane, BorderLayout.NORTH);
-		
-		JPanel insideControlsPane = new JPanel(new BorderLayout());
+		pane.setBackground(GuiConstants.BG_COLOR);
+		return pane;
+	}
+
+	private JPanel getChatPane() {
+		JPanel pane = new JPanel(new BorderLayout());
 		_txtArea = new JTextArea();
 		_txtArea.setRows(8);
 		_txtArea.setColumns(25);
@@ -168,50 +230,50 @@ public class Gui extends JFrame {
 		_txtArea.setFont(GuiConstants.CHAT_FONT);
 		_txtArea.setForeground(Color.GRAY);
 		JScrollPane scrollPane = new JScrollPane(_txtArea);
-		insideControlsPane.add(scrollPane, BorderLayout.NORTH);
+		pane.add(scrollPane, BorderLayout.NORTH);
 		
-		insideControlsPane.add(new JLabel("<html>&nbsp;</html>"), BorderLayout.CENTER);
+		pane.add(new JLabel("<html>&nbsp;</html>"), BorderLayout.CENTER);
 		
 		_txtLine = new JTextField("Send message to player");
 		_txtLine.setFont(GuiConstants.CHAT_FONT);
 		_txtLine.setForeground(Color.GRAY);
 		_txtLine.addFocusListener(new ChatFocusListener());
-		insideControlsPane.add(_txtLine, BorderLayout.SOUTH);
+		pane.add(_txtLine, BorderLayout.SOUTH);
 		_txtLine.addKeyListener(new ChatSendListener());
-		insideControlsPane.setBorder(	BorderFactory.createCompoundBorder(
+		pane.setBorder(	BorderFactory.createCompoundBorder(
 										BorderFactory.createTitledBorder(
 										BorderFactory.createLineBorder(Color.GRAY), "Chat"),
 										BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		insideControlsPane.setBackground(GuiConstants.BG_COLOR);
-		controlspane.add(insideControlsPane, BorderLayout.CENTER);
-		controlspane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		pane.setBackground(GuiConstants.BG_COLOR);
+		return pane;
+	}
+	
+	private JPanel getActionsPanel() {
+		setupButtons();
+		JPanel pane = new JPanel();
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		pane.setBackground(GuiConstants.BG_COLOR);
+		pane.setBorder(	BorderFactory.createCompoundBorder(
+										BorderFactory.createTitledBorder(
+										BorderFactory.createLineBorder(Color.GRAY), "Available Actions"),
+										BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		
-		JPanel buttonpane = new JPanel();
-		JButton donebutton = new JButton("Done");
-		donebutton.setMnemonic(KeyEvent.VK_D);
-		donebutton.setPreferredSize(new Dimension(160, 25));
-		donebutton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		donebutton.addActionListener(new DoneButtonListener());
-		buttonpane.add(donebutton);
-		buttonpane.setBorder(BorderFactory.createEmptyBorder(0, 0, 175, 0));
-		buttonpane.setBackground(GuiConstants.BG_COLOR);
-		
-		controlspane.add(buttonpane, BorderLayout.SOUTH);
-		controlspane.setBackground(GuiConstants.BG_COLOR);
-		
-		mainpane.add(controlspane, BorderLayout.EAST);
-		
-		
-		setJMenuBar(menubar);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(_xPos, _yPos);
-		setResizable(false);
-		pack();
-		setVisible(true);
-
-		_board.initGraphicsBuffer();
+		for (int i=0; i < _buttonCmds.size(); i++)
+			pane.add(getActionButton(_buttonCmds.get(i), i));
+		return pane;
 	}
 
+	private JButton getActionButton(String label, int i) {
+		_buttons.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
+		//button.setPreferredSize(new Dimension(260, 20));
+		_buttons.get(i).setEnabled(false);
+		_buttons.get(i).setFont(GuiConstants.BUTTON_FONT);
+		_buttons.get(i).setBackground(Color.WHITE);
+		_buttons.get(i).addActionListener(new ActionButtonListener());
+		_buttons.get(i).setActionCommand(label);
+		return _buttons.get(i);
+	}
+	
 	private String getPlayerNamesString(List<Player> players) {
 		String result = "";
 		for (Player player : players) {
@@ -326,11 +388,33 @@ public class Gui extends JFrame {
 			}
 			if (newSelection != null) { // clicked a blob that player controls
 				_selectedBlob = newSelection;
+				updateAvailableActions();
 				addChatLine("Selected blob " + _selectedBlob.toString());
 			} else if (_selectedBlob != null) { // clicked a destination for a blob
-				_blobMoves.put(_selectedBlob, worldClick);
-				addChatLine("Queueing move of blob " + _selectedBlob.toString() + " to " + worldClick.toString());
+				if (_selectedAction != -1) {
+					_blobMoves.put(_selectedBlob, worldClick);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " of blob " + _selectedBlob.toString() + " to " + worldClick.toString());
+				}
+				else {
+					addChatLine("You must select an action for blob " + _selectedBlob.toString());
+				}
 			}
+		}
+		
+		private void updateAvailableActions() {
+			_buttons.get(ACTION_MOVE).setEnabled(true);
+			_buttons.get(ACTION_SPLIT).setEnabled(true);
+			_buttons.get(ACTION_FILL).setEnabled(true);
+			_buttons.get(ACTION_DEATH).setEnabled(false);
+			_buttons.get(ACTION_SLIPPERY).setEnabled(false);
+			_buttons.get(ACTION_EXPLODE).setEnabled(false);
+			
+			if (_selectedBlob instanceof DeathRayBlob)
+				_buttons.get(ACTION_DEATH).setEnabled(true);
+			else if (_selectedBlob instanceof ExplodingBlob)
+				_buttons.get(ACTION_EXPLODE).setEnabled(true);
+			else if (_selectedBlob instanceof SlipperyBlob)
+				_buttons.get(ACTION_SLIPPERY).setEnabled(true);	
 		}
 		
 		/** not needed */
@@ -353,23 +437,17 @@ public class Gui extends JFrame {
     }
     
     private class BoardMouseMotionListener implements MouseMotionListener {
-
+    	// TODO still need this?
 		public void mouseDragged(MouseEvent e) {
 			Point p = e.getPoint();
 			if (p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
 					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH) {
 				addChatLine("mouseDragged: ("+p.x+","+p.y+")");
-				
-				// TODO Send this Point to real-time physics engine for line drawing
-				
+				// TODO Send this Point to real-time physics engine for line drawing	
 				// TODO get data back from physics to draw line for projected path
 			}
-				
-			
 		}
-
-		public void mouseMoved(MouseEvent e) {}
-    	
+		public void mouseMoved(MouseEvent e) {}	
     }
     
 	private class DoneButtonListener implements ActionListener {
@@ -377,6 +455,52 @@ public class Gui extends JFrame {
 			// I'm assuming this is only clicks. If not we need to check the event type.
 			_turnEndCoordinator.turnDone();
 		}
+	}
+	
+	private class ActionButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			String cmd = event.getActionCommand();
+			String text = "you've selected to ";
+			if (cmd.equals("Move blob")) {
+				addChatLine(text+="move a blob");
+				_selectedAction = ACTION_MOVE;
+			}
+			else if (cmd.equals("Split blob")) {
+				addChatLine(text+="split a blob");
+				_selectedAction = ACTION_SPLIT;
+			}
+			else if (cmd.equals("Fill hole")) {
+				addChatLine(text+="file a hole");
+				_selectedAction = ACTION_FILL;
+			}
+			else if (cmd.equals("Fire Death Ray")) {
+				addChatLine(text+="fire a day ray");
+				_selectedAction = ACTION_DEATH;
+			}
+			else if (cmd.equals("Fire Slippery")) {
+				addChatLine(text+="fire slippery goop");
+				_selectedAction = ACTION_SLIPPERY;
+			}
+			else if (cmd.equals("Explode")) {
+				addChatLine(text+="explode a blob");
+				_selectedAction = ACTION_EXPLODE;
+			}
+		}
+	}
+	
+	private void setupButtons() {
+		_buttonCmds.add("Move blob");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_MOVE)));
+		_buttonCmds.add("Split blob");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_SPLIT)));
+		_buttonCmds.add("Fill hole");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_FILL)));
+		_buttonCmds.add("Fire Death Ray");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_DEATH)));
+		_buttonCmds.add("Fire Slippery");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_SLIPPERY)));
+		_buttonCmds.add("Explode");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_EXPLODE)));
 	}
 	
 	public void addChatLine(String line) {
