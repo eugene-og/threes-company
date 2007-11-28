@@ -23,7 +23,7 @@ public class LocalGameStateTest extends BaseTestCase {
 		
 		finalPositions.put(blob, new Coordinate(2, 3));
 		
-		GUIGameMove guiMove = new GUIGameMove(finalPositions, new ArrayList<Blob>());
+		GUIGameMove guiMove = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
 		GameMove move = new GameMove(guiMove);
 		
 		state.executeMove(move);
@@ -35,7 +35,7 @@ public class LocalGameStateTest extends BaseTestCase {
 				   		   3, blob.getPosition().y);
 		
 		finalPositions.put(blob, new Coordinate(5, 0));
-		guiMove = new GUIGameMove(finalPositions, new ArrayList<Blob>());
+		guiMove = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
 		move = new GameMove(guiMove);
 		
 		state.executeMove(move);
@@ -76,7 +76,7 @@ public class LocalGameStateTest extends BaseTestCase {
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
 		finalPositions.put(boringBlob, new Coordinate(1, 0));
 		
-		GUIGameMove move = new GUIGameMove(finalPositions, activations);
+		GUIGameMove move = new GUIGameMove(finalPositions, activations, new ArrayList<Blob>());
 		state.executeMove(new GameMove(move));
 		
 		assertFalse("Boring blob should be alive", boringBlob.isDead());

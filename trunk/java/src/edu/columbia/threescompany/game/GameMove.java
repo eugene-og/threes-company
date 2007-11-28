@@ -78,6 +78,23 @@ public class GameMove implements Serializable {
 		return _duration;
 	}
 	
+	public String toString() {
+		StringBuilder s = new StringBuilder("GameMove: ");
+		for (Blob b : _moves.keySet()) {
+			s.append(b.toString());
+			s.append(" move: ");
+			s.append(_moves.get(b).toString());
+			s.append("\n");
+		}
+		for (Blob b : _activations.keySet()) {
+			s.append(b.toString());
+			s.append(" event: ");
+			s.append(_activations.get(b).toString());
+			s.append("\n");
+		}
+		return s.toString();
+	}
+	
 	private Map<Blob, PhysicalMove> _moves;
 	private Map<Blob, EventMove> _activations;
 	private int _duration = 0;

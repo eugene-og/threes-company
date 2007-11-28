@@ -99,8 +99,9 @@ public class BlobsClient {
 				notYourTurnDialog();
 			}
 		} else if (message instanceof ExecuteMoveMessage) {
-			_gameState.executeMove(((ExecuteMoveMessage) message).getMove(),
-								   _gui);
+			GameMove move = ((ExecuteMoveMessage) message).getMove();
+			System.err.println("Received move: " + move);
+			_gameState.executeMove(move, _gui);
 		}
 	}
 
@@ -111,10 +112,16 @@ public class BlobsClient {
 	}
 
 	private static void updateState(ServerMessage message) {
-		// TODO confirm we already have this state.
-		_gameState = ((UpdateStateMessage) message).getGameState();
-		System.err.println("Received new state: " + _gameState);
+		/* This should *never* differ from our state in simulation -- unless
+		 * we are still waiting for our move to simulate. */
+	
+		if (_gameState == null)
+			_gameState = ((UpdateStateMessage) message).getGameState();
 		_gui.drawState(_gameState);
+		
+//		System.err.println("Received new state: " + _gameState);
+//		if (! _gameState.equals(((UpdateStateMessage) message).getGameState()))
+//			throw new RuntimeException("Incorrect game state received!");
 	}
 
 	private static void yourMove(String activePlayer) throws IOException {

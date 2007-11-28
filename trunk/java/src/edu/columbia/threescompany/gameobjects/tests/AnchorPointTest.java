@@ -43,7 +43,8 @@ public class AnchorPointTest extends BaseTestCase {
 		List<Blob> activations = new ArrayList<Blob>(1);
 		activations.add(pushBlob);
 		
-		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations);
+		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations,
+										   new ArrayList<Blob>());
 		state.executeMove(new GameMove(move));
 		
 		/* Blob should be caught on the anchor and not make it to its destination.
@@ -75,7 +76,7 @@ public class AnchorPointTest extends BaseTestCase {
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
 		finalPositions.put(boringBlob, new Coordinate(5.0, 0));
 		
-		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>());
+		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
 		state.executeMove(new GameMove(move));
 		
 		assertFalse("Boring blob should be alive", boringBlob.isDead());
