@@ -161,9 +161,9 @@ public class LocalGameState implements Serializable {
 		initialGameState.addObject(new PushBlob(1, 8, players.get(0)));
 		initialGameState.addObject(new PullBlob(1, 12, players.get(0)));
 		initialGameState.addObject(new PullBlob(1, 16, players.get(0)));
-		initialGameState.addObject(new DeathRayBlob(3, 6, players.get(0)));
-		initialGameState.addObject(new SlipperyBlob(3, 10, players.get(0)));
-		initialGameState.addObject(new ExplodingBlob(3, 14, players.get(0)));
+		initialGameState.addObject(new DeathRayBlob(4, 6, players.get(0)));
+		initialGameState.addObject(new SlipperyBlob(4, 10, players.get(0)));
+		initialGameState.addObject(new ExplodingBlob(4, 14, players.get(0)));
 		
 		initialGameState.addObject(new PushBlob(19, 4, players.get(1)));
 		initialGameState.addObject(new PushBlob(19, 8, players.get(1)));
