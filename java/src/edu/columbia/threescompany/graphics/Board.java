@@ -89,10 +89,17 @@ public class Board extends Canvas {
 	{
 		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
-		
+//		int border = (int)(GameParameters.BOARD_SIZE);
+//		surface.translate(border, border);
+//		surface.scale(this.getWidth() / (GameParameters.BOARD_SIZE * 1.1), this.getHeight() / (GameParameters.BOARD_SIZE * 1.1));
 		surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 		surface.setColor(Color.black);
 		surface.setStroke(new BasicStroke(0.1f));
+		
+		surface.drawLine(0, 0, (int)GameParameters.BOARD_SIZE, 0);
+		surface.drawLine((int)GameParameters.BOARD_SIZE, 0, (int)GameParameters.BOARD_SIZE, (int)GameParameters.BOARD_SIZE);
+		surface.drawLine((int)GameParameters.BOARD_SIZE, (int)GameParameters.BOARD_SIZE, 0, (int)GameParameters.BOARD_SIZE);
+		surface.drawLine(0, (int)GameParameters.BOARD_SIZE, 0, 0);
 		
 		if (_gameState == null) {
 			surface.drawString("Waiting for start...", 0, 10);
@@ -100,9 +107,6 @@ public class Board extends Canvas {
 		}
 		
 		for (GameObject item : _gameState.getObjects()) {
-			if (item.isDead()) {
-				continue;
-			}
 			if (item instanceof PushBlob)
 				surface.setColor(Color.blue);
 			else if (item instanceof PullBlob)
