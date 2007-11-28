@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -21,6 +22,7 @@ import javax.swing.ImageIcon;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.gameobjects.AnchorPoint;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
@@ -108,6 +110,10 @@ public class Board extends Canvas {
 		
 		for (GameObject item : _gameState.getObjects()) {
 			if (item.isDead()) continue;
+			if (item instanceof AnchorPoint) {
+				drawAnchorPoint(surface, (AnchorPoint) item);
+				continue;
+			}
 			if (item instanceof PushBlob)
 				surface.setColor(Color.blue);
 			else if (item instanceof PullBlob)
@@ -163,6 +169,13 @@ public class Board extends Canvas {
 		
 	}
 	
+	private void drawAnchorPoint(Graphics2D surface, AnchorPoint item) {
+		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, 0.1);
+		surface.setStroke(new BasicStroke(0.1f));
+		surface.draw(anchorPointToDraw);
+		surface.setColor(Color.white);
+	}
+
 	public void drawState(LocalGameState gameState)
 	{
 		_gameState = gameState;
