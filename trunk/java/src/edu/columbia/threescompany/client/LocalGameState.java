@@ -132,10 +132,11 @@ public class LocalGameState implements Serializable {
 	}
 
 	public boolean gameOver() {
+		int livingPlayers = 0;
 		for (Player player : _players)
-			if (hasAnyBlobsLeft(player)) return false;
+			if (hasAnyBlobsLeft(player)) livingPlayers++;
 		
-		return true;
+		return (livingPlayers < 2);
 	}
 
 	private boolean hasAnyBlobsLeft(Player player) {
