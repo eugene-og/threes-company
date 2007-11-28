@@ -77,7 +77,7 @@ public class Gui extends JFrame {
 	private Map<Blob, Coordinate> _blobMoves; // final positions
 	private Blob 				_selectedBlob;
 	private int 				_selectedAction	= -1;
-	private Integer 			_activePlayer; // Null means no one's turn
+	private String 				_activePlayer; // Null means no one's turn
 	public TurnEndCoordinator 	_turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
 	                                               // and notify across classes
 	
@@ -382,10 +382,11 @@ public class Gui extends JFrame {
 			Blob newSelection = blobClickedOn(worldClick);
 			if (newSelection != null) {
 				// Debugging output
-				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getId());
+				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getName());
 			}
-			if (newSelection != null && newSelection.getOwner().getId() != _activePlayer) {
+			if (newSelection != null && !newSelection.getOwner().getName().equals(_activePlayer)) {
 				newSelection = null;
+				addChatLine("Blob does not belong to you.");
 			}
 			if (newSelection != null) { // clicked a blob that player controls
 				_selectedBlob = newSelection;
@@ -552,7 +553,7 @@ public class Gui extends JFrame {
 		_txtArea.setText(_txtArea.getText() + line + "\n");
 	}
 
-	public GUIGameMove getMoveFor(int activePlayer) {
+	public GUIGameMove getMoveFor(String activePlayer) {
 		// TODO Moves need a lot of work
 		addChatLine("It's player " + activePlayer + "'s turn.");
 		_turnEndCoordinator.turnStart();

@@ -10,7 +10,7 @@ import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class BlobTestTools {
-	public static final Player PLAYER = new Player(0, "Test Player");
+	public static final Player PLAYER = new Player("Test Player");
 
 	public static Blob getBoringBlob(double x, double y) {
 		return new BoringBlob(x, y);

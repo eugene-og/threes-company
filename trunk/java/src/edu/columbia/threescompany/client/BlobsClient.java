@@ -94,7 +94,7 @@ public class BlobsClient {
 			String activePlayer = ((TurnChangeMessage) message).whoseTurn();
 			_gameState.updateActivePlayer(activePlayer);
 			if (isLocalPlayer(activePlayer)) {
-				yourMove(getIdForName(activePlayer));
+				yourMove(activePlayer);
 			} else {
 				notYourTurnDialog();
 			}
@@ -110,12 +110,6 @@ public class BlobsClient {
 		return false;
 	}
 
-	private static int getIdForName(String activePlayer) {
-		for (Player player : _players)
-			if (player.getName().equals(activePlayer)) return player.getId();
-		throw new RuntimeException("Bad player name!");
-	}
-
 	private static void updateState(ServerMessage message) {
 		// TODO confirm we already have this state.
 		_gameState = ((UpdateStateMessage) message).getGameState();
@@ -123,7 +117,7 @@ public class BlobsClient {
 		_gui.drawState(_gameState);
 	}
 
-	private static void yourMove(int activePlayer) throws IOException {
+	private static void yourMove(String activePlayer) throws IOException {
 		final GameMove move = new GameMove(_gui.getMoveFor(activePlayer));
 		new Thread(new Runnable() {
 			public void run() {
