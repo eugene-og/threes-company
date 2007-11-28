@@ -76,10 +76,7 @@ public abstract class Blob extends GameObject implements Serializable {
 	public void checkCollision(GameObject rhs) {
 		if (rhs == this) return;
 		if (!collidingWith(rhs)) return;
-		if (rhs.getOwner() == _owner)
-			elasticReboundFrom(rhs);
-		else	/* Opponent's smaller blob */
-			if (rhs.getRadius() < _radius) rhs.die();
+		if (rhs.getRadius() <= _radius) rhs.die();
 	}
 
 	private void elasticReboundFrom(GameObject rhs) {
