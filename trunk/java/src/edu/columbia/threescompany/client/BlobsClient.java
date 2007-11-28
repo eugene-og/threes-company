@@ -38,7 +38,7 @@ public class BlobsClient {
 				doPlayerSetup();
 			}
 		}
-		_gui = Gui.getInstance(_chatThread);
+		_gui = Gui.getInstance(_chatThread, _players);
 		_chatThread.setGui(_gui);
 		_chatThread.start();
 

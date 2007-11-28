@@ -20,6 +20,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -40,6 +42,7 @@ import javax.swing.UIManager;
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
@@ -67,14 +70,14 @@ public class Gui extends JFrame {
 	
 	private static Gui _instance;
 	
-	public static Gui getInstance(ChatThread thread) {
-		if (_instance == null) _instance = new Gui(thread);
+	public static Gui getInstance(ChatThread thread, List<Player> players) {
+		if (_instance == null) _instance = new Gui(thread, players);
 		return _instance;
 	}
 
-	private Gui(ChatThread chatThread) {
-		super("Welcome to Blobs!");
-		
+	private Gui(ChatThread chatThread, List<Player> players) {
+		super();
+		setTitle(getPlayerNamesString(players) + " - Welcome to Blobs!");
 		_gameState = null;
 		_turnEndCoordinator = new TurnEndCoordinator();
 		_activePlayer = null;
@@ -207,6 +210,14 @@ public class Gui extends JFrame {
 		setVisible(true);
 
 		_board.initGraphicsBuffer();
+	}
+
+	private String getPlayerNamesString(List<Player> players) {
+		String result = "";
+		for (Player player : players) {
+			result += player.getName() + ",";
+		}
+		return result.substring(0,result.length()-1);
 	}
 
 	private JPanel getBoardPane() {

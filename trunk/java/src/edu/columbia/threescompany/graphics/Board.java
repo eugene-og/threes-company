@@ -56,6 +56,7 @@ public class Board extends Canvas {
 		}
 		
 		for (GameObject item : _gameState.getObjects()) {
+			
 			if (item instanceof PushBlob)
 				surface.setColor(Color.blue);
 			else if (item instanceof PullBlob)
@@ -67,7 +68,15 @@ public class Board extends Canvas {
 			else if (item instanceof SlipperyBlob)
 				surface.setColor(Color.yellow);
 			Coordinate pos = item.getPosition();
-			surface.draw(new Ellipse2D.Double(pos.x, pos.y, item.getRadius(), item.getRadius()));
+			Ellipse2D.Double blobToDraw = new Ellipse2D.Double(pos.x, pos.y, item.getRadius(), item.getRadius());
+			surface.setStroke(new BasicStroke(0.3f));
+			surface.draw(blobToDraw);
+			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
+				surface.setColor(Color.lightGray);
+			} else {
+				surface.setColor(Color.darkGray);
+			}
+			surface.fill(blobToDraw);
 		}
 //		ImageIcon icon = new ImageIcon("Bsdfall.png");
 //		surface.drawImage(icon.getImage(), 3, 5, 2, 2, icon.getImageObserver());
