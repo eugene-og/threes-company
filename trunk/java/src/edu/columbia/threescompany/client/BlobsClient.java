@@ -27,9 +27,11 @@ public class BlobsClient {
 	
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
+		if (args.length == 0)
+			args = new String[] {PlayerInfoGui.getServerAddress(), PlayerInfoGui.getServerPort()};
 		
 		try {
-				_chatThread = new ChatThread(_players);
+				_chatThread = new ChatThread(_players, args);
 		} catch (ConnectException e) {
 				JOptionPane.showMessageDialog(null, "Blobs could not connect to the server. You need a server running " +
 				                              "even for a hotseat game.");
@@ -95,7 +97,7 @@ public class BlobsClient {
 			_players = PlayerInfoGui.getPlayers(1);
 		} else {
 			throw new RuntimeException("Unknown game type!");
-		}	
+		}
 	}
 	
 	private static void handleMessage(ServerMessage message) throws IOException {
