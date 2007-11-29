@@ -33,8 +33,9 @@ public class ServerAuthenticationTest extends BaseTestCase {
 		List<Player> players2 = new ArrayList<Player>();
 		players2.add(new Player("Bill"));
 		
-		ChatThread chatThread1 = new ChatThread(players1);
-		ChatThread chatThread2 = new ChatThread(players2);
+		String[] args = new String[] {"localhost",String.valueOf(TEST_PORT)};
+		ChatThread chatThread1 = new ChatThread(players1,args);
+		ChatThread chatThread2 = new ChatThread(players2,args);
 		
 		new ServerConnection("localhost", TEST_PORT);
 		new ServerConnection("localhost", TEST_PORT);

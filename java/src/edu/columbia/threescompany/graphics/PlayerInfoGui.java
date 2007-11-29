@@ -23,37 +23,37 @@ public class PlayerInfoGui extends JFrame {
 	private static final long serialVersionUID = -8656693214492658606L;
 	private List<Player> _players = new ArrayList<Player>();
 	private List<JTextField> _playerNames= new ArrayList<JTextField>();;
-	private JPanel _mainPane;
+	private JPanel _mainPane, _contentPane;
+	private static JTextField _serverAddress;
+	private static JTextField _serverPort;
 	
 	private PlayerInfoGui(final int numPlayers) {
 		_mainPane = (JPanel) this.getContentPane();
-		_mainPane.setLayout(new GridLayout(5, 1));
+		_mainPane.setLayout(new BorderLayout());
+		_contentPane = new JPanel();
+		_contentPane.setLayout(new GridLayout(4, 2));
 		
 		_mainPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8), 
 				   BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Network Setup"), 
 													  BorderFactory.createEmptyBorder(5, 5, 5, 5))));
 		
-		JPanel contentPane;
-		_mainPane.add(new JLabel(""));
-		
 		for (int i = 0; i < numPlayers; i++) {
-			contentPane = new JPanel(new BorderLayout());
-			addTextField(contentPane, _playerNames, i);
-			_mainPane.add(contentPane);
+			addTextField(_playerNames, i);
 		}
-
-		_mainPane.add(new JLabel(""));
+		addServerAndPortFields();
+		_mainPane.add(_contentPane, BorderLayout.NORTH);
 		
 		JButton startGame = new JButton("Start");
-		startGame.setPreferredSize(new Dimension(50,10));
+		startGame.setPreferredSize(new Dimension(50,30));
 		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				for (int i = 0; i < numPlayers; i++)
+				for (int i = 0; i < numPlayers; i++) {
 					_players.add(new Player(_playerNames.get(i).getText()));
+				}
 				dispose();
 			}
 		});
-		_mainPane.add(startGame);
+		_mainPane.add(startGame, BorderLayout.SOUTH);
 		
         // Get coordinates such that window's centered on screen
 		Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -67,12 +67,24 @@ public class PlayerInfoGui extends JFrame {
 		setVisible(true);
 	}
 
-	private void addTextField(JPanel contentPane, final List<JTextField> playerNames, int i) {
+	private void addServerAndPortFields() {
+		JLabel label = new JLabel("Server address:");
+		label.setFont(GuiConstants.CHAT_FONT);
+		_contentPane.add(label);
+		_serverAddress = new JTextField("localhost");
+		_contentPane.add(_serverAddress);
+		label = new JLabel("Server port:");
+		label.setFont(GuiConstants.CHAT_FONT);
+		_contentPane.add(label);
+		_serverPort = new JTextField("3444");
+		_contentPane.add(_serverPort);
+	}
+	private void addTextField(final List<JTextField> playerNames, int i) {
 		JLabel label = new JLabel("Player " + (i + 1) + " enter your handle");
 		label.setFont(GuiConstants.CHAT_FONT);
-		contentPane.add(label, BorderLayout.WEST);
+		_contentPane.add(label);
 		playerNames.add(i, new JTextField("username"+(i+1), 12));
-		contentPane.add(playerNames.get(i), BorderLayout.EAST);
+		_contentPane.add(playerNames.get(i));
 	}
 	
 	public static List<Player> getPlayers(int numPlayers) {
@@ -85,4 +97,14 @@ public class PlayerInfoGui extends JFrame {
 		}
 		return gui._players;
 	}
+
+	public static String getServerAddress() {
+		return _serverAddress.getText();
+	}
+
+	public static String getServerPort() {
+		return _serverPort.getText();
+	}
+	
+	
 }

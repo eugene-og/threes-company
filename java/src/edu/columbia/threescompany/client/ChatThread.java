@@ -15,7 +15,6 @@ import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class ChatThread extends Thread {
-	private static final int SERVER_PORT = 3444;		// FIXME
 	
 	private Socket socket;
 	private BufferedReader in;
@@ -26,17 +25,18 @@ public class ChatThread extends Thread {
 	/**
 	 * @throws IOException, java.net.ConnectException
 	 */
-	public ChatThread(List<Player> players) throws IOException {
+	
+	public ChatThread(List<Player> players, String[] args) throws IOException {
 		InetAddress addr;
 		sendBuffer = new ArrayList<String>();
 		try {
-			addr = InetAddress.getByName("localhost");
+			addr = InetAddress.getByName(args[0]);
 		} catch (UnknownHostException e1) {
 			System.err.println("Unknown host : " + e1);
 			return;
 		}
 		
-		socket = new Socket(addr, SERVER_PORT);
+		socket = new Socket(addr, Integer.valueOf(args[1]));
 		ObjectOutputStream ooStream = new ObjectOutputStream(socket.getOutputStream());
 		ooStream.writeObject(players.toArray());
 		
