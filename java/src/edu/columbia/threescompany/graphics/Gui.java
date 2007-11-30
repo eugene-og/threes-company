@@ -174,6 +174,10 @@ public class Gui extends JFrame {
 	private JPanel getTexturesPane() {
 		JPanel pane = new JPanel();
 		pane.setBackground(Color.WHITE);
+		// To add a new texture:
+		// 1.) put "small" somewhere in the texture image filename
+		// 2.) put texture image in images/textures
+		// all files from images/textures with "small" in their name loaded as clickable thumbnails
 		File[] textures = (new File(GuiConstants.IMAGES_TEXTURES_DIR)).listFiles();
 		for (int i=0; i<textures.length; i++) {
 			JLabel label = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR + 

@@ -100,7 +100,10 @@ public class Board extends Canvas {
 		
 		/* draw texture on board background before scaling */
 		try {
-			
+			// To add a new texture:
+			// 1.) put "small" somewhere in the texture image filename
+			// 2.) put texture image in images/textures
+			// all files from images/textures with "small" in their name loaded as clickable thumbnails
 			Image displayImage = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR+texture_file);
 			
 			BufferedImage bi = new BufferedImage(displayImage.getWidth(this),
