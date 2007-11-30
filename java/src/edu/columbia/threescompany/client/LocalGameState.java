@@ -173,25 +173,31 @@ public class LocalGameState implements Serializable {
 		initialGameState._players = players;
 		initialGameState._gameObjects = new ArrayList<GameObject>();
 		
-		initialGameState.addObject(new PushBlob(1, 4, players.get(0)));
-		initialGameState.addObject(new PushBlob(1, 8, players.get(0)));
-		initialGameState.addObject(new PullBlob(1, 12, players.get(0)));
-		initialGameState.addObject(new PullBlob(1, 16, players.get(0)));
-		initialGameState.addObject(new DeathRayBlob(4, 6, players.get(0)));
-		initialGameState.addObject(new SlipperyBlob(4, 10, players.get(0)));
-		initialGameState.addObject(new ExplodingBlob(4, 14, players.get(0)));
+		initialGameState.addObject(new PushBlob(1, 4, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new PushBlob(1, 8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new PullBlob(1, 12, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new PullBlob(1, 16, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new DeathRayBlob(4, 6, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new SlipperyBlob(4, 10, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new ExplodingBlob(4, 14, getRandomBlobSize(), players.get(0)));
 		
-		initialGameState.addObject(new PushBlob(19, 4, players.get(1)));
-		initialGameState.addObject(new PushBlob(19, 8, players.get(1)));
-		initialGameState.addObject(new PullBlob(19, 12, players.get(1)));
-		initialGameState.addObject(new PullBlob(19, 16, players.get(1)));
-		initialGameState.addObject(new DeathRayBlob(16, 6, players.get(1)));
-		initialGameState.addObject(new SlipperyBlob(16, 10, players.get(1)));
-		initialGameState.addObject(new ExplodingBlob(16, 14, players.get(1)));
+		initialGameState.addObject(new PushBlob(19, 4, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new PushBlob(19, 8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new PullBlob(19, 12, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new PullBlob(19, 16, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new DeathRayBlob(16, 6, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new SlipperyBlob(16, 10, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new ExplodingBlob(16, 14, getRandomBlobSize(), players.get(1)));
 		
 		initialGameState.addObject(new AnchorPoint(8, 8));
 		
 		return initialGameState;
+	}
+
+	private static double getRandomBlobSize() {
+		return Math.random() *
+			   (GameParameters.BLOB_SIZE_LIMIT - GameParameters.BLOB_INITIAL_SIZE) + 
+			   GameParameters.BLOB_INITIAL_SIZE;
 	}
 	
 	public LocalGameState predictOutcome(GUIGameMove guiMove) {
