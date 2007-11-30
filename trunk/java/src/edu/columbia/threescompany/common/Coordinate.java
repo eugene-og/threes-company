@@ -1,6 +1,7 @@
 package edu.columbia.threescompany.common;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class Coordinate implements Serializable {
 	private static final long serialVersionUID = -9086984043560982108L;
@@ -61,5 +62,12 @@ public class Coordinate implements Serializable {
 	
 	public String toString() {
 		return "(" + x + ", " + y + ")";
+	}
+	
+	public String toRoundedString() {
+		DecimalFormat fmt = new DecimalFormat();
+		fmt.setMaximumFractionDigits(2);
+		fmt.setMinimumFractionDigits(2);
+		return "(" + fmt.format(x) + ", " + fmt.format(y) + ")";
 	}
 }
