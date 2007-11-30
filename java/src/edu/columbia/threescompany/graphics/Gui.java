@@ -570,6 +570,10 @@ public class Gui extends JFrame {
 				addChatLine(text+="fire a death ray");
 				_selectedAction = ACTION_DEATH;
 			}
+			else if (cmd.equals(_buttonCmds.get(ACTION_ROTATE))) {
+				addChatLine(text+="rotate death ray");
+				_selectedAction = ACTION_ROTATE;
+			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_SLIPPERY))) {
 				addChatLine(text+="fire slippery goop");
 				_selectedAction = ACTION_SLIPPERY;
