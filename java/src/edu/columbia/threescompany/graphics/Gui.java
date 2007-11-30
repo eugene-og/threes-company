@@ -209,7 +209,7 @@ public class Gui extends JFrame {
 	private JPanel getQueuePanel() {
 		JPanel pane = new JPanel(new BorderLayout());
 		_txtAreaQueue = new JTextArea();
-		_txtAreaQueue.setRows(5);
+		_txtAreaQueue.setRows(10);
 		_txtAreaQueue.setColumns(20);
 		_txtAreaQueue.setEditable(false);
 		_txtAreaQueue.setFont(GuiConstants.CHAT_FONT);
@@ -292,7 +292,7 @@ public class Gui extends JFrame {
 	private JPanel getChatPane() {
 		JPanel pane = new JPanel(new BorderLayout());
 		_txtAreaChat = new JTextArea();
-		_txtAreaChat.setRows(5);
+		_txtAreaChat.setRows(10);
 		_txtAreaChat.setColumns(20);
 		_txtAreaChat.setEditable(false);
 		_txtAreaChat.setFont(GuiConstants.CHAT_FONT);
@@ -334,7 +334,7 @@ public class Gui extends JFrame {
 
 	private JButton getActionButton(String label, int i) {
 		_buttons.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
-		_buttons.get(i).setPreferredSize(new Dimension(70, 20));
+		_buttons.get(i).setPreferredSize(new Dimension(80, 20));
 		_buttons.get(i).setEnabled(false);
 		_buttons.get(i).setFont(GuiConstants.BUTTON_FONT);
 		_buttons.get(i).setBackground(Color.WHITE);
@@ -473,25 +473,29 @@ public class Gui extends JFrame {
 		}
 		
 		private void updateAvailableActions() {
-			_buttons.get(ACTION_MOVE).setEnabled(true);
-			_buttons.get(ACTION_SPLIT).setEnabled(true);
-			_buttons.get(ACTION_FILL).setEnabled(true);
-			_buttons.get(ACTION_DEATH).setEnabled(false);
-			_buttons.get(ACTION_ROTATE).setEnabled(false);
-			_buttons.get(ACTION_SLIPPERY).setEnabled(false);
-			_buttons.get(ACTION_EXPLODE).setEnabled(false);
-			_buttons.get(ACTION_FORCE).setEnabled(false);
+			setButtonEnabled(ACTION_MOVE);
+			setButtonEnabled(ACTION_SPLIT);
+			setButtonEnabled(ACTION_FILL);
+			setButtonDisabled(ACTION_DEATH);
+			setButtonDisabled(ACTION_ROTATE);
+			setButtonDisabled(ACTION_SLIPPERY);
+			setButtonDisabled(ACTION_EXPLODE);
+			setButtonDisabled(ACTION_FORCE);
 			
+			if (_graphicalState.getSelectedBlob().getRadius() < GameParameters.BLOB_INITIAL_SIZE) {
+				setButtonDisabled(ACTION_SPLIT); // can't split if below initial size
+			}
 			if (_graphicalState.getSelectedBlob() instanceof DeathRayBlob) {
-				_buttons.get(ACTION_DEATH).setEnabled(true);
-				_buttons.get(ACTION_ROTATE).setEnabled(true);
+				if (_graphicalState.getSelectedBlob().getRadius() == GameParameters.BLOB_SIZE_LIMIT)
+					setButtonEnabled(ACTION_DEATH); // can only fire if at size limit
+				setButtonEnabled(ACTION_ROTATE);
 			}
 			else if (_graphicalState.getSelectedBlob() instanceof ExplodingBlob)
-				_buttons.get(ACTION_EXPLODE).setEnabled(true);
+				setButtonEnabled(ACTION_EXPLODE);
 			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob)
-				_buttons.get(ACTION_SLIPPERY).setEnabled(true);	
+				setButtonEnabled(ACTION_SLIPPERY);	
 			else if (_graphicalState.getSelectedBlob() instanceof ForceBlob)
-				_buttons.get(ACTION_FORCE).setEnabled(true);
+				setButtonEnabled(ACTION_FORCE);
 		}
 		
 		/** not needed */
@@ -538,7 +542,6 @@ public class Gui extends JFrame {
 				_blobMoves = new HashMap<Blob, Coordinate>();
 				_blobsToActivate = new ArrayList<Blob>();
 				_blobsToSpawn = new ArrayList<Blob>();
-				_graphicalState.setSelectedBlob(null);
 				_txtAreaQueue.setText("");
 			}
 		}
@@ -638,6 +641,16 @@ public class Gui extends JFrame {
 		_txtAreaQueue.setText(_txtAreaQueue.getText()+str+"\n");
 	}
 	
+	private void setButtonEnabled(int button) {
+		_buttons.get(button).setEnabled(true);
+		_buttons.get(button).setFont(new Font("Tahoma", Font.BOLD, 9));
+	}
+	
+	private void setButtonDisabled(int button) {
+		_buttons.get(button).setEnabled(false);
+		_buttons.get(button).setFont(new Font("Tahoma", Font.PLAIN, 9));
+	}
+
 	private class TextureListener implements MouseListener
     {
 		public void mouseClicked(MouseEvent e) {
