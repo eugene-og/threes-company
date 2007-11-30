@@ -175,12 +175,11 @@ public class Gui extends JFrame {
 		JPanel pane = new JPanel();
 		pane.setBackground(Color.WHITE);
 		File[] textures = (new File(GuiConstants.IMAGES_TEXTURES_DIR)).listFiles();
-		System.err.println("file count: "+textures.length);
 		for (int i=0; i<textures.length; i++) {
-			JLabel label = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR+textures[i].getName()).getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+			JLabel label = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR + 
+										textures[i].getName()).getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
 			label.addMouseListener(new TextureListener());
 			label.setName(textures[i].getName());
-			System.err.println("file: "+textures[i].getName());
 			if (textures[i].getName().contains("small"))
 				pane.add(label);
 		}
@@ -642,7 +641,6 @@ public class Gui extends JFrame {
 	private class TextureListener implements MouseListener
     {
 		public void mouseClicked(MouseEvent e) {
-			System.out.println("TexturesListener: name: "+ e.getComponent().getName());
 			_board.setTextureFilename(e.getComponent().getName());
 		}
 		
