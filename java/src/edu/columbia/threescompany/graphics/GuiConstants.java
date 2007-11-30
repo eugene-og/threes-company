@@ -32,6 +32,8 @@ public class GuiConstants {
 	
 	public static final String	IMAGES_MENU_DIR = "images" + File.separator + "menu" + File.separator;
 	
+	public static final String	IMAGES_TEXTURES_DIR = "images" + File.separator + "textures" + File.separator;
+	
     /** String for About box. */
     public static final String	HELP_ABOUT =	"<html><b>Blobs v" + VERSION + "</b>\n" +
 												"2007, Columbia University, CS4995\n" +

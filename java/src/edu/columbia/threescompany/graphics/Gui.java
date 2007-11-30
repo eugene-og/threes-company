@@ -7,9 +7,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -19,6 +21,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,10 +145,14 @@ public class Gui extends JFrame {
 		actionsPane.add(actionQueuePane, BorderLayout.EAST);
 		controlsPane.add(actionsPane, BorderLayout.SOUTH);
 		
+		/* setup textures pane */
+		JPanel texturesPane = getTexturesPane(); 
+		
 		/* setup Done button pane */
 		JPanel buttonpane = getButtonPane();
 		
 		mainControlsPane.add(controlsPane, BorderLayout.NORTH);
+		mainControlsPane.add(texturesPane, BorderLayout.CENTER);
 		mainControlsPane.add(buttonpane, BorderLayout.SOUTH);
 		mainControlsPane.setBackground(GuiConstants.BG_COLOR);
 		mainControlsPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
@@ -162,6 +169,22 @@ public class Gui extends JFrame {
 		setVisible(true);
 
 		_board.initGraphicsBuffer();
+	}
+
+	private JPanel getTexturesPane() {
+		JPanel pane = new JPanel();
+		pane.setBackground(Color.WHITE);
+		File[] textures = (new File(GuiConstants.IMAGES_TEXTURES_DIR)).listFiles();
+		System.err.println("file count: "+textures.length);
+		for (int i=0; i<textures.length; i++) {
+			JLabel label = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR+textures[i].getName()).getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+			label.addMouseListener(new TextureListener());
+			label.setName(textures[i].getName());
+			System.err.println("file: "+textures[i].getName());
+			if (textures[i].getName().contains("small"))
+				pane.add(label);
+		}
+		return pane;
 	}
 
 	private JPanel getButtonPane() {
@@ -188,7 +211,7 @@ public class Gui extends JFrame {
 		JPanel pane = new JPanel(new BorderLayout());
 		_txtAreaQueue = new JTextArea();
 		_txtAreaQueue.setRows(5);
-		_txtAreaQueue.setColumns(25);
+		_txtAreaQueue.setColumns(20);
 		_txtAreaQueue.setEditable(false);
 		_txtAreaQueue.setFont(GuiConstants.CHAT_FONT);
 		_txtAreaQueue.setForeground(Color.BLACK);
@@ -271,7 +294,7 @@ public class Gui extends JFrame {
 		JPanel pane = new JPanel(new BorderLayout());
 		_txtAreaChat = new JTextArea();
 		_txtAreaChat.setRows(5);
-		_txtAreaChat.setColumns(25);
+		_txtAreaChat.setColumns(20);
 		_txtAreaChat.setEditable(false);
 		_txtAreaChat.setFont(GuiConstants.CHAT_FONT);
 		_txtAreaChat.setForeground(Color.GRAY);
@@ -443,7 +466,7 @@ public class Gui extends JFrame {
 			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
 				if (_selectedAction == 0) { // move action
 					_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
-					addQueueLine("Moving blob to " + worldClick.toString());
+					addQueueLine("Moving blob to " + worldClick.toRoundedString());
 					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
 							" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
 				}
@@ -615,5 +638,19 @@ public class Gui extends JFrame {
 	private void addQueueLine(String str) {
 		_txtAreaQueue.setText(_txtAreaQueue.getText()+str+"\n");
 	}
+	
+	private class TextureListener implements MouseListener
+    {
+		public void mouseClicked(MouseEvent e) {
+			System.out.println("TexturesListener: name: "+ e.getComponent().getName());
+			_board.setTextureFilename(e.getComponent().getName());
+		}
+		
+		/** not needed */
+		public void mouseEntered(MouseEvent arg0) {}
+		public void mouseExited(MouseEvent arg0) {}
+		public void mousePressed(MouseEvent arg0) {}
+		public void mouseReleased(MouseEvent arg0) {}
+    }
 	
 }

@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Rectangle;
+import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -38,6 +39,7 @@ public class Board extends Canvas {
 	private GraphicalGameState _graphicalState;
 	Graphics offscreenSurface;
 	Image offscreenImage = null;
+	private String texture_file = "math_graph_small.gif";
 
 	public Board(GraphicalGameState graphicalState)
 	{
@@ -94,6 +96,29 @@ public class Board extends Canvas {
 //		int border = (int)(GameParameters.BOARD_SIZE);
 //		surface.translate(border, border);
 //		surface.scale(this.getWidth() / (GameParameters.BOARD_SIZE * 1.1), this.getHeight() / (GameParameters.BOARD_SIZE * 1.1));
+		
+		
+		/* draw texture on board background before scaling */
+		try {
+			
+			Image displayImage = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR+texture_file);
+			
+			BufferedImage bi = new BufferedImage(displayImage.getWidth(this),
+												 displayImage.getHeight(this),
+												 BufferedImage.TYPE_INT_RGB);
+			bi.createGraphics().drawImage(displayImage, 0, 0, this);
+			
+			Rectangle2D rectangle = new Rectangle2D.Float(0, 0,
+            						displayImage.getWidth(this),
+            						displayImage.getHeight(this));
+			TexturePaint tp = new TexturePaint(bi, rectangle);
+			
+			surface.setPaint(tp);
+			surface.fill(new Rectangle2D.Float(0,0,getWidth(), getHeight()));
+			
+		}
+		catch (Exception e) {e.printStackTrace();}
+		
 		surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 		surface.setColor(Color.black);
 		surface.setStroke(new BasicStroke(0.1f));
@@ -144,6 +169,8 @@ public class Board extends Canvas {
 			}
 		}
 		
+		
+		
 //		MediaTracker media = new MediaTracker(this);
 //		Image image = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_DIR+"boom_black.png");
 //		media.addImage(image, 0);
@@ -155,6 +182,7 @@ public class Board extends Canvas {
 //		Graphics2D tmpgraphic = (Graphics2D)tmp.getGraphics();
 		//tmpgraphic.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
 		//tmpgraphic.drawImage(image, 0, 0, null);
+		
 		
 //		try {
 //			// TODO make function that takes image and 0-20 board units and draws it.
@@ -180,5 +208,10 @@ public class Board extends Canvas {
 	{
 		_gameState = gameState;
 		repaint();
+	}
+	
+	public void setTextureFilename(String texture_file) {
+		this.texture_file = texture_file;
+		paint(getGraphics());
 	}
 }
