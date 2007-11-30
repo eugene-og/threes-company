@@ -28,6 +28,7 @@ public class PlayerInfoGui extends JFrame {
 	private static JTextField _serverPort;
 	
 	private PlayerInfoGui(final int numPlayers) {
+		super("Hotseat Player Setup");
 		_mainPane = (JPanel) this.getContentPane();
 		_mainPane.setLayout(new BorderLayout());
 		_contentPane = new JPanel();
