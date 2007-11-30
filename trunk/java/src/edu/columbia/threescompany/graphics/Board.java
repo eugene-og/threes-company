@@ -117,7 +117,7 @@ public class Board extends Canvas {
 			surface.fill(new Rectangle2D.Float(0,0,getWidth(), getHeight()));
 			
 		}
-		catch (Exception e) {e.printStackTrace();}
+		catch (Exception e) {}
 		
 		surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 		surface.setColor(Color.black);
