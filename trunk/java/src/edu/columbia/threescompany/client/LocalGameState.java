@@ -85,21 +85,32 @@ public class LocalGameState implements Serializable {
 						killList.add(obj1);
 		
 		for (GameObject obj : killList) {
-			System.out.println("KILLING " + obj);
 			obj.die();
 		}
 	}
 	
 	private void applyForces() {
-		for (GameObject obj1 : _gameObjects)
-		for (GameObject obj2 : _gameObjects) {
-			if (obj1.isDead() || obj2.isDead()) continue;
-			Force f = obj1.actOn(obj2);
-			
-			/* Newton's 3rd law: */
-			obj1.applyForce(f.inverse());
-			obj2.applyForce(f);
+		for (GameObject obj1 : _gameObjects) {
+			for (GameObject obj2 : _gameObjects) {
+				if (obj1.isDead() || obj2.isDead() || !(obj1 instanceof Blob) || !(obj2 instanceof Blob)) continue;
+				Force f = obj1.actOn(obj2);
+				
+				/* Newton's 3rd law: */
+				obj1.applyForce(f.inverse());
+				obj2.applyForce(f);
+				
+				checkOffBoard(obj1, obj2);
+			}
 		}
+	}
+
+	private void checkOffBoard(GameObject obj1, GameObject obj2) {
+		if (obj1.getPosition().x < 0 || obj1.getPosition().x > GameParameters.BOARD_SIZE ||
+				obj1.getPosition().y < 0 || obj1.getPosition().y > GameParameters.BOARD_SIZE)
+			obj1.die();
+		if (obj2.getPosition().x < 0 || obj2.getPosition().x > GameParameters.BOARD_SIZE ||
+				obj2.getPosition().y < 0 || obj2.getPosition().y > GameParameters.BOARD_SIZE)
+			obj2.die();
 	}
 
 	private void deactivateBlobs() {
@@ -196,7 +207,7 @@ public class LocalGameState implements Serializable {
 
 	private static double getRandomBlobSize() {
 		return Math.random() *
-			   (GameParameters.BLOB_SIZE_LIMIT - GameParameters.BLOB_INITIAL_SIZE) + 
+			   (GameParameters.BLOB_SIZE_LIMIT - GameParameters.BLOB_INITIAL_SIZE) / 2 + 
 			   GameParameters.BLOB_INITIAL_SIZE;
 	}
 	
