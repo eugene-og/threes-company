@@ -11,6 +11,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.columbia.threescompany.client.communication.AuthenticationException;
+import edu.columbia.threescompany.client.communication.AuthenticationObject;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 
@@ -24,38 +26,13 @@ public class ChatThread extends Thread {
 
 	/**
 	 * @throws IOException, java.net.ConnectException
+	 * @throws InterruptedException 
 	 */
 	
-	public ChatThread(List<Player> players, String[] args) throws IOException {
-		InetAddress addr;
+	public ChatThread(Object[] streams) throws IOException, AuthenticationException, InterruptedException {
+		in = (BufferedReader) streams[0];
+		out = (PrintWriter) streams[1];
 		sendBuffer = new ArrayList<String>();
-		try {
-			addr = InetAddress.getByName(args[0]);
-		} catch (UnknownHostException e1) {
-			System.err.println("Unknown host : " + e1);
-			return;
-		}
-		
-		socket = new Socket(addr, Integer.valueOf(args[1]));
-		ObjectOutputStream ooStream = new ObjectOutputStream(socket.getOutputStream());
-		ooStream.writeObject(players.toArray());
-		
-		try {
-			startStreams();
-		} catch (IOException e) {
-			try {
-				socket.close();
-			} catch (IOException e2) {
-				System.err.println("Socket not closed");
-			}
-			throw(e);
-		}
-	}
-
-	private void startStreams() throws IOException {
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		// Enable auto-flush:
-		out = new PrintWriter(socket.getOutputStream(), true);
 	}
 	
 	public void setGui(Gui gui) {
@@ -100,4 +77,5 @@ public class ChatThread extends Thread {
 	public void sendLine(String text) {
 		sendBuffer.add(text);
 	}
+
 }

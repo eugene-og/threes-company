@@ -3,6 +3,7 @@ package edu.columbia.threescompany.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.columbia.threescompany.client.BlobsClient;
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.communication.ServerConnection;
 import edu.columbia.threescompany.game.Player;
@@ -34,8 +35,9 @@ public class ServerAuthenticationTest extends BaseTestCase {
 		players2.add(new Player("Bill"));
 		
 		String[] args = new String[] {"localhost",String.valueOf(TEST_PORT)};
-		ChatThread chatThread1 = new ChatThread(players1,args);
-		ChatThread chatThread2 = new ChatThread(players2,args);
+		
+		ChatThread chatThread1 = new ChatThread(BlobsClient.authenticatePlayers(args, players1));
+		ChatThread chatThread2 = new ChatThread(BlobsClient.authenticatePlayers(args, players2));
 		
 		new ServerConnection("localhost", TEST_PORT);
 		new ServerConnection("localhost", TEST_PORT);

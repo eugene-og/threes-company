@@ -1,22 +1,32 @@
 package edu.columbia.threescompany.client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 
+import edu.columbia.threescompany.client.communication.AuthenticationException;
+import edu.columbia.threescompany.client.communication.AuthenticationObject;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
 import edu.columbia.threescompany.client.communication.ServerConnection;
 import edu.columbia.threescompany.client.communication.ServerMessage;
-import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.client.communication.TurnChangeMessage;
+import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.graphics.PlayerInfoGui;
 import edu.columbia.threescompany.graphics.PreGameGui;
 import edu.columbia.threescompany.server.BlobsServer;
+import edu.columbia.threescompany.server.CommunicationConstants;
 
 public class BlobsClient {
 	private static LocalGameState _gameState;
@@ -31,11 +41,15 @@ public class BlobsClient {
 			args = new String[] {PlayerInfoGui.getServerAddress(), PlayerInfoGui.getServerPort()};
 		
 		try {
-				_chatThread = new ChatThread(_players, args);
+			Object[] streams = authenticatePlayers(args);
+			_chatThread = new ChatThread(streams);
 		} catch (ConnectException e) {
 				JOptionPane.showMessageDialog(null, "Blobs could not connect to the server. You need a server running " +
 				                              "even for a hotseat game.");
 				return;
+		} catch (AuthenticationException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage());
+			System.exit(0);
 		}
 		_gui = Gui.getInstance(_chatThread, _players);
 
@@ -51,6 +65,57 @@ public class BlobsClient {
 		gameOverDialog();
 	}
 
+	public static Object[] authenticatePlayers(String[] args, List<Player> players) throws NumberFormatException, AuthenticationException, IOException {
+		_players = players;
+		return authenticatePlayers(args);
+	}
+	
+	private static Object[] authenticatePlayers(String[] args) throws AuthenticationException, NumberFormatException, IOException {
+		InetAddress addr;
+		try {
+			addr = InetAddress.getByName(args[0]);
+		} catch (UnknownHostException e1) {
+			throw new AuthenticationException("Unknown host : " + e1);
+		}
+		
+		Socket socket = new Socket(addr, Integer.valueOf(args[1]));
+		Object[] streams = new Object[]{null,null};
+		
+		try {
+			streams = startStreams(socket);
+		} catch (IOException e) {
+			try {
+				socket.close();
+			} catch (IOException e2) {
+				System.err.println("Socket not closed");
+			}
+			throw(e);
+		} catch (InterruptedException e) {}
+		
+		AuthenticationObject ao = new AuthenticationObject(_players.toArray(), true);
+		ObjectOutputStream ooStream = new ObjectOutputStream(socket.getOutputStream());
+		ooStream.writeObject(ao);
+		
+		BufferedReader in = (BufferedReader) streams[0];
+		while (!in.ready()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {}
+		}
+		String response = in.readLine();
+     	if (!response.equals(CommunicationConstants.AUTHENTICATION_OK)) {
+     		throw new AuthenticationException(response);
+     	}
+     	return streams;
+	}
+	
+	private static Object[] startStreams(Socket socket) throws IOException, InterruptedException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		// Enable auto-flush:
+		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+		return new Object[] {in,out};
+	}
+	
 	private static void connectToServer(String[] args) throws UnknownHostException, IOException {
 		if (args.length == 2)
 			_serverConnection = connectFromHostAndPort(args[0], args[1]);
@@ -59,7 +124,7 @@ public class BlobsClient {
 		else
 			_serverConnection = new ServerConnection();
 
-		_serverConnection.sendPlayers(_players);
+		_serverConnection.sendPlayers(_players, false);
 	}
 
 	private static ServerConnection connectFromHost(String host)
@@ -160,4 +225,5 @@ public class BlobsClient {
 											"Hold your horses!",
 											JOptionPane.ERROR_MESSAGE );
 	}
+
 }

@@ -50,29 +50,13 @@ public class ServerConnection {
 		_ooStream.writeObject(obj);
 	}
 
-	public void sendPlayers(List<Player> players) throws IOException {
+	public void sendPlayers(List<Player> players, boolean isFirstConnection) throws IOException {
 		// This has to be the first step in the conn process
 		Player[] array = new Player[players.size()];
 		for (int i = 0; i < players.size(); i++)
 			array[i] = players.get(i);
-		writeObject(array);
-	}
-	
-	/**
-	 * Associates a chat thread connection with the given player(s). 
-	 * @throws a PlayerDoesNotExistException if there isn't at least one player in the list which already exists in 
-	 * the server's player list. 
-	 */
-	public void chatForPlayers(List<Player> players) throws PlayerDoesNotExistException {
-		
-	}
-	
-	/**
-	 * Checks if the given Player's name is not in use. If not, adds it to the server's list of players. 
-	 * Throws an exception if it's in use.
-	 */
-	public void addPlayer(Player player) throws PlayerNameInUseException, IOException {
-		// TODO
+		AuthenticationObject ao = new AuthenticationObject(array, new Boolean(isFirstConnection));
+		writeObject(ao);
 	}
 	
 	private ObjectOutputStream _ooStream;

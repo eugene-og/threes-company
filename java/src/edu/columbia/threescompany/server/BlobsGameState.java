@@ -20,6 +20,11 @@ public class BlobsGameState {
 		playerServerDataMap = new HashMap<String, PlayerServerData>();
 	}
 	
+	public void reset() {
+		playerServerDataMap.clear();
+		playerCount = 0;
+	}
+	
 	public static BlobsGameState instance() {
 		if (gameState == null) {
 			gameState = new BlobsGameState();
@@ -74,7 +79,7 @@ public class BlobsGameState {
 
 	public boolean isHandleTaken(String username, String hostAddress) {
 		for (PlayerServerData currentPsd : getAllPlayerServerData()) {
-			if (currentPsd.getHandlesList().contains(username) && !currentPsd.getHostAddress().equals(hostAddress)) {
+			if (currentPsd.getHandlesList().contains(username)){// && !currentPsd.getHostAddress().equals(hostAddress)) {
 				return true;
 			}
 		}
