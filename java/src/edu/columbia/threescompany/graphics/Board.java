@@ -155,7 +155,7 @@ public class Board extends Canvas {
 			Coordinate pos = item.getPosition();
 			//System.out.println("x: "+pos.x+", y: "+pos.y);
 			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
-			surface.setStroke(new BasicStroke(0.3f));
+			surface.setStroke(new BasicStroke(0.2f));
 			surface.draw(blobToDraw);
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
 				surface.setColor(Color.lightGray);
