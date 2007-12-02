@@ -71,6 +71,7 @@ public abstract class Blob extends GameObject implements Serializable {
 	}
 	
 	public void die() {
+		System.out.println("KILLING " + this);
 		_dead = true;
 	}
 	
