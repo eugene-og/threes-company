@@ -67,16 +67,16 @@ public class LocalGameStateTest extends BaseTestCase {
 		 * beginning (if a blob has no other moves)
 		 */
 		
-		LocalGameState state = BlobTestTools.getSingleBlobState(-1, 0);
+		LocalGameState state = BlobTestTools.getSingleBlobState(3, 5);
 		Blob boringBlob = (Blob) state.getObjects().get(0);
-		PushBlob pushBlob = new PushBlob(0, -2.2, 1, BlobTestTools.PLAYER);
+		PushBlob pushBlob = new PushBlob(5, 3, 1, BlobTestTools.PLAYER);
 		state.addObject(pushBlob);
 		
 		List<Blob> activations = new ArrayList<Blob>();
 		activations.add(pushBlob);
 		
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
-		finalPositions.put(boringBlob, new Coordinate(1, 0));
+		finalPositions.put(boringBlob, new Coordinate(8, 5));
 		
 		GUIGameMove move = new GUIGameMove(finalPositions, activations, new ArrayList<Blob>());
 		state.executeMove(new GameMove(move));
@@ -84,11 +84,11 @@ public class LocalGameStateTest extends BaseTestCase {
 		assertFalse("Boring blob should be alive", boringBlob.isDead());
 		assertFalse("Push blob should be alive", pushBlob.isDead());
 		
-		assertTrue("Boring blob should have significantly deviated from x-axis" +
+		assertTrue("Boring blob should have significantly deviated from (x=5) line" +
 				   " (y-position was " + boringBlob.getPosition().y + ")",
-				   boringBlob.getPosition().y > 2 * BaseTestCase.EPSILON);
+				   boringBlob.getPosition().y > 5 + 2 * BaseTestCase.EPSILON);
 		assertTrue("Push blob should have been pushed backward by Newton's 3rd",
-				   pushBlob.getPosition().y < -2.2 + 2 * BaseTestCase.EPSILON);
+				   pushBlob.getPosition().y < 3 - 2 * BaseTestCase.EPSILON);
 		
 		/* Note that PushBlob and BoringBlob's x-coordinates can't be guessed
 		 * all that easily, since Newton's 3 means that PushBlob was initially
