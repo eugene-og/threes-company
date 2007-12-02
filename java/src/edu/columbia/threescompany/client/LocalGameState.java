@@ -147,7 +147,7 @@ public class LocalGameState implements Serializable {
 		for (Player player : _players)
 			if (hasAnyBlobsLeft(player)) livingPlayers++;
 		
-		return (livingPlayers < 2);
+		return (livingPlayers < _players.size());
 	}
 
 	private boolean hasAnyBlobsLeft(Player player) {
@@ -184,23 +184,23 @@ public class LocalGameState implements Serializable {
 		initialGameState._players = players;
 		initialGameState._gameObjects = new ArrayList<GameObject>();
 		
-		initialGameState.addObject(new PushBlob(1, 4, getRandomBlobSize(), players.get(0)));
-		initialGameState.addObject(new PushBlob(1, 8, getRandomBlobSize(), players.get(0)));
-		initialGameState.addObject(new PullBlob(1, 12, getRandomBlobSize(), players.get(0)));
-		initialGameState.addObject(new PullBlob(1, 16, getRandomBlobSize(), players.get(0)));
-		initialGameState.addObject(new DeathRayBlob(4, 6, getRandomBlobSize(), players.get(0)));
-		initialGameState.addObject(new SlipperyBlob(4, 10, getRandomBlobSize(), players.get(0)));
-		initialGameState.addObject(new ExplodingBlob(4, 14, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new PushBlob((GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*1/8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new PushBlob((GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*3/8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new PullBlob((GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*5/8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new PullBlob((GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*7/8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new DeathRayBlob((GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*2/8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new SlipperyBlob((GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*4/8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new ExplodingBlob((GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*6/8, getRandomBlobSize(), players.get(0)));
 		
-		initialGameState.addObject(new PushBlob(19, 4, getRandomBlobSize(), players.get(1)));
-		initialGameState.addObject(new PushBlob(19, 8, getRandomBlobSize(), players.get(1)));
-		initialGameState.addObject(new PullBlob(19, 12, getRandomBlobSize(), players.get(1)));
-		initialGameState.addObject(new PullBlob(19, 16, getRandomBlobSize(), players.get(1)));
-		initialGameState.addObject(new DeathRayBlob(16, 6, getRandomBlobSize(), players.get(1)));
-		initialGameState.addObject(new SlipperyBlob(16, 10, getRandomBlobSize(), players.get(1)));
-		initialGameState.addObject(new ExplodingBlob(16, 14, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new PushBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*1/8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new PushBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*3/8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new PullBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*5/8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new PullBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*7/8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new DeathRayBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*2/8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new SlipperyBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*4/8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new ExplodingBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*6/8, getRandomBlobSize(), players.get(1)));
 		
-		initialGameState.addObject(new AnchorPoint(8, 8));
+		initialGameState.addObject(new AnchorPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2));
 		
 		return initialGameState;
 	}
