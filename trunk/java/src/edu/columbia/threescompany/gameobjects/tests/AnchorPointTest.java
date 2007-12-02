@@ -33,10 +33,10 @@ public class AnchorPointTest extends BaseTestCase {
 		 * =P========B===
 		 */
 		
-		LocalGameState state = BlobTestTools.getSingleBlobState(0, 0);
-		GameObject boringBlob = (GameObject) state.getObjects().get(0);
-		Blob pushBlob = new PushBlob(-1.5, 0.0, 1.0, BlobTestTools.PLAYER);
-		AnchorPoint anchorPoint = new AnchorPoint(1.5, 0);
+		LocalGameState state = BlobTestTools.getSingleBlobState(5.5, 0);
+		GameObject boringBlob = state.getObjects().get(0);
+		Blob pushBlob = new PushBlob(3.0, 0.0, 1.0, BlobTestTools.PLAYER);
+		AnchorPoint anchorPoint = new AnchorPoint(7.5, 0);
 		
 		state.addObject(anchorPoint);
 		state.addObject(pushBlob);
@@ -51,17 +51,19 @@ public class AnchorPointTest extends BaseTestCase {
 		/* Blob should be caught on the anchor and not make it to its destination.
 		 * BUT the Push Blob should continue to repel it, meaning that Newton's
 		 * 3rd is pushing it in the negative-X direction. */
+		assertFalse("Nobody should be dead", boringBlob.isDead());
+		assertFalse("Nobody should be dead", pushBlob.isDead());
 		assertEquals("Boring blob shouldn't move in Y-direction at all",
 					 boringBlob.getPosition().y, 0.0);
 		assertEquals("Anchor point shouldn't move at all",
-				     new Coordinate(1.5, 0), anchorPoint.getPosition());
-		assertTrue("Boring blob should move", boringBlob.getPosition().x > 0.2);
+				     new Coordinate(7.5, 0), anchorPoint.getPosition());
+		assertTrue("Boring blob should move", boringBlob.getPosition().x > 5.5 + 0.2);
 		assertTrue("Boring blob shouldn't move after hitting the anchor",
-				   boringBlob.getPosition().x < 0.6);
+				   boringBlob.getPosition().x < 6.6);
 		assertTrue("Push blob should have moved more than boring blob did " +
 				   "(its position was " + pushBlob.getPosition() + ") -- " +
 				   " probably a Newton's 3rd failure",
-				   boringBlob.getPosition().x < -1.5 -(pushBlob.getPosition().x));
+				   boringBlob.getPosition().x - 5.5 < 3.0 - (pushBlob.getPosition().x));
 		assertEquals("Push blob shouldn't move in Y-direction at all",
 				     0.0, pushBlob.getPosition().y);
 	}
