@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 public abstract class BaseTestCase extends TestCase {
 	/* At low granularities (e.g., < 100), physics results start getting
 	 * super-crappy. So EPSILON depends on the game's internal accuracy. */
-	public static final double EPSILON = 2 / GameParameters.GRANULARITY_OF_PHYSICS;
+	public static final double EPSILON = 5 / GameParameters.GRANULARITY_OF_PHYSICS;
 	
 	protected void assertNegative(int x) {
 		assertNegative((double) x);
