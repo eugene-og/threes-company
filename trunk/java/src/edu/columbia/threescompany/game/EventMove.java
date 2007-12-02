@@ -20,6 +20,8 @@ public class EventMove extends GameMoveComponent implements Serializable {
 	}
 
 	public void execute(LocalGameState state) {
+		if (_target.isDead()) return;
+		
 		if (_moveType == MOVE_TYPE.ACTIVATE)
 			((Blob) _target).activate(true);
 		else if (_moveType == MOVE_TYPE.SPAWN) {

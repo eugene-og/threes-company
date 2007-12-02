@@ -37,6 +37,8 @@ public class PhysicalMove extends GameMoveComponent implements Serializable {
 	}
 	
 	public void execute(LocalGameState state) {
+		if (_target.isDead()) return;
+		
 		Force f = new Force(_fx, _fy);
 		((Blob) _target).applyIrresistibleForce(f);
 	}
