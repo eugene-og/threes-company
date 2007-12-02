@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import edu.columbia.threescompany.client.communication.AuthenticationException;
 import edu.columbia.threescompany.client.communication.AuthenticationObject;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
+import edu.columbia.threescompany.client.communication.GameOverMessage;
 import edu.columbia.threescompany.client.communication.ServerConnection;
 import edu.columbia.threescompany.client.communication.ServerMessage;
 import edu.columbia.threescompany.client.communication.TurnChangeMessage;
@@ -62,7 +63,7 @@ public class BlobsClient {
 		while ((message = _serverConnection.receiveMessage()) != null)
 			handleMessage(message);
 		
-		gameOverDialog();
+		//gameOverDialog();
 	}
 
 	public static Object[] authenticatePlayers(String[] args, List<Player> players) throws NumberFormatException, AuthenticationException, IOException {
@@ -138,7 +139,7 @@ public class BlobsClient {
 	}
 
 	private static void gameOverDialog() {
-		JOptionPane.showMessageDialog(null, "You didn't lose, you just weren't the winner", 
+		JOptionPane.showMessageDialog(null, "Good game!  Try again.", 
 											"Game over",
 											JOptionPane.INFORMATION_MESSAGE );
 	}
@@ -184,6 +185,8 @@ public class BlobsClient {
 			_gameState = ((ExecuteMoveMessage) message).getInitialState();
 			System.err.println("Received move: " + move);
 			_gameState.executeMove(move, _gui);
+		} else if (message instanceof GameOverMessage) {
+			gameOverDialog();
 		}
 	}
 
