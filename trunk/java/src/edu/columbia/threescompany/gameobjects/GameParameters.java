@@ -10,7 +10,7 @@ public class GameParameters {
 	
 	/* How many pieces moves are broken down into (basically 1/dt).
 	 * I may later replace this with integrals. --ZvS */
-	public static final double GRANULARITY_OF_PHYSICS = 20;
+	public static final double GRANULARITY_OF_PHYSICS = 80;
 	
 	/* After all blobs have stopped being moved by PLAYERS, we want to sit and
 	 * let the force blobs do their thing. How long should this be?
@@ -23,7 +23,7 @@ public class GameParameters {
 	public static final double FORCE_OF_USERS_HAND = 3;
 	
 	/* How many milliseconds between average animation frames? (Variable!) */
-	public static final int AVERAGE_MS_FRAME_GAP = 4;
+	public static final int AVERAGE_MS_FRAME_GAP = 8;
 	
 	/* Base AP costs (tweakable) */
 	public static final int BASE_ROTATE_COST = 1;
