@@ -23,7 +23,7 @@ public class GameParameters {
 	public static final double FORCE_OF_USERS_HAND = 3;
 	
 	/* How many milliseconds between average animation frames? (Variable!) */
-	public static final int AVERAGE_MS_FRAME_GAP = 8;
+	public static final int AVERAGE_MS_FRAME_GAP = 10;
 	
 	/* Base AP costs (tweakable) */
 	public static final int BASE_ROTATE_COST = 1;
