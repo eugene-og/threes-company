@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +74,9 @@ public class Gui extends JFrame {
 	private JTextField			_txtLine;
 	private JTextArea			_txtAreaChat;
 	private JTextArea			_txtAreaQueue;
+	private double				_ap = 10;
 	private JPanel[] 			_ap_panes;
+	private JLabel	 			_ap_label;
 	private Color[] 			_ap_colors = {Color.RED, Color.RED, Color.RED, 
 			 								  Color.YELLOW, Color.YELLOW, Color.YELLOW,
 			 								  Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN};
@@ -213,7 +216,7 @@ public class Gui extends JFrame {
 	private JPanel getQueuePanel() {
 		JPanel pane = new JPanel(new BorderLayout());
 		_txtAreaQueue = new JTextArea();
-		_txtAreaQueue.setRows(10);
+		_txtAreaQueue.setRows(9);
 		_txtAreaQueue.setColumns(20);
 		_txtAreaQueue.setEditable(false);
 		_txtAreaQueue.setFont(GuiConstants.CHAT_FONT);
@@ -275,13 +278,21 @@ public class Gui extends JFrame {
 	}
 
 	private JPanel getAPPane() {
-		JPanel pane = new JPanel(new GridLayout(1,10));
-		_ap_panes = new JPanel[10];
+		JPanel pane = new JPanel(new GridLayout(1,11));
+		_ap_panes = new JPanel[11];
+		_ap_panes[0] = new JPanel();
+		_ap_panes[0].setPreferredSize(new Dimension(20,20));
+		_ap_panes[0].setBackground(Color.WHITE);
 		
-		for (int i=0; i<10; i++) {
+		_ap_label = new JLabel(Double.toString(_ap));
+		_ap_label.setFont(GuiConstants.AP_LABEL_FONT);
+		_ap_panes[0].add(_ap_label);
+		
+		pane.add(_ap_panes[0]);
+		for (int i=1; i<11; i++) {
 			_ap_panes[i] = new JPanel();
 			_ap_panes[i].setPreferredSize(new Dimension(20,20));
-			_ap_panes[i].setBackground(_ap_colors[i]);
+			_ap_panes[i].setBackground(_ap_colors[i-1]);
 			_ap_panes[i].setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 			pane.add(_ap_panes[i]);
 		}
@@ -296,7 +307,7 @@ public class Gui extends JFrame {
 	private JPanel getChatPane() {
 		JPanel pane = new JPanel(new BorderLayout());
 		_txtAreaChat = new JTextArea();
-		_txtAreaChat.setRows(10);
+		_txtAreaChat.setRows(9);
 		_txtAreaChat.setColumns(20);
 		_txtAreaChat.setEditable(false);
 		_txtAreaChat.setFont(GuiConstants.CHAT_FONT);
@@ -375,16 +386,22 @@ public class Gui extends JFrame {
 	}
 	
 	
-	private void setAP(int ap) {
-		for (int i=0; i < ap; i++)
-			_ap_panes[i].setBackground(_ap_colors[i]);
+	private void setAP() {
+		for (int i=1; i < 11; i++)
+			_ap_panes[i].setBackground(Color.WHITE);
+		for (int i=1; i < (int)_ap+1; i++)
+			_ap_panes[i].setBackground(_ap_colors[i-1]);
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(1);
+		df.setMinimumFractionDigits(1);
+		_ap_label.setText(df.format(_ap));
 	}
 	
 	public void drawState(LocalGameState gameState)
 	{
 		_gameState = gameState;
 		_board.drawState(gameState);
-		setAP(gameState.getAP());
+		//setAP(gameState.getAP());
 	}
 
 	private class ChatFocusListener implements FocusListener {
@@ -468,10 +485,17 @@ public class Gui extends JFrame {
 				addChatLine("Selected blob " + _graphicalState.getSelectedBlob());
 			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
 				if (_selectedAction == 0) { // move action
-					_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
-					addQueueLine("Moving blob to " + worldClick.toRoundedString());
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
+					double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
+					if (_ap - cost <= 0.0) {
+						showNotEnoughAPDialog("move this blob");
+					} else {
+						_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
+						addQueueLine("Moving blob to " + worldClick.toRoundedString() + " with cost of " + cost);
+						addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+								" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
+						_ap -= cost;
+						setAP();
+					}
 				}
 			}
 		}
@@ -492,6 +516,11 @@ public class Gui extends JFrame {
 			if (_graphicalState.getSelectedBlob() instanceof DeathRayBlob) {
 				if (_graphicalState.getSelectedBlob().getRadius() == GameParameters.BLOB_SIZE_LIMIT)
 					setButtonEnabled(ACTION_DEATH); // can only fire if at size limit
+				setButtonEnabled(ACTION_ROTATE);
+			}
+			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob) {
+				if (_graphicalState.getSelectedBlob().getRadius() == GameParameters.BLOB_SIZE_LIMIT)
+					setButtonEnabled(ACTION_SLIPPERY); // can only fire if at size limit
 				setButtonEnabled(ACTION_ROTATE);
 			}
 			else if (_graphicalState.getSelectedBlob() instanceof ExplodingBlob)
@@ -543,6 +572,8 @@ public class Gui extends JFrame {
 				_turnEndCoordinator.turnDone();
 			}
 			else { // clear queue
+				_ap = 10.0;
+				setAP();
 				_blobMoves = new HashMap<Blob, Coordinate>();
 				_blobsToActivate = new ArrayList<Blob>();
 				_blobsToSpawn = new ArrayList<Blob>();
@@ -555,49 +586,66 @@ public class Gui extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 			String cmd = event.getActionCommand();
 			String text = "you've selected to ";
+			String message = null;
 			boolean isSpawn = false;
+			double cost = 0.0;
 			
 			if (_graphicalState.getSelectedBlob() == null) {
 				showBlobNotSelectedDialog();
 				return;
 			}
 			if (cmd.equals(_buttonCmds.get(ACTION_SPLIT))) {
-				addChatLine(text+="split a blob");
+				message = "split a blob";
 				_selectedAction = ACTION_SPLIT;
 				isSpawn = true;
+				cost = ActionPointEngine.getCostOfSplit(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_FILL))) {
-				addChatLine(text+="file a hole");
+				message = "file a hole";
 				_selectedAction = ACTION_FILL;
+				cost = 0.0; // sacrifice blob, no AP cost
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_DEATH))) {
-				addChatLine(text+="fire a death ray");
+				message = "fire a death ray";
 				_selectedAction = ACTION_DEATH;
+				cost = ActionPointEngine.getCostOfProjectile(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_ROTATE))) {
-				addChatLine(text+="rotate death ray");
+				message = "rotate blob";
 				_selectedAction = ACTION_ROTATE;
+				cost = ActionPointEngine.getCostOfRotate();
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_SLIPPERY))) {
-				addChatLine(text+="fire slippery goop");
+				message = "fire slippery goop";
 				_selectedAction = ACTION_SLIPPERY;
+				cost = ActionPointEngine.getCostOfProjectile(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_EXPLODE))) {
-				addChatLine(text+="explode a blob");
+				message = "explode a blob";
 				_selectedAction = ACTION_EXPLODE;
+				cost = ActionPointEngine.getCostOfProratedAction(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_FORCE))) {
-				addChatLine(text+="apply a blob force");
+				message = "apply a blob force";
 				_selectedAction = ACTION_FORCE;
+				cost = ActionPointEngine.getCostOfProratedAction(_graphicalState.getSelectedBlob());
 			}
 			
-			if (isSpawn)
-				_blobsToSpawn.add(_graphicalState.getSelectedBlob());
-			else
-				_blobsToActivate.add(_graphicalState.getSelectedBlob());
+			if (_ap - cost <= 0.0) {
+				showNotEnoughAPDialog(message);
+			} else {
+				if (isSpawn)
+					_blobsToSpawn.add(_graphicalState.getSelectedBlob());
+				else
+					_blobsToActivate.add(_graphicalState.getSelectedBlob());
 				
-			addQueueLine("Activate blob " + _buttonCmds.get(_selectedAction));
-			addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+				
+				addQueueLine("Activate blob " + _buttonCmds.get(_selectedAction) + " with cost of " + cost);
+				addChatLine(text+=message);
+				addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+				_ap -= cost;
+				setAP();
+			}
 		}
 
 		private void showBlobNotSelectedDialog() {
@@ -605,6 +653,12 @@ public class Gui extends JFrame {
 					"No blob selected",
 					JOptionPane.INFORMATION_MESSAGE );
 		}
+	}
+	
+	private void showNotEnoughAPDialog(String message) {
+		JOptionPane.showMessageDialog(null, "You do not have enough action points to "+message, 
+				"Not enough action points!",
+				JOptionPane.INFORMATION_MESSAGE );
 	}
 	
 	private void setupButtons() {
@@ -629,6 +683,8 @@ public class Gui extends JFrame {
 	public GUIGameMove getMoveFor(String activePlayer) {
 		// TODO Moves need a lot of work
 		addChatLine("It's player " + activePlayer + "'s turn.");
+		_ap = 10.0;
+		setAP();
 		_turnEndCoordinator.turnStart();
 		_blobMoves = new HashMap<Blob, Coordinate>();
 		_blobsToActivate = new ArrayList<Blob>();
