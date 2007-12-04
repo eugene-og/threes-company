@@ -236,4 +236,15 @@ public class Board extends Canvas {
 		this.texture_file = texture_file;
 		paint(getGraphics());
 	}
+	
+	public void drawMoveCost(Coordinate pos, double cost, boolean able) {
+		Graphics2D surface = (Graphics2D) getGraphics();
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(1);
+		df.setMaximumFractionDigits(1);
+		if (able) surface.setColor(Color.BLACK);
+		else surface.setColor(Color.RED);
+		surface.setFont(new Font("Tahoma", Font.BOLD, 10));
+		surface.drawString(df.format(cost), (float)(pos.x*SCALE_FACTOR), (float)(pos.y*SCALE_FACTOR));
+	}
 }
