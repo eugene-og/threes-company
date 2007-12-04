@@ -31,7 +31,7 @@ public abstract class Blob extends GameObject implements Serializable {
 	public GameObject spawn() {
 		// TODO this positioning can be done more cleverly
 		_radius /= 2;
-		double dRadius = _radius * ((GameParameters.BLOB_GROWTH_FACTOR) * 3 - 2);
+		double dRadius = GameParameters.BLOB_SIZE_LIMIT * GameParameters.BLOB_GROWTH_FACTOR;
 		_position.x -= dRadius;
 		
 		try {
