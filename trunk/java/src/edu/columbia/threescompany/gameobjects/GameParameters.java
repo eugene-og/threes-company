@@ -27,7 +27,7 @@ public class GameParameters {
 	
 	/* Base AP costs (tweakable) */
 	public static final int BASE_ROTATE_COST = 1;
-	public static final int BASE_PHYSICAL_MOVE_COST = 3;
+	public static final int BASE_PHYSICAL_MOVE_COST = 2;
 	public static final int BASE_FORCE_COST = 3;
 	public static final int BASE_EXPLODE_COST = 3;
 	public static final int BASE_SPLIT_COST = 3;
