@@ -39,24 +39,4 @@ public class SoundEngine {
             }
         }.start();
     }
-
-
-    // test client
-    public static void main(String[] args) {
-        String filename = args[0];
-        SoundEngine.play(filename);
-
-        // do whatever computation you like, while music plays
-        int N = 4000;
-        double sum = 0.0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                sum += Math.sin(i + j);
-            }
-        }
-        System.out.println(sum);
-
-        // when the computation is done, stop playing it
-        SoundEngine.close();
-    }
 }
