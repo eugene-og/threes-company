@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.sound.SoundEngine;
 
 public abstract class Blob extends GameObject implements Serializable {
 	public abstract Force actOn(GameObject obj);
@@ -72,6 +73,7 @@ public abstract class Blob extends GameObject implements Serializable {
 	
 	public void die() {
 		System.out.println("KILLING " + this);
+		SoundEngine.play(SoundEngine.BUBBLE);
 		_dead = true;
 	}
 	

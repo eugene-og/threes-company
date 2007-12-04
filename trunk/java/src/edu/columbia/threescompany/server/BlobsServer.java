@@ -18,6 +18,7 @@ import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.sound.SoundEngine;
 
 public class BlobsServer {
 	public static String VERSION = "0.1";
@@ -80,6 +81,7 @@ public class BlobsServer {
 			sendStateToAllPlayers(gameState);
 		}
 		sendGameOver();
+		SoundEngine.play(SoundEngine.GAMEOVER);
 	}
 
 	private static void sendGameOver() throws IOException {
