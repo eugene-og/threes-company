@@ -18,6 +18,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 
@@ -40,6 +41,7 @@ public class Board extends Canvas {
 	Graphics offscreenSurface;
 	Image offscreenImage = null;
 	private String texture_file = "math_graph_small.gif";
+	private static final double SCALE_FACTOR = GuiConstants.BOARD_LENGTH/GameParameters.BOARD_SIZE;
 
 	public Board(GraphicalGameState graphicalState)
 	{
@@ -66,7 +68,10 @@ public class Board extends Canvas {
 	private Ellipse2D circle(double centerX, double centerY, double radius) {
 		// TODO We might need to subtract sqrt(radius ^ 2 + radius ^ 2) instead of radius to properly align them. 
 		// Needs testing to check. 
-		return new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2);
+		return new Ellipse2D.Double((centerX - radius)*SCALE_FACTOR, 
+									(centerY - radius)*SCALE_FACTOR, 
+									(radius * 2)*SCALE_FACTOR, 
+									(radius * 2)*SCALE_FACTOR);
 	}
 	
     public void update(Graphics g) {
@@ -93,52 +98,28 @@ public class Board extends Canvas {
 	{
 		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
-//		int border = (int)(GameParameters.BOARD_SIZE);
-//		surface.translate(border, border);
-//		surface.scale(this.getWidth() / (GameParameters.BOARD_SIZE * 1.1), this.getHeight() / (GameParameters.BOARD_SIZE * 1.1));
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(1);
+		df.setMaximumFractionDigits(1);
+
+		drawTexture(surface);
 		
-		
-		/* draw texture on board background before scaling */
-		try {
-			// To add a new texture:
-			// 1.) put "small" somewhere in the texture image filename
-			// 2.) put texture image in images/textures
-			// all files from images/textures with "small" in their name loaded as clickable thumbnails
-			Image displayImage = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR+texture_file);
-			
-			BufferedImage bi = new BufferedImage(displayImage.getWidth(this),
-												 displayImage.getHeight(this),
-												 BufferedImage.TYPE_INT_RGB);
-			bi.createGraphics().drawImage(displayImage, 0, 0, this);
-			
-			Rectangle2D rectangle = new Rectangle2D.Float(0, 0,
-            						displayImage.getWidth(this),
-            						displayImage.getHeight(this));
-			TexturePaint tp = new TexturePaint(bi, rectangle);
-			
-			surface.setPaint(tp);
-			surface.fill(new Rectangle2D.Float(0,0,getWidth(), getHeight()));
-			
-		}
-		catch (Exception e) {}
-		
-		surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
+		//surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 		surface.setColor(Color.black);
 		surface.setStroke(new BasicStroke(0.1f));
+		surface.setFont(new Font("Tahoma", Font.BOLD, 10));
 		
-		surface.drawLine(0, 0, (int)GameParameters.BOARD_SIZE, 0);
-		surface.drawLine((int)GameParameters.BOARD_SIZE, 0, (int)GameParameters.BOARD_SIZE, (int)GameParameters.BOARD_SIZE);
-		surface.drawLine((int)GameParameters.BOARD_SIZE, (int)GameParameters.BOARD_SIZE, 0, (int)GameParameters.BOARD_SIZE);
-		surface.drawLine(0, (int)GameParameters.BOARD_SIZE, 0, 0);
+		drawBoardBorder(surface);
 		
 		if (_gameState == null) {
-			surface.drawString("Waiting for start...", 0, 10);
+			surface.drawString("Waiting for start...", 1, (int)GuiConstants.BOARD_LENGTH/2);
 			return;
 		}
 		
 		for (GameObject item : _gameState.getObjects()) {
 			if (item.isDead()) continue;
 			if (item instanceof AnchorPoint) {
+				surface.setColor(Color.black);
 				drawAnchorPoint(surface, (AnchorPoint) item);
 				continue;
 			}
@@ -153,9 +134,8 @@ public class Board extends Canvas {
 			else if (item instanceof SlipperyBlob)
 				surface.setColor(Color.yellow);
 			Coordinate pos = item.getPosition();
-			//System.out.println("x: "+pos.x+", y: "+pos.y);
 			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
-			surface.setStroke(new BasicStroke(0.2f));
+			surface.setStroke(new BasicStroke(3.0f));
 			surface.draw(blobToDraw);
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
 				surface.setColor(Color.lightGray);
@@ -163,6 +143,13 @@ public class Board extends Canvas {
 				surface.setColor(Color.darkGray);
 			}
 			surface.fill(blobToDraw);
+			
+			//surface.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
+			surface.setColor(Color.WHITE);
+			double x = ((pos.x)*SCALE_FACTOR-16/2); // 16 = approximate width of string
+			double y = ((pos.y)*SCALE_FACTOR+8/2); // 8 = approximate height of string
+			surface.drawString(df.format(item.getRadius()), (float)x, (float)y);
+			//surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 			
 			if (_graphicalState.getSelectedBlob() == item) {
 				surface.setColor(Color.orange);
@@ -199,9 +186,41 @@ public class Board extends Canvas {
 //		catch (Exception e) {e.printStackTrace();}
 		
 	}
+
+	private void drawBoardBorder(Graphics2D surface) {
+		surface.drawLine(0, 0, GuiConstants.BOARD_LENGTH, 0);
+		surface.drawLine(GuiConstants.BOARD_LENGTH, 0, GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH);
+		surface.drawLine(GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH, 0, GuiConstants.BOARD_LENGTH);
+		surface.drawLine(0, GuiConstants.BOARD_LENGTH, 0, 0);
+	}
+
+	private void drawTexture(Graphics2D surface) {
+		try {
+			// To add a new texture:
+			// 1.) put "small" somewhere in the texture image filename
+			// 2.) put texture image in images/textures
+			// all files from images/textures with "small" in their name loaded as clickable thumbnails
+			Image displayImage = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR+texture_file);
+			
+			BufferedImage bi = new BufferedImage(displayImage.getWidth(this),
+												 displayImage.getHeight(this),
+												 BufferedImage.TYPE_INT_RGB);
+			bi.createGraphics().drawImage(displayImage, 0, 0, this);
+			
+			Rectangle2D rectangle = new Rectangle2D.Float(0, 0,
+            						displayImage.getWidth(this),
+            						displayImage.getHeight(this));
+			TexturePaint tp = new TexturePaint(bi, rectangle);
+			
+			surface.setPaint(tp);
+			surface.fill(new Rectangle2D.Float(0,0,getWidth(), getHeight()));
+			
+		}
+		catch (Exception e) {}
+	}
 	
 	private void drawAnchorPoint(Graphics2D surface, AnchorPoint item) {
-		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, 0.1);
+		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE/2);
 		surface.setStroke(new BasicStroke(0.1f));
 		surface.draw(anchorPointToDraw);
 		surface.setColor(Color.white);
