@@ -11,7 +11,7 @@ import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 public class ActionPointEngine {
 	
 	public static double getCostOfPhysicalMove(Blob blob, Coordinate click) {
-		return GameParameters.BASE_PHYSICAL_MOVE_COST + (blob.getPosition().distanceFrom(click) / (1/blob.getWeight()));
+		return GameParameters.BASE_PHYSICAL_MOVE_COST + (blob.getPosition().distanceFrom(click) * blob.getWeight() * 0.5);
 	}
 	
 	public static double getCostOfProratedAction(Blob blob) {
