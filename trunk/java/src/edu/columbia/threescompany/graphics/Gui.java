@@ -454,17 +454,25 @@ public class Gui extends JFrame {
     	public void mouseReleased(MouseEvent e) {
 			// TODO Make movement input right. This is a very rough first pass to get things moving.
 			Point p = e.getPoint();
-			addChatLine("Clicked: ("+p.x+","+p.y+")");
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				_board.repaint(); // let go of right click so repaint
+				return;
+			}
+			
 			if (_gameState == null) { // drawBoard hasn't been called yet
 				return;
 			}
 			if (_activePlayer == null) { // It's no one's turn
 				return;
 			}
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				processClick(p);
+			}
+		}
+    	
+    	private void processClick(Point p) {
 			// The world variables are locations in world/game space (as opposed to screen space)
-			double worldX = (double)p.x * (int)GameParameters.BOARD_SIZE / _board.getWidth();
-			double worldY = (double)p.y * (int)GameParameters.BOARD_SIZE / _board.getHeight();
-			Coordinate worldClick = new Coordinate(worldX, worldY);
+			Coordinate worldClick = getClickCoordinate(p);
 			// TODO have screen to world and world to screen in only one place
 			Blob newSelection = blobClickedOn(worldClick);
 			if (newSelection != null) {
@@ -497,16 +505,7 @@ public class Gui extends JFrame {
 				}
 			}
 		}
-		public void mouseDragged(MouseEvent e) {
-			Point p = e.getPoint();
-			if (p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
-					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH) {
-				addChatLine("mouseDragged: ("+p.x+","+p.y+")");
-				// TODO Send this Point to real-time physics engine for line drawing	
-				// TODO get data back from physics to draw line for projected path
-			}
-		}
-	    
+		
 		private Blob blobClickedOn(Coordinate worldClick) {
 			for (GameObject object : _gameState.getObjects()) {
 				if (object instanceof Blob && !object.isDead()) {
@@ -550,13 +549,49 @@ public class Gui extends JFrame {
 				setButtonEnabled(ACTION_FORCE);
 		}
 		
+		private Coordinate getClickCoordinate(Point p) {
+			double worldX = (double)p.x * (int)GameParameters.BOARD_SIZE / _board.getWidth();
+			double worldY = (double)p.y * (int)GameParameters.BOARD_SIZE / _board.getHeight();
+			Coordinate worldClick = new Coordinate(worldX, worldY);
+			return worldClick;
+		}
+		
+		public void mousePressed(MouseEvent e) {
+			if (e.getButton() == MouseEvent.BUTTON3) { // right button pressed
+				Point p = e.getPoint();
+				Coordinate worldClick = getClickCoordinate(p);
+				Blob newSelection = blobClickedOn(worldClick);
+				if (newSelection == null && _graphicalState.getSelectedBlob() != null) {
+					// clicked a destination for a blob, display cost until released
+					double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
+					_board.drawMoveCost(worldClick, cost, cost < _ap);
+				}
+			}
+		}
+		
+		public void mouseDragged(MouseEvent e) {
+			Point p = e.getPoint();
+			if (p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
+					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH) {
+				if (e.getModifiers() == 4) { // right click drag
+					Coordinate worldClick = getClickCoordinate(p);
+					Blob newSelection = blobClickedOn(worldClick);
+					if (newSelection == null && _graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
+						_board.repaint();
+						double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
+						_board.drawMoveCost(worldClick, cost, cost < _ap);
+					}
+				}
+				// TODO Send this Point to real-time physics engine for line drawing	
+				// TODO get data back from physics to draw line for projected path
+			}
+		}
+		
 		/** not needed */
 		public void mouseEntered(MouseEvent e) {}
 		public void mouseExited(MouseEvent e) {}
 		public void mouseMoved(MouseEvent e) {}
 		public void mouseClicked(MouseEvent e) {}
-		public void mousePressed(MouseEvent e) {}
-		
 	}
     
 	private class MainButtonListener implements ActionListener {
