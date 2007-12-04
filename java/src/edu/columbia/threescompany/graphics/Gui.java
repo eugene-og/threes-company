@@ -187,6 +187,7 @@ public class Gui extends JFrame {
 										textures[i].getName()).getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
 			label.addMouseListener(new TextureListener());
 			label.setName(textures[i].getName());
+			label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			if (textures[i].getName().contains("small"))
 				pane.add(label);
 		}
@@ -298,7 +299,7 @@ public class Gui extends JFrame {
 		}
 		pane.setBorder(	BorderFactory.createCompoundBorder(
 							BorderFactory.createTitledBorder(
-							BorderFactory.createLineBorder(Color.GRAY), "AP"),
+							BorderFactory.createLineBorder(Color.GRAY), "Action Point Meter"),
 							BorderFactory.createEmptyBorder(0, 5, 5, 0)));
 		pane.setBackground(GuiConstants.BG_COLOR);
 		return pane;
@@ -371,7 +372,7 @@ public class Gui extends JFrame {
 		_board = new Board(_graphicalState);
 		_boardMouseListener = new BoardMouseListener();
 		_board.addMouseListener(_boardMouseListener);
-		_board.addMouseMotionListener(new BoardMouseMotionListener());
+		_board.addMouseMotionListener(_boardMouseListener);
 		pane.add(_board);
 		
 		return pane;
@@ -401,7 +402,6 @@ public class Gui extends JFrame {
 	{
 		_gameState = gameState;
 		_board.drawState(gameState);
-		//setAP(gameState.getAP());
 	}
 
 	private class ChatFocusListener implements FocusListener {
@@ -425,7 +425,6 @@ public class Gui extends JFrame {
 				addChatLine(_username + ": " + _txtLine.getText());
 				_chatThread.sendLine(_txtLine.getText());
 				_txtLine.setText("");
-				// TODO: pass off text to new chat event
 			}
 		}
 	}
@@ -450,9 +449,9 @@ public class Gui extends JFrame {
         }
     }
     
-    private class BoardMouseListener implements MouseListener
+    private class BoardMouseListener implements MouseListener, MouseMotionListener
     {
-		public void mouseClicked(MouseEvent e) {
+    	public void mouseReleased(MouseEvent e) {
 			// TODO Make movement input right. This is a very rough first pass to get things moving.
 			Point p = e.getPoint();
 			addChatLine("Clicked: ("+p.x+","+p.y+")");
@@ -467,7 +466,6 @@ public class Gui extends JFrame {
 			double worldY = (double)p.y * (int)GameParameters.BOARD_SIZE / _board.getHeight();
 			Coordinate worldClick = new Coordinate(worldX, worldY);
 			// TODO have screen to world and world to screen in only one place
-			// TODO only allow selecting blobs belonging to activePlayer
 			Blob newSelection = blobClickedOn(worldClick);
 			if (newSelection != null) {
 				// Debugging output
@@ -499,7 +497,28 @@ public class Gui extends JFrame {
 				}
 			}
 		}
-		
+		public void mouseDragged(MouseEvent e) {
+			Point p = e.getPoint();
+			if (p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
+					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH) {
+				addChatLine("mouseDragged: ("+p.x+","+p.y+")");
+				// TODO Send this Point to real-time physics engine for line drawing	
+				// TODO get data back from physics to draw line for projected path
+			}
+		}
+	    
+		private Blob blobClickedOn(Coordinate worldClick) {
+			for (GameObject object : _gameState.getObjects()) {
+				if (object instanceof Blob && !object.isDead()) {
+					double clickObjectDistance = object.getPosition().distanceFrom(worldClick);
+					if (clickObjectDistance <= object.getRadius()) {
+						return (Blob)object;
+					}
+				}
+			}
+	    	return null;
+	    }
+
 		private void updateAvailableActions() {
 			setButtonEnabled(ACTION_MOVE);
 			setButtonEnabled(ACTION_SPLIT);
@@ -532,37 +551,13 @@ public class Gui extends JFrame {
 		}
 		
 		/** not needed */
-		public void mouseEntered(MouseEvent arg0) {}
-		public void mouseExited(MouseEvent arg0) {}
-		public void mousePressed(MouseEvent arg0) {}
-		public void mouseReleased(MouseEvent arg0) {}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {}
+		public void mouseMoved(MouseEvent e) {}
+		public void mouseClicked(MouseEvent e) {}
+		public void mousePressed(MouseEvent e) {}
 		
-	    private Blob blobClickedOn(Coordinate worldClick) {
-			for (GameObject object : _gameState.getObjects()) {
-				if (object instanceof Blob && !object.isDead()) {
-					double clickObjectDistance = object.getPosition().distanceFrom(worldClick);
-					if (clickObjectDistance <= object.getRadius()) {
-						return (Blob)object;
-					}
-				}
-			}
-	    	return null;
-	    }
-    }
-    
-    private class BoardMouseMotionListener implements MouseMotionListener {
-    	// TODO still need this?
-		public void mouseDragged(MouseEvent e) {
-			Point p = e.getPoint();
-			if (p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
-					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH) {
-				addChatLine("mouseDragged: ("+p.x+","+p.y+")");
-				// TODO Send this Point to real-time physics engine for line drawing	
-				// TODO get data back from physics to draw line for projected path
-			}
-		}
-		public void mouseMoved(MouseEvent e) {}	
-    }
+	}
     
 	private class MainButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
