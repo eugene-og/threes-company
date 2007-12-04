@@ -148,7 +148,7 @@ public class Board extends Canvas {
 			surface.setColor(Color.WHITE);
 			double x = ((pos.x)*SCALE_FACTOR-16/2); // 16 = approximate width of string
 			double y = ((pos.y)*SCALE_FACTOR+8/2); // 8 = approximate height of string
-			surface.drawString(df.format(item.getRadius()), (float)x, (float)y);
+			surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
 			//surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 			
 			if (_graphicalState.getSelectedBlob() == item) {
