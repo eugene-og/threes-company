@@ -81,8 +81,13 @@ public class LocalGameState implements Serializable {
 		for (GameObject obj1 : _gameObjects)
 			for (GameObject obj2 : _gameObjects)
 				if (!obj1.isDead() && !obj2.isDead())
-					if (obj1.checkCollision(obj2))
+					if (obj1.checkCollision(obj2)) {
 						killList.add(obj1);
+						if (obj2.getRadius()-obj1.getRadius()/2 < GameParameters.BLOB_INITIAL_SIZE/2)
+							killList.add(obj2);
+						else
+							obj2.setRadius(obj2.getRadius()-obj1.getRadius()/2);
+					}
 		
 		for (GameObject obj : killList) {
 			obj.die();

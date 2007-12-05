@@ -15,6 +15,10 @@ public abstract class GameObject implements Serializable {
 	public double getRadius() {
 		return _radius;
 	}
+	
+	public void setRadius(double _radius) {
+		this._radius = _radius;
+	}
 
 	public double getWeight() {
 		return _weight;

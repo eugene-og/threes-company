@@ -154,7 +154,7 @@ public class Board extends Canvas {
 			if (_graphicalState.getSelectedBlob() == item) {
 				surface.setColor(Color.orange);
 				Ellipse2D selectionIndicator = circle(pos.x, pos.y, item.getRadius() + 0.8);
-				surface.setStroke(new BasicStroke(0.1f));
+				surface.setStroke(new BasicStroke(2.0f));
 				surface.draw(selectionIndicator);
 			}
 		}
@@ -221,7 +221,7 @@ public class Board extends Canvas {
 	
 	private void drawAnchorPoint(Graphics2D surface, AnchorPoint item) {
 		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE/2);
-		surface.setStroke(new BasicStroke(0.1f));
+		surface.setStroke(new BasicStroke(2.0f));
 		surface.draw(anchorPointToDraw);
 		surface.setColor(Color.white);
 	}
