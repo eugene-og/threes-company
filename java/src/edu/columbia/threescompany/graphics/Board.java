@@ -24,11 +24,13 @@ import javax.swing.ImageIcon;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.gameobjects.APCIPoint;
 import edu.columbia.threescompany.gameobjects.AnchorPoint;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.gameobjects.ImmovableGameObject;
 import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
@@ -121,6 +123,10 @@ public class Board extends Canvas {
 			if (item instanceof AnchorPoint) {
 				surface.setColor(Color.black);
 				drawAnchorPoint(surface, (AnchorPoint) item);
+				continue;
+			} else if (item instanceof APCIPoint) {
+				surface.setColor(Color.cyan);
+				drawAnchorPoint(surface, (APCIPoint) item);
 				continue;
 			}
 			if (item instanceof PushBlob)
@@ -219,13 +225,13 @@ public class Board extends Canvas {
 		catch (Exception e) {}
 	}
 	
-	private void drawAnchorPoint(Graphics2D surface, AnchorPoint item) {
+	private void drawAnchorPoint(Graphics2D surface, ImmovableGameObject item) {
 		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE/2);
 		surface.setStroke(new BasicStroke(2.0f));
 		surface.draw(anchorPointToDraw);
 		surface.setColor(Color.white);
 	}
-
+	
 	public void drawState(LocalGameState gameState)
 	{
 		_gameState = gameState;

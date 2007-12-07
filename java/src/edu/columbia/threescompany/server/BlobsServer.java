@@ -69,11 +69,11 @@ public class BlobsServer {
 		while (!gameState.gameOver()) {
 			activePlayer = (activePlayer + 1) % _playerList.size();
 			// TODO do this better -- Zach
-			String playerName = _playerList.get(activePlayer).getName();
-			sendMessage(playerName, new TurnChangeMessage(playerName));
+			Player player = _playerList.get(activePlayer);
+			sendMessage(player.getName(), new TurnChangeMessage(player));
 
 			MoveStatePair pair = receiveMoveAndState();
-			int sent = sendMoveToAllPlayersExcept(playerName, pair._move, pair._state);
+			int sent = sendMoveToAllPlayersExcept(player.getName(), pair._move, pair._state);
 
 			//if (sent == 0) continue;
 			gameState = pair._state;

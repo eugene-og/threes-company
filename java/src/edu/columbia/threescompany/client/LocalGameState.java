@@ -10,6 +10,7 @@ import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.PhysicalMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
+import edu.columbia.threescompany.gameobjects.APCIPoint;
 import edu.columbia.threescompany.gameobjects.AnchorPoint;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
@@ -36,12 +37,17 @@ public class LocalGameState implements Serializable {
 		
 		deactivateBlobs();
 		growBlobs();
+		resetAP();
 		checkCollisions();
 		
 		System.out.println("Game objects after executing move:");
 		for (GameObject item : _gameObjects) {
 			System.out.println(item);			
 		}
+	}
+
+	private void resetAP() {
+		_activePlayer.setActionPoints(10.0);
 	}
 
 	public void executeMove(GameMove move) {
@@ -132,18 +138,18 @@ public class LocalGameState implements Serializable {
 		return _players;
 	}
 	
-	public int getAP() {
-		return _activePlayer.getAbilityPoints();
+	public double getAP() {
+		return _activePlayer.getActionPoints();
 	}
 	
-	public void updateActivePlayer(String id) {
+	public void updateActivePlayer(Player newPlayer) {
 		for (Player player : _players) {
-			if (id.equals(player.getName())) {
+			if (newPlayer.equals(player)) {
 				_activePlayer = player;
 				return;
 			}
 		}
-		throw new RuntimeException("Can't set active player to " + id +
+		throw new RuntimeException("Can't set active player to " + newPlayer.getName() +
 								   ", that player doesn't exist!");
 	}
 
@@ -206,6 +212,7 @@ public class LocalGameState implements Serializable {
 		initialGameState.addObject(new ExplodingBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*6/8, getRandomBlobSize(), players.get(1)));
 		
 		initialGameState.addObject(new AnchorPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2));
+		initialGameState.addObject(new APCIPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2 + 2));
 		
 		return initialGameState;
 	}
