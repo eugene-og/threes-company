@@ -47,7 +47,10 @@ public class LocalGameState implements Serializable {
 	}
 
 	private void resetAP() {
-		_activePlayer.setActionPoints(10.0);
+		for (Player player : _players) {
+			player.setActionPoints(10.0d);
+			
+		}
 	}
 
 	public void executeMove(GameMove move) {
