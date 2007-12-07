@@ -170,7 +170,7 @@ public class BlobsClient {
 		if (message instanceof UpdateStateMessage) {
 			updateState(message);
 		} else if (message instanceof TurnChangeMessage) {
-			String activePlayer = ((TurnChangeMessage) message).whoseTurn();
+			Player activePlayer = ((TurnChangeMessage) message).whoseTurn();
 			_gameState.updateActivePlayer(activePlayer);
 			if (isLocalPlayer(activePlayer)) {
 				yourMove(activePlayer);
@@ -190,9 +190,9 @@ public class BlobsClient {
 		}
 	}
 
-	private static boolean isLocalPlayer(String activePlayer) {
+	private static boolean isLocalPlayer(Player activePlayer) {
 		for (Player player : _players)
-		if (activePlayer.equals(player.getName())) return true;
+		if (activePlayer.equals(player)) return true;
 		return false;
 	}
 
@@ -209,7 +209,7 @@ public class BlobsClient {
 //			throw new RuntimeException("Incorrect game state received!");
 	}
 
-	private static void yourMove(String activePlayer) throws IOException {
+	private static void yourMove(Player activePlayer) throws IOException {
 		final GameMove move = new GameMove(_gui.getMoveFor(activePlayer));
 		new Thread(new Runnable() {
 			public void run() {

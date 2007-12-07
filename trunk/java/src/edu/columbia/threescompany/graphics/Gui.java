@@ -85,7 +85,7 @@ public class Gui extends JFrame {
 	private GraphicalGameState	_graphicalState;
 	private Map<Blob, Coordinate> _blobMoves; // final positions
 	private int 				_selectedAction	= 0;
-	private String 				_activePlayer; // Null means no one's turn
+	private Player 				_activePlayer; // Null means no one's turn
 	public TurnEndCoordinator 	_turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
 	                                               // and notify across classes
 	
@@ -390,8 +390,9 @@ public class Gui extends JFrame {
 	private void setAP() {
 		for (int i=1; i < 11; i++)
 			_ap_panes[i].setBackground(Color.WHITE);
-		for (int i=1; i < (int)_ap+1; i++)
-			_ap_panes[i].setBackground(_ap_colors[i-1]);
+		for (int i=1; i < (int)_ap+1; i++) {
+			if (i<=10) _ap_panes[i].setBackground(_ap_colors[i-1]);
+		}
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(1);
 		df.setMinimumFractionDigits(1);
@@ -479,7 +480,7 @@ public class Gui extends JFrame {
 				// Debugging output
 				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getName());
 			}
-			if (newSelection != null && !newSelection.getOwner().getName().equals(_activePlayer)) {
+			if (newSelection != null && !newSelection.getOwner().equals(_activePlayer)) {
 				newSelection = null;
 				addChatLine("Blob does not belong to you.");
 			}
@@ -602,7 +603,7 @@ public class Gui extends JFrame {
 				_turnEndCoordinator.turnDone();
 			}
 			else { // clear queue
-				_ap = 10.0;
+				_ap = _activePlayer.getActionPoints();
 				setAP();
 				_blobMoves = new HashMap<Blob, Coordinate>();
 				_blobsToActivate = new ArrayList<Blob>();
@@ -710,10 +711,10 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_FORCE)));
 	}
 	
-	public GUIGameMove getMoveFor(String activePlayer) {
+	public GUIGameMove getMoveFor(Player activePlayer) {
 		// TODO Moves need a lot of work
 		addChatLine("It's player " + activePlayer + "'s turn.");
-		_ap = 10.0;
+		_ap = activePlayer.getActionPoints();
 		setAP();
 		_turnEndCoordinator.turnStart();
 		_blobMoves = new HashMap<Blob, Coordinate>();

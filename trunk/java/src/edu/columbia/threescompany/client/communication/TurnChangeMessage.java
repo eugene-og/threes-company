@@ -1,15 +1,17 @@
 package edu.columbia.threescompany.client.communication;
 
+import edu.columbia.threescompany.game.Player;
+
 public class TurnChangeMessage extends ServerMessage {
 	private static final long serialVersionUID = -3151972268456439697L;
 	
-	public TurnChangeMessage(String playerId) {
-		_playerID = playerId;
+	public TurnChangeMessage(Player player) {
+		_player = player;
 	}
 	
-	private String _playerID;
+	private Player _player;
 	
-	public String whoseTurn() {
-		return _playerID;
+	public Player whoseTurn() {
+		return _player;
 	}
 }
