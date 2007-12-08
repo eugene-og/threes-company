@@ -350,7 +350,7 @@ public class Gui extends JFrame {
 
 	private JButton getActionButton(String label, int i) {
 		_buttons.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
-		_buttons.get(i).setPreferredSize(new Dimension(80, 20));
+		_buttons.get(i).setPreferredSize(new Dimension(90, 20));
 		_buttons.get(i).setEnabled(false);
 		_buttons.get(i).setFont(GuiConstants.BUTTON_FONT);
 		_buttons.get(i).setBackground(Color.WHITE);
@@ -738,12 +738,32 @@ public class Gui extends JFrame {
 	
 	private void setButtonEnabled(int button) {
 		_buttons.get(button).setEnabled(true);
-		_buttons.get(button).setFont(new Font("Tahoma", Font.BOLD, 9));
+		_buttons.get(button).setFont(GuiConstants.BUTTON_ENABLED_FONT);
+		Blob blob = _graphicalState.getSelectedBlob();
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(1);
+		df.setMinimumFractionDigits(1);
+		if (button == ACTION_DEATH) {
+			_buttons.get(button).setText("Fire ("+df.format(ActionPointEngine.getCostOfProjectile(blob))+")");
+		} else if (button == ACTION_EXPLODE) {
+			_buttons.get(button).setText("Explode ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
+		} else if (button == ACTION_FILL) {
+			_buttons.get(button).setText("Fill (0)");
+		} else if (button == ACTION_FORCE) {
+			_buttons.get(button).setText("Force ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
+		} else if (button == ACTION_ROTATE) {
+			_buttons.get(button).setText("Rotate ("+df.format(ActionPointEngine.getCostOfRotate())+")");
+		} else if (button == ACTION_SLIPPERY) {
+			_buttons.get(button).setText("Slippery ("+df.format(ActionPointEngine.getCostOfProjectile(blob))+")");
+		} else if (button == ACTION_SPLIT) {
+			_buttons.get(button).setText("Split ("+df.format(ActionPointEngine.getCostOfSplit(blob))+")");
+		}
 	}
 	
 	private void setButtonDisabled(int button) {
 		_buttons.get(button).setEnabled(false);
-		_buttons.get(button).setFont(new Font("Tahoma", Font.PLAIN, 9));
+		_buttons.get(button).setFont(GuiConstants.CHAT_FONT);
+		_buttons.get(button).setText(_buttonCmds.get(button));
 	}
 
 	private class TextureListener implements MouseListener
