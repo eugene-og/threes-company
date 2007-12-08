@@ -46,6 +46,7 @@ import javax.swing.UIManager;
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.common.ConditionVariable;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;

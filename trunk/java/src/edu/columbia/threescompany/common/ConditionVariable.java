@@ -1,18 +1,18 @@
-package edu.columbia.threescompany.graphics;
+package edu.columbia.threescompany.common;
 
 public class ConditionVariable {
 	private Boolean _done;
 	
-	synchronized void setFalse() {
+	public synchronized void setFalse() {
 		_done = false;
 	}
 	
-	synchronized void setTrue() {
+	public synchronized void setTrue() {
 		_done = true;
 		notify();
 	}
 	
-	synchronized void waitUntilTrue() {
+	public synchronized void waitUntilTrue() {
 		while (!_done) {
 			try {
 				wait();
