@@ -28,6 +28,8 @@ public class GuiConstants {
 	
 	public static final Font	AP_LABEL_FONT = new Font("Tahoma", Font.BOLD, 9);
 	
+	public static final Font	BUTTON_ENABLED_FONT = new Font("Tahoma", Font.BOLD, 8);
+	
 	public static final Color	BG_COLOR = Color.WHITE;
 	
 	public static final String	IMAGES_DIR = "images" + File.separator;
