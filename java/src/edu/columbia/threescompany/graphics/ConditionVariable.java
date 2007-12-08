@@ -1,18 +1,18 @@
 package edu.columbia.threescompany.graphics;
 
-public class TurnEndCoordinator {
+public class ConditionVariable {
 	private Boolean _done;
 	
-	synchronized void turnStart() {
+	synchronized void setFalse() {
 		_done = false;
 	}
 	
-	synchronized void turnDone() {
+	synchronized void setTrue() {
 		_done = true;
 		notify();
 	}
 	
-	synchronized void waitUntilTurnDone() {
+	synchronized void waitUntilTrue() {
 		while (!_done) {
 			try {
 				wait();

@@ -86,8 +86,7 @@ public class Gui extends JFrame {
 	private Map<Blob, Coordinate> _blobMoves; // final positions
 	private int 				_selectedAction	= 0;
 	private Player 				_activePlayer; // Null means no one's turn
-	public TurnEndCoordinator 	_turnEndCoordinator; // This seems like overkill, but I don't know how else to use wait 
-	                                               // and notify across classes
+	public ConditionVariable 	_turnOver;
 	
 	private List<String> 		_buttonCmds = new ArrayList<String>();
 	private List<JButton>		_buttons = new ArrayList<JButton>();
@@ -108,7 +107,7 @@ public class Gui extends JFrame {
 		_username = getPlayerNamesString(players);
 		_gameState = null;
 		_graphicalState = new GraphicalGameState();
-		_turnEndCoordinator = new TurnEndCoordinator();
+		_turnOver = new ConditionVariable();
 		_activePlayer = null;
 		
 		try{ UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
@@ -600,7 +599,7 @@ public class Gui extends JFrame {
 			if (event.getActionCommand().equals("Done")) {
 				_graphicalState.setSelectedBlob(null);
 				_txtAreaQueue.setText("");
-				_turnEndCoordinator.turnDone();
+				_turnOver.setTrue();
 			}
 			else { // clear queue
 				_ap = _activePlayer.getActionPoints();
@@ -716,13 +715,13 @@ public class Gui extends JFrame {
 		addChatLine("It's player " + activePlayer + "'s turn.");
 		_ap = activePlayer.getActionPoints();
 		setAP();
-		_turnEndCoordinator.turnStart();
+		_turnOver.setFalse();
 		_blobMoves = new HashMap<Blob, Coordinate>();
 		_blobsToActivate = new ArrayList<Blob>();
 		_blobsToSpawn = new ArrayList<Blob>();
 		_graphicalState.setSelectedBlob(null);
 		_activePlayer = activePlayer;
-		_turnEndCoordinator.waitUntilTurnDone();
+		_turnOver.waitUntilTrue();
 		_activePlayer = null;
 
 		return new GUIGameMove(_blobMoves, _blobsToActivate, _blobsToSpawn);
