@@ -1,11 +1,14 @@
 package edu.columbia.threescompany.server;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
-
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import org.quickserver.net.AppException;
+import org.quickserver.net.qsadmin.gui.QSAdminGUI;
+import org.quickserver.net.qsadmin.gui.QSAdminMain;
 import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.QuickServer;
 
@@ -22,15 +25,49 @@ import edu.columbia.threescompany.sound.SoundEngine;
 
 public class BlobsServer {
 	public static String VERSION = "0.1";
-//	private static String _confFile = "conf" + File.separator + "BlobsServer.xml";
+	private QuickServer blobsServer;
+	private static int _port = 3444;
 	
 	private static List<Player> _playerList;
 	
-	public static void main(String args[]) throws IOException {
-		QuickServer blobsServer = new QuickServer("edu.columbia.threescompany.server.BlobsChatHandler");
+	public static void main(String args[]) {		
+		try {
+			
+			BlobsServer server = new BlobsServer();
+
+            try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				System.out.println("Non-fatal error setting look and feel.");
+				e.printStackTrace();
+			}
+			QSAdminMain admin = new QSAdminMain();
+			JFrame frame = new JFrame("Blobs Standalone Server");
+			QSAdminGUI adminGui = new QSAdminGUI(admin, frame);
+			frame.getContentPane().add(adminGui);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.pack();
+			frame.setSize(700, 450);
+			frame.setVisible(true);
+			adminGui.updateConnectionStatus(false);
+			JOptionPane.showMessageDialog(null, "Something's wrong here and this tool is not connecting to " +
+					"the server. The server still works though.", "Broken", JOptionPane.WARNING_MESSAGE);
+			//admin.doLogin("localhost", _port, "admin", "admin");
+			//adminGui.updateConnectionStatus(true);
+			
+			server.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+	}
+	
+	public BlobsServer() throws IOException, AppException {
+		blobsServer = new QuickServer("edu.columbia.threescompany.server.BlobsChatHandler");
 		blobsServer.setName("BlobsServer");
 		blobsServer.setBindAddr("0.0.0.0");
-		blobsServer.setPort(3444);
+		blobsServer.setPort(_port);
 		blobsServer.setClientData("edu.columbia.threescompany.server.PlayerServerData");
 		blobsServer.setClientAuthenticationHandler("edu.columbia.threescompany.server.BlobsServerQuickAuthenticator");
 		blobsServer.setClientObjectHandler("edu.columbia.threescompany.server.BlobsClientObjectHandler");
@@ -50,14 +87,10 @@ public class BlobsServer {
 		 * </communication-logging>
 		 */
 		
-		try {
-			blobsServer.startServer();
-			blobsServer.startQSAdminServer();
-		} catch (AppException e) {
-			System.err.println("Error in server : " + e);
-			e.printStackTrace();
-		}
-		
+		blobsServer.startServer();
+	}
+	
+	public void run() throws IOException {
 		BlobsGameState serverGameState = BlobsGameState.instance();
 		do {
 			try {
@@ -72,14 +105,14 @@ public class BlobsServer {
 		broadcastMessage(serverGameState, blobsServer, "Game Over!");
 	}
 
-	private static void broadcastMessage(BlobsGameState gameState, QuickServer server, String msg) throws IOException {
+	private void broadcastMessage(BlobsGameState gameState, QuickServer server, String msg) throws IOException {
 		for (PlayerServerData toPlayer : gameState.getAllPlayerServerData()) {
 			ClientHandler toHandler = toPlayer.getChatClientHandler();
 			toHandler.sendClientMsg(msg);	
 		}
 	}
 	
-	private static void mainServerLoop() throws IOException {
+	private void mainServerLoop() throws IOException {
 		_playerList = getPlayers();
 		LocalGameState gameState = LocalGameState.getInitialGameState(_playerList);
 		sendStateToAllPlayers(gameState);
@@ -103,25 +136,25 @@ public class BlobsServer {
 		SoundEngine.play(SoundEngine.GAMEOVER);
 	}
 
-	private static void sendGameOver() throws IOException {
+	private void sendGameOver() throws IOException {
 		sendMessageToAllPlayers(new GameOverMessage());
 	}
 
-	public static void sendStateToAllPlayers(LocalGameState gameState) throws IOException {
+	public void sendStateToAllPlayers(LocalGameState gameState) throws IOException {
 		sendMessageToAllPlayers(new UpdateStateMessage(gameState));
 	}
 
-	private static void sendMessageToAllPlayers(ServerMessage msg) throws IOException {
+	private void sendMessageToAllPlayers(ServerMessage msg) throws IOException {
 		for (Player player : getPlayers()) {
 			sendMessage(player.getName(), msg);
 		}
 	}
 
-	private static List<Player> getPlayers() {
+	private List<Player> getPlayers() {
 		return BlobsGameState.instance().getAllPlayers();
 	}
 	
-	public static int sendMoveToAllPlayersExcept(String playerId, GameMove move, LocalGameState initialState) throws IOException {
+	public int sendMoveToAllPlayersExcept(String playerId, GameMove move, LocalGameState initialState) throws IOException {
 		int count = 0;
 		ServerMessage msg = new ExecuteMoveMessage(move, initialState);
 		List<Player> players = getPlayers();
@@ -135,18 +168,18 @@ public class BlobsServer {
 		return count;
 	}
 	
-	public static MoveStatePair receiveMoveAndState() {
+	public MoveStatePair receiveMoveAndState() {
 		return MoveStatePairQueue.instance().blockForNextPair();
 	}
 
-	public static void sendMessage(String playerName, ServerMessage msg) throws IOException {
+	public void sendMessage(String playerName, ServerMessage msg) throws IOException {
 		ObjectOutputStream ooStream = getObjectOutputStreamFor(playerName);
 		if (ooStream == null)
 			throw new RuntimeException("Player " + playerName + "doesn't have an output stream!");
 		ooStream.writeObject(msg);
 	}
 
-	private static ObjectOutputStream getObjectOutputStreamFor(String playerName) {
+	private ObjectOutputStream getObjectOutputStreamFor(String playerName) {
 		ClientHandler handler = BlobsGameState.instance().getPlayerServerData(playerName).getGameClientHandler();
 		return handler.getObjectOutputStream();
 	}
