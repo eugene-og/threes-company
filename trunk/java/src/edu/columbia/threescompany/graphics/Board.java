@@ -16,11 +16,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
+import java.net.URL;
 import java.text.DecimalFormat;
-
-import javax.swing.ImageIcon;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
@@ -42,7 +39,8 @@ public class Board extends Canvas {
 	private GraphicalGameState _graphicalState;
 	Graphics offscreenSurface;
 	Image offscreenImage = null;
-	private String texture_file = "math_graph_small.gif";
+	private URL _backgroundUrl;
+	
 	private static final double SCALE_FACTOR = GuiConstants.BOARD_LENGTH/GameParameters.BOARD_SIZE;
 
 	public Board(GraphicalGameState graphicalState)
@@ -104,7 +102,7 @@ public class Board extends Canvas {
 		df.setMinimumFractionDigits(1);
 		df.setMaximumFractionDigits(1);
 
-		drawTexture(surface);
+		drawBackground(surface);
 		
 		//surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 		surface.setColor(Color.black);
@@ -200,29 +198,32 @@ public class Board extends Canvas {
 		surface.drawLine(0, GuiConstants.BOARD_LENGTH, 0, 0);
 	}
 
-	private void drawTexture(Graphics2D surface) {
+	private void drawBackground(Graphics2D surface) {
 		try {
-			// To add a new texture:
-			// 1.) put "small" somewhere in the texture image filename
-			// 2.) put texture image in images/textures
-			// all files from images/textures with "small" in their name loaded as clickable thumbnails
-			Image displayImage = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR+texture_file);
-			
+			if (_backgroundUrl == null) {
+				return;
+			}
+			// TODO Store these images somewhere when we first load them in Gui so we don't have to reload them.
+			Image displayImage = Toolkit.getDefaultToolkit().getImage(_backgroundUrl);
+			if (displayImage.getWidth(this) < 0) {
+				// I don't know why this can happen, but it does when the board first loads, so bail out
+				return;
+			}
 			BufferedImage bi = new BufferedImage(displayImage.getWidth(this),
-												 displayImage.getHeight(this),
-												 BufferedImage.TYPE_INT_RGB);
+					displayImage.getHeight(this), BufferedImage.TYPE_INT_RGB);
 			bi.createGraphics().drawImage(displayImage, 0, 0, this);
-			
-			Rectangle2D rectangle = new Rectangle2D.Float(0, 0,
-            						displayImage.getWidth(this),
-            						displayImage.getHeight(this));
+
+			Rectangle2D rectangle = new Rectangle2D.Float(0, 0, displayImage
+					.getWidth(this), displayImage.getHeight(this));
 			TexturePaint tp = new TexturePaint(bi, rectangle);
-			
+
 			surface.setPaint(tp);
-			surface.fill(new Rectangle2D.Float(0,0,getWidth(), getHeight()));
-			
+			surface.fill(new Rectangle2D.Float(0, 0, getWidth(), getHeight()));			
 		}
-		catch (Exception e) {}
+		catch (Exception e) {
+			System.out.println("Error in drawBackground():");
+			e.printStackTrace();
+		}
 	}
 	
 	private void drawAnchorPoint(Graphics2D surface, ImmovableGameObject item) {
@@ -238,9 +239,9 @@ public class Board extends Canvas {
 		repaint();
 	}
 	
-	public void setTextureFilename(String texture_file) {
-		this.texture_file = texture_file;
-		paint(getGraphics());
+	public void setBackground(URL backgroundUrl) {
+		_backgroundUrl = backgroundUrl;
+		repaint();
 	}
 	
 	public void drawMoveCost(Coordinate pos, double cost, boolean able) {

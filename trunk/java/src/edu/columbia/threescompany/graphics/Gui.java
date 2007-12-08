@@ -22,6 +22,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,6 +98,22 @@ public class Gui extends JFrame {
 	
 	private static Gui 			_instance;
 	private String				_username;
+
+	// This sucks a little. We used to load images dynamically by looking in the right directory, but that doesn't work
+	// in a jar. Now we have to list the images here.
+	private String[] _backgroundFiles = {
+			"/textures/math_graph_small.gif",
+			"/textures/blank_small.jpg",
+			"/textures/concrete_triangles_small.jpg",
+			"/textures/geometric_small.jpg",
+			"/textures/geometric2_small.jpg",
+			"/textures/heated_metal_small.jpg",
+			"/textures/money_small.jpg",
+			"/textures/red_clover_brick_small.jpg",
+			"/textures/stone_small.jpg",
+			"/textures/wood_panels_small.jpg",
+	};
+	private URL _defaultBackgroundUrl = null; // Gets set to the first image loaded
 	
 	public static Gui getInstance(ChatThread thread, List<Player> players) {
 		if (_instance == null) _instance = new Gui(thread, players);
@@ -149,7 +167,7 @@ public class Gui extends JFrame {
 		controlsPane.add(actionsPane, BorderLayout.SOUTH);
 		
 		/* setup textures pane */
-		JPanel texturesPane = getTexturesPane(); 
+		JPanel texturesPane = getTexturesPane();
 		
 		/* setup Done button pane */
 		JPanel buttonpane = getButtonPane();
@@ -172,24 +190,27 @@ public class Gui extends JFrame {
 		setVisible(true);
 
 		_board.initGraphicsBuffer();
+		_board.setBackground(_defaultBackgroundUrl);
 	}
 
 	private JPanel getTexturesPane() {
 		JPanel pane = new JPanel();
 		pane.setBackground(Color.WHITE);
-		// To add a new texture:
-		// 1.) put "small" somewhere in the texture image filename
-		// 2.) put texture image in images/textures
-		// all files from images/textures with "small" in their name loaded as clickable thumbnails
-		File[] textures = (new File(GuiConstants.IMAGES_TEXTURES_DIR)).listFiles();
-		for (int i=0; i<textures.length; i++) {
-			JLabel label = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_TEXTURES_DIR + 
-										textures[i].getName()).getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
+		for (int i=0; i<_backgroundFiles.length; i++) {
+			URL url = this.getClass().getResource(_backgroundFiles[i]);
+			if (url == null) {
+				System.out.println("Error loading resource " + _backgroundFiles[i]);
+				continue;
+			}
+			ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().getImage(url).getScaledInstance(16, 16, Image.SCALE_DEFAULT));
+			if (_defaultBackgroundUrl == null) {
+				_defaultBackgroundUrl = url;
+			}
+			JLabel label = new JLabel(image);
 			label.addMouseListener(new TextureListener());
-			label.setName(textures[i].getName());
+			label.setName(url.toString());
 			label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			if (textures[i].getName().contains("small"))
-				pane.add(label);
+			pane.add(label);
 		}
 		return pane;
 	}
@@ -769,7 +790,12 @@ public class Gui extends JFrame {
 	private class TextureListener implements MouseListener
     {
 		public void mouseClicked(MouseEvent e) {
-			_board.setTextureFilename(e.getComponent().getName());
+			try {
+				_board.setBackground(new URL(e.getComponent().getName()));
+			} catch (MalformedURLException e1) {
+				System.out.println("Error creating url for loading image from label name.");
+				e1.printStackTrace();
+			}
 		}
 		
 		/** not needed */
