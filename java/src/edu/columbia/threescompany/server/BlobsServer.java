@@ -22,21 +22,40 @@ import edu.columbia.threescompany.sound.SoundEngine;
 
 public class BlobsServer {
 	public static String VERSION = "0.1";
-	private static String _confFile = "conf" + File.separator + "BlobsServer.xml";
+//	private static String _confFile = "conf" + File.separator + "BlobsServer.xml";
 	
 	private static List<Player> _playerList;
 	
 	public static void main(String args[]) throws IOException {
-		QuickServer blobsServer = new QuickServer();
-		Object config[] = new Object[] { _confFile };
-		if (blobsServer.initService(config) == true) {
-			try {
-				blobsServer.startServer();
-				blobsServer.startQSAdminServer();
-			} catch (AppException e) {
-				System.err.println("Error in server : " + e);
-				e.printStackTrace();
-			}
+		QuickServer blobsServer = new QuickServer("edu.columbia.threescompany.server.BlobsChatHandler");
+		blobsServer.setName("BlobsServer");
+		blobsServer.setBindAddr("0.0.0.0");
+		blobsServer.setPort(3444);
+		blobsServer.setClientData("edu.columbia.threescompany.server.PlayerServerData");
+		blobsServer.setClientAuthenticationHandler("edu.columbia.threescompany.server.BlobsServerQuickAuthenticator");
+		blobsServer.setClientObjectHandler("edu.columbia.threescompany.server.BlobsClientObjectHandler");
+		blobsServer.setTimeout(-1);
+		
+		blobsServer.setQSAdminServerPort(4445);
+		blobsServer.setServerBanner("QSAdminServer Started on port : 4445");
+		
+		/* DB: I switched from using a config file to hardcoded values because we couldn't load the config file nicely
+		 * from in a jar. I translated most things to here, but couldn't figure out how the reproduce the piece below. 
+		 * It seems to work without it.
+		 * <command-shell>
+		 *   <enable>true</enable>
+		 * </command-shell>
+		 * <communication-logging>
+		 *   <enable>false</enable>
+		 * </communication-logging>
+		 */
+		
+		try {
+			blobsServer.startServer();
+			blobsServer.startQSAdminServer();
+		} catch (AppException e) {
+			System.err.println("Error in server : " + e);
+			e.printStackTrace();
 		}
 		
 		BlobsGameState serverGameState = BlobsGameState.instance();
