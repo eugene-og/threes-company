@@ -13,6 +13,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.quickserver.net.AppException;
+
 import edu.columbia.threescompany.client.communication.AuthenticationException;
 import edu.columbia.threescompany.client.communication.AuthenticationObject;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
@@ -148,16 +150,7 @@ public class BlobsClient {
 		GameType gameType = PreGameGui.getGameType();
 		
 		if (gameType == GameType.HOTSEAT) {
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						BlobsServer.main(new String[0]);
-					} catch (IOException e) {
-						System.err.println("Embedded server crashed.");
-						e.printStackTrace();
-					}
-				}
-			}).start();
+			runEmbeddedServer();
 			_players = PlayerInfoGui.getPlayers(2);
 		} else if (gameType == GameType.NETWORK) {
 			_players = PlayerInfoGui.getPlayers(1);
@@ -166,6 +159,21 @@ public class BlobsClient {
 		}
 	}
 	
+	private static void runEmbeddedServer() {
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					new BlobsServer().run();
+				} catch (Exception e) {
+					e.printStackTrace();
+					String message = "Embedded server crashed:\n";
+					message += e.toString();
+					JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+ 				}
+			}
+		}).start();
+	}
+
 	private static void handleMessage(ServerMessage message) throws IOException {
 		if (message instanceof UpdateStateMessage) {
 			updateState(message);
