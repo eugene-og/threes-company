@@ -237,4 +237,8 @@ public class BlobsClient {
 											JOptionPane.ERROR_MESSAGE );
 	}
 
+	public static LocalGameState getGameState() {
+		return _gameState;
+	}
+
 }
