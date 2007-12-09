@@ -31,7 +31,7 @@ public class Hole extends ImmovableGameObject {
 	}
 
 	public boolean collidesWith(GameObject blob) {
-		return _position.distanceFrom(blob.getPosition()) <= blob.getRadius();
+		return _position.distanceFrom(blob.getPosition()) <= _radius;
 	}
 
 	public GameObject clone() {
