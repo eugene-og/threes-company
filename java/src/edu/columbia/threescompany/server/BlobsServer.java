@@ -50,10 +50,8 @@ public class BlobsServer {
 			frame.setSize(700, 450);
 			frame.setVisible(true);
 			adminGui.updateConnectionStatus(false);
-			JOptionPane.showMessageDialog(null, "Something's wrong here and this tool is not connecting to " +
-					"the server. The server still works though.", "Broken", JOptionPane.WARNING_MESSAGE);
-			//admin.doLogin("localhost", _port, "admin", "admin");
-			//adminGui.updateConnectionStatus(true);
+			admin.doLogin("localhost", 4445, "Admin", "QsAdm1n");
+			adminGui.updateConnectionStatus(true);
 			
 			server.run();
 		} catch (Exception e) {
@@ -73,8 +71,8 @@ public class BlobsServer {
 		blobsServer.setClientObjectHandler("edu.columbia.threescompany.server.BlobsClientObjectHandler");
 		blobsServer.setTimeout(-1);
 		
-		blobsServer.setQSAdminServerPort(4445);
 		blobsServer.setServerBanner("QSAdminServer Started on port : 4445");
+		blobsServer.startQSAdminServer(4445, null);
 		
 		/* DB: I switched from using a config file to hardcoded values because we couldn't load the config file nicely
 		 * from in a jar. I translated most things to here, but couldn't figure out how the reproduce the piece below. 
@@ -125,7 +123,7 @@ public class BlobsServer {
 			sendMessage(player.getName(), new TurnChangeMessage(player));
 
 			MoveStatePair pair = receiveMoveAndState();
-			int sent = sendMoveToAllPlayersExcept(player.getName(), pair._move, pair._state);
+			sendMoveToAllPlayersExcept(player.getName(), pair._move, pair._state);
 
 			//if (sent == 0) continue;
 			gameState = pair._state;
