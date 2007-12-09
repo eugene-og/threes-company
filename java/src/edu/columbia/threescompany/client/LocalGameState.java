@@ -17,6 +17,7 @@ import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.gameobjects.Hole;
 import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
@@ -216,6 +217,7 @@ public class LocalGameState implements Serializable {
 		
 		initialGameState.addObject(new AnchorPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2));
 		initialGameState.addObject(new APCIPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2 + 2));
+		initialGameState.addObject(new Hole(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2 + 10, GameParameters.BLOB_SIZE_LIMIT));
 		
 		return initialGameState;
 	}
