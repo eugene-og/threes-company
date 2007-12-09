@@ -1,10 +1,13 @@
 package edu.columbia.threescompany.gameobjects;
 
+import edu.columbia.threescompany.client.BlobsClient;
+import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
 public class ExplodingBlob extends Blob {
 	private static final long serialVersionUID = -5592289336246561407L;
+	private boolean _activated;
 
 	public ExplodingBlob(double x, double y, double radius, Player owner) {
 		super(x, y, radius, owner);
@@ -19,9 +22,12 @@ public class ExplodingBlob extends Blob {
 	}
 	
 	public void activate(boolean activated) {
-		if (activated) return;
-		
-		// TODO die and create a Hole [on deactivation]
+		_activated = activated;
+		if (_activated) {
+			LocalGameState gameState = BlobsClient.getGameState();
+			this.die();
+			gameState.addObject(new Hole(this.getPosition().x, this.getPosition().y, this.getRadius() * 2));	
+		}
 	}
 	
 	public GameObject clone() {
