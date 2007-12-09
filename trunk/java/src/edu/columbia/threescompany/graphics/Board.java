@@ -27,6 +27,7 @@ import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.gameobjects.Hole;
 import edu.columbia.threescompany.gameobjects.ImmovableGameObject;
 import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
@@ -125,6 +126,10 @@ public class Board extends Canvas {
 			} else if (item instanceof APCIPoint) {
 				surface.setColor(Color.cyan);
 				drawAnchorPoint(surface, (APCIPoint) item);
+				continue;
+			} else if (item instanceof Hole) {
+				surface.setColor(Color.black);
+				drawHole(surface, (Hole) item);
 				continue;
 			}
 			if (item instanceof PushBlob)
@@ -231,6 +236,14 @@ public class Board extends Canvas {
 		surface.setStroke(new BasicStroke(2.0f));
 		surface.draw(anchorPointToDraw);
 		surface.setColor(Color.white);
+	}
+	
+	private void drawHole(Graphics2D surface, ImmovableGameObject item) {
+		Ellipse2D holeToDraw = circle(item.getPosition().x, item.getPosition().y, item.getRadius());
+		surface.setStroke(new BasicStroke(2.0f));
+		surface.draw(holeToDraw);
+		surface.setColor(Color.black);
+		surface.fill(holeToDraw);
 	}
 	
 	public void drawState(LocalGameState gameState)
