@@ -11,10 +11,8 @@ import java.awt.MediaTracker;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -125,36 +123,47 @@ public class Board extends Canvas {
 				continue;
 			} else if (item instanceof APCIPoint) {
 				surface.setColor(Color.cyan);
-				drawAnchorPoint(surface, (APCIPoint) item);
+				drawAPCIPoint(surface, (APCIPoint) item);
 				continue;
 			} else if (item instanceof Hole) {
 				surface.setColor(Color.black);
 				drawHole(surface, (Hole) item);
 				continue;
 			}
-			if (item instanceof PushBlob)
-				surface.setColor(Color.blue);
-			else if (item instanceof PullBlob)
-				surface.setColor(Color.red);
-			else if (item instanceof DeathRayBlob)
-				surface.setColor(Color.black);
-			else if (item instanceof ExplodingBlob)
-				surface.setColor(Color.green);
-			else if (item instanceof SlipperyBlob)
-				surface.setColor(Color.yellow);
+			BufferedImage bi = null;
+			Color textColor = null;
+			//TODO: Find appropriate text and outline colors... also better icons?
+			if (item instanceof PushBlob) {
+				bi = ImageUtilities.getBufferedImage("/icons/bgblu02.gif", this);
+				textColor = Color.white;
+			} else if (item instanceof PullBlob) {
+				bi = ImageUtilities.getBufferedImage("/icons/bgred02.gif", this);
+				textColor = Color.white;
+			} else if (item instanceof DeathRayBlob) {
+				bi = ImageUtilities.getBufferedImage("/icons/bgbrn07.gif", this);
+				textColor = Color.white;
+			} else if (item instanceof ExplodingBlob) {
+				bi = ImageUtilities.getBufferedImage("/icons/bgyel01.gif", this);
+				textColor = Color.white;
+			} else if (item instanceof SlipperyBlob) {
+				bi = ImageUtilities.getBufferedImage("/icons/bggrn01.gif", this);
+				textColor = Color.white;
+			}
 			Coordinate pos = item.getPosition();
 			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
+			TexturePaint paint = new TexturePaint(bi, blobToDraw.getFrame());
+			surface.setPaint(paint);
+			surface.fill(blobToDraw);
 			surface.setStroke(new BasicStroke(3.0f));
-			surface.draw(blobToDraw);
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
 				surface.setColor(Color.lightGray);
 			} else {
 				surface.setColor(Color.darkGray);
 			}
-			surface.fill(blobToDraw);
+			surface.draw(blobToDraw);
 			
 			//surface.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
-			surface.setColor(Color.WHITE);
+			surface.setColor(textColor);
 			double x = ((pos.x)*SCALE_FACTOR-16/2); // 16 = approximate width of string
 			double y = ((pos.y)*SCALE_FACTOR+8/2); // 8 = approximate height of string
 			surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
@@ -208,15 +217,14 @@ public class Board extends Canvas {
 			if (_backgroundUrl == null) {
 				return;
 			}
+			
 			// TODO Store these images somewhere when we first load them in Gui so we don't have to reload them.
 			Image displayImage = Toolkit.getDefaultToolkit().getImage(_backgroundUrl);
 			if (displayImage.getWidth(this) < 0) {
 				// I don't know why this can happen, but it does when the board first loads, so bail out
 				return;
 			}
-			BufferedImage bi = new BufferedImage(displayImage.getWidth(this),
-					displayImage.getHeight(this), BufferedImage.TYPE_INT_RGB);
-			bi.createGraphics().drawImage(displayImage, 0, 0, this);
+			BufferedImage bi = ImageUtilities.getBufferedImage(_backgroundUrl, this);
 
 			Rectangle2D rectangle = new Rectangle2D.Float(0, 0, displayImage
 					.getWidth(this), displayImage.getHeight(this));
@@ -232,17 +240,33 @@ public class Board extends Canvas {
 	}
 	
 	private void drawAnchorPoint(Graphics2D surface, ImmovableGameObject item) {
-		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE/2);
-		surface.setStroke(new BasicStroke(2.0f));
+		BufferedImage bi = ImageUtilities.getBufferedImage("/icons/Anchor0b.gif", this);
+
+		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE*0.75);
+		TexturePaint paint = new TexturePaint(bi,anchorPointToDraw.getFrame());
+		surface.setPaint(paint);
+		surface.fill(anchorPointToDraw);
+		
+		surface.setStroke(new BasicStroke(3.0f));
 		surface.draw(anchorPointToDraw);
 		surface.setColor(Color.white);
 	}
 	
+	private void drawAPCIPoint(Graphics2D surface, ImmovableGameObject item) {
+		BufferedImage bi = ImageUtilities.getBufferedImage("/icons/bgblu01.gif", this);
+		
+		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE*0.75);
+		TexturePaint paint = new TexturePaint(bi,anchorPointToDraw.getFrame());
+		surface.setPaint(paint);
+		surface.fill(anchorPointToDraw);
+	}
+	
 	private void drawHole(Graphics2D surface, ImmovableGameObject item) {
+		BufferedImage bi = ImageUtilities.getBufferedImage("/icons/hole.PNG", this);
 		Ellipse2D holeToDraw = circle(item.getPosition().x, item.getPosition().y, item.getRadius());
-		surface.setStroke(new BasicStroke(2.0f));
-		surface.draw(holeToDraw);
-		surface.setColor(Color.black);
+		
+		TexturePaint paint = new TexturePaint(bi,holeToDraw.getFrame());
+		surface.setPaint(paint);
 		surface.fill(holeToDraw);
 	}
 	
