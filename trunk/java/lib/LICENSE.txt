@@ -1,1 +1,1 @@
-We use a number of 3rd party libraries. Please check each one for it's license.
+We use a number of 3rd party libraries. Please check each one for its license.
