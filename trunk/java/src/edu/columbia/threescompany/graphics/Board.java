@@ -7,12 +7,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.MediaTracker;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -130,30 +130,24 @@ public class Board extends Canvas {
 				drawHole(surface, (Hole) item);
 				continue;
 			}
-			BufferedImage bi = null;
-			Color textColor = null;
-			//TODO: Find appropriate text and outline colors... also better icons?
+			
+			Color textColor = null; //TODO This may change depending on the fill color/texture of the blob
 			if (item instanceof PushBlob) {
-				bi = ImageUtilities.getBufferedImage("/icons/bgblu02.gif", this);
 				textColor = Color.white;
 			} else if (item instanceof PullBlob) {
-				bi = ImageUtilities.getBufferedImage("/icons/bgred02.gif", this);
 				textColor = Color.white;
 			} else if (item instanceof DeathRayBlob) {
-				bi = ImageUtilities.getBufferedImage("/icons/bgbrn07.gif", this);
 				textColor = Color.white;
 			} else if (item instanceof ExplodingBlob) {
-				bi = ImageUtilities.getBufferedImage("/icons/bgyel01.gif", this);
 				textColor = Color.white;
 			} else if (item instanceof SlipperyBlob) {
-				bi = ImageUtilities.getBufferedImage("/icons/bggrn01.gif", this);
 				textColor = Color.white;
 			}
+			//TODO Need to find better icons and way to differentiate between 2 players
+			BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
 			Coordinate pos = item.getPosition();
 			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
-			TexturePaint paint = new TexturePaint(bi, blobToDraw.getFrame());
-			surface.setPaint(paint);
-			surface.fill(blobToDraw);
+			fillShapeWithImage(surface, blobToDraw, bi);
 			surface.setStroke(new BasicStroke(3.0f));
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
 				surface.setColor(Color.lightGray);
@@ -240,34 +234,32 @@ public class Board extends Canvas {
 	}
 	
 	private void drawAnchorPoint(Graphics2D surface, ImmovableGameObject item) {
-		BufferedImage bi = ImageUtilities.getBufferedImage("/icons/Anchor0b.gif", this);
-
+		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
 		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE*0.75);
-		TexturePaint paint = new TexturePaint(bi,anchorPointToDraw.getFrame());
-		surface.setPaint(paint);
-		surface.fill(anchorPointToDraw);
-		
+		fillShapeWithImage(surface, anchorPointToDraw, bi);
+
+		//draw the outline
 		surface.setStroke(new BasicStroke(3.0f));
 		surface.draw(anchorPointToDraw);
 		surface.setColor(Color.white);
 	}
-	
+
 	private void drawAPCIPoint(Graphics2D surface, ImmovableGameObject item) {
-		BufferedImage bi = ImageUtilities.getBufferedImage("/icons/bgblu01.gif", this);
-		
-		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE*0.75);
-		TexturePaint paint = new TexturePaint(bi,anchorPointToDraw.getFrame());
-		surface.setPaint(paint);
-		surface.fill(anchorPointToDraw);
+		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
+		Ellipse2D apciPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE*0.75);
+		fillShapeWithImage(surface, apciPointToDraw, bi);
 	}
 	
 	private void drawHole(Graphics2D surface, ImmovableGameObject item) {
-		BufferedImage bi = ImageUtilities.getBufferedImage("/icons/hole.PNG", this);
+		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
 		Ellipse2D holeToDraw = circle(item.getPosition().x, item.getPosition().y, item.getRadius());
-		
-		TexturePaint paint = new TexturePaint(bi,holeToDraw.getFrame());
+		fillShapeWithImage(surface, holeToDraw, bi);
+	}
+	
+	private void fillShapeWithImage(Graphics2D surface, RectangularShape shape, BufferedImage bi) {
+		TexturePaint paint = new TexturePaint(bi,shape.getFrame());
 		surface.setPaint(paint);
-		surface.fill(holeToDraw);
+		surface.fill(shape);
 	}
 	
 	public void drawState(LocalGameState gameState)

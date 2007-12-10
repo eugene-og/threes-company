@@ -5,13 +5,24 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
+
+import edu.columbia.threescompany.gameobjects.APCIPoint;
+import edu.columbia.threescompany.gameobjects.AnchorPoint;
+import edu.columbia.threescompany.gameobjects.DeathRayBlob;
+import edu.columbia.threescompany.gameobjects.ExplodingBlob;
+import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.gameobjects.Hole;
+import edu.columbia.threescompany.gameobjects.PullBlob;
+import edu.columbia.threescompany.gameobjects.PushBlob;
+import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 
 public class ImageUtilities {
-
-	/** Create Image from a file, then turn that into a BufferedImage.
-	 */
-
+	
+	protected static HashMap<Class<? extends GameObject>, String> imageMap = new HashMap<Class<? extends GameObject>, String>();
+	
 	public static BufferedImage getBufferedImage(URL url, Component c) {
 		Image image = c.getToolkit().getImage(url);
 		waitForImage(image, c);
@@ -21,18 +32,27 @@ public class ImageUtilities {
 		g2d.drawImage(image, 0, 0, c);
 		return (bufferedImage);
 	}
-	public static BufferedImage getBufferedImage(String path, Component c) {
-		URL url = path.getClass().getResource(path);
-		return getBufferedImage(url, c);
+	
+	public static BufferedImage getBufferedImage(GameObject gameObject, Component c) {
+		Class<? extends GameObject> gameObjectType = gameObject.getClass();
+		return getBufferedImage(getImageURLForType(gameObjectType), c);
 	}
 
-	/** Take an Image associated with a file, and wait until it is
-	 *  done loading. Just a simple application of MediaTracker.
-	 *  If you are loading multiple images, don't use this
-	 *  consecutive times; instead use the version that takes
-	 *  an array of images.
-	 */
-
+	private static URL getImageURLForType(Class<? extends GameObject> gameObjectClass) {
+		//if not initialized, initialize image map
+		if (imageMap.isEmpty()) {
+			imageMap.put(PushBlob.class, GuiConstants.PUSH_BLOB_IMAGE);
+			imageMap.put(PullBlob.class, GuiConstants.PULL_BLOB_IMAGE);
+			imageMap.put(ExplodingBlob.class, GuiConstants.EXPLODING_BLOB_IMAGE);
+			imageMap.put(SlipperyBlob.class, GuiConstants.SLIPPERY_BLOB_IMAGE);
+			imageMap.put(DeathRayBlob.class, GuiConstants.DEATHRAY_BLOB_IMAGE);
+			imageMap.put(AnchorPoint.class, GuiConstants.ANCHOR_POINT_IMAGE);
+			imageMap.put(APCIPoint.class, GuiConstants.APCI_POINT_IMAGE);
+			imageMap.put(Hole.class, GuiConstants.HOLE_IMAGE);
+		}
+		return gameObjectClass.getResource("/icons/"+imageMap.get(gameObjectClass));
+	}
+	
 	private static boolean waitForImage(Image image, Component c) {
 		MediaTracker tracker = new MediaTracker(c);
 		tracker.addImage(image, 0);
