@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 
