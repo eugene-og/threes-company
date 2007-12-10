@@ -43,5 +43,15 @@ public class GuiConstants {
 												"John Morales\n" +
 												"Eugene Kozhukalo\n" +
     											"Zach van Schouwen";
+    
+    public static final String PUSH_BLOB_IMAGE = "bgblu02.gif";
+    public static final String PULL_BLOB_IMAGE = "bgred02.gif";
+    public static final String EXPLODING_BLOB_IMAGE = "bgyel01.gif";
+    public static final String SLIPPERY_BLOB_IMAGE = "bggrn01.gif";
+    public static final String DEATHRAY_BLOB_IMAGE = "bgbrn07.gif";
+    public static final String ANCHOR_POINT_IMAGE = "Anchor0b.gif";
+    public static final String APCI_POINT_IMAGE = "bgblu01.gif";
+    public static final String HOLE_IMAGE = "hole.PNG";
+
 }
 												
