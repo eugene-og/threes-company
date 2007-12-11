@@ -217,15 +217,11 @@ public class BlobsClient {
 
 	private static void yourMove(Player activePlayer) throws IOException {
 		final GameMove move = new GameMove(_gui.getMoveFor(activePlayer));
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					_serverConnection.sendMove(move, _gameState);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}).start();
+		// sendMove used to happen in a new thread spawned here for that. But this was broken because the state could
+		// change before the send thread sent. I tried to fix this by clone()ing the state and sending a copy. But 
+		// then the move references the wrong blobs and life is bad. So for now we'll just send synchronously before
+		// we change anything.
+		_serverConnection.sendMove(move, _gameState);
 		_gameState.executeMove(move, _gui);
 	}
 
