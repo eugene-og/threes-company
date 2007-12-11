@@ -13,8 +13,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.quickserver.net.AppException;
-
 import edu.columbia.threescompany.client.communication.AuthenticationException;
 import edu.columbia.threescompany.client.communication.AuthenticationObject;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
