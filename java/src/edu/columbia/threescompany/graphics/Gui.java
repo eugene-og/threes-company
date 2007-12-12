@@ -493,10 +493,14 @@ public class Gui extends JFrame {
     private class BoardMouseListener implements MouseListener, MouseMotionListener
     {
     	public void mouseReleased(MouseEvent e) {
-			// TODO Make movement input right. This is a very rough first pass to get things moving.
 			Point p = e.getPoint();
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				_board.repaint(); // let go of right click so repaint
+			if (isRightClick(e)) {
+				/* There's cost numbers hangin' around */
+				_board.repaint();
+				
+				/* ZvS: We consider this a move, right?!? I'm making it act that way: */
+				addMoveForCurrentBlob(getClickCoordinate(p));
+				
 				return;
 			}
 			
@@ -506,9 +510,14 @@ public class Gui extends JFrame {
 			if (_activePlayer == null) { // It's no one's turn
 				return;
 			}
-			if (e.getButton() == MouseEvent.BUTTON1) {
+			
+			if (isLeftClick(e)) {
 				processClick(p);
 			}
+		}
+
+		private boolean isLeftClick(MouseEvent e) {
+			return e.getButton() == MouseEvent.BUTTON1;
 		}
     	
     	private void processClick(Point p) {
@@ -533,18 +542,22 @@ public class Gui extends JFrame {
 				addChatLine("Selected blob " + _graphicalState.getSelectedBlob());
 			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
 				if (_selectedAction == 0) { // move action
-					double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
-					if (_ap - cost <= 0.0) {
-						showNotEnoughAPDialog("move this blob");
-					} else {
-						_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
-						addQueueLine("Moving blob to " + worldClick.toRoundedString() + " with cost of " + cost);
-						addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-								" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
-						_ap -= cost;
-						setAP();
-					}
+					addMoveForCurrentBlob(worldClick);
 				}
+			}
+		}
+
+		private void addMoveForCurrentBlob(Coordinate worldClick) {
+			double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
+			if (_ap - cost <= 0.0) {
+				showNotEnoughAPDialog("move this blob");
+			} else {
+				_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
+				addQueueLine("Moving blob to " + worldClick.toRoundedString() + " with cost of " + cost);
+				addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+						" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
+				_ap -= cost;
+				setAP();
 			}
 		}
 		
@@ -599,34 +612,50 @@ public class Gui extends JFrame {
 		}
 		
 		public void mousePressed(MouseEvent e) {
-			if (e.getButton() == MouseEvent.BUTTON3) { // right button pressed
+			if (isRightClick(e)) { // right button pressed
 				Point p = e.getPoint();
 				Coordinate worldClick = getClickCoordinate(p);
 				Blob newSelection = blobClickedOn(worldClick);
-				if (newSelection == null && _graphicalState.getSelectedBlob() != null) {
-					// clicked a destination for a blob, display cost until released
-					double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
-					_board.drawMoveCost(worldClick, cost, cost < _ap);
+				
+				if (newSelection != null)
+					_graphicalState.setSelectedBlob(newSelection);
+				
+				if (_graphicalState.getSelectedBlob() != null) {
+					drawMoveCost(worldClick);
 				}
 			}
+		}
+
+		private void drawMoveCost(Coordinate worldClick) {
+			// clicked a destination for a blob, display cost until released
+			double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
+			_board.drawMoveCost(worldClick, cost, cost < _ap);
+			_board.repaint();
+		}
+
+		private boolean isRightClick(MouseEvent e) {
+			return e.getButton() == MouseEvent.BUTTON3;
 		}
 		
 		public void mouseDragged(MouseEvent e) {
 			Point p = e.getPoint();
-			if (p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
-					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH) {
-				if (e.getModifiers() == 4) { // right click drag
-					Coordinate worldClick = getClickCoordinate(p);
-					Blob newSelection = blobClickedOn(worldClick);
-					if (newSelection == null && _graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
-						_board.repaint();
-						double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
-						_board.drawMoveCost(worldClick, cost, cost < _ap);
-					}
+			if (isOnBoard(p) && isRightClickDrag(e)) {
+				if (_graphicalState.getSelectedBlob() != null) {
+					// clicked a destination for a blob
+					drawMoveCost(getClickCoordinate(p));
 				}
-				// TODO Send this Point to real-time physics engine for line drawing	
-				// TODO get data back from physics to draw line for projected path
 			}
+			// TODO Send this Point to real-time physics engine for line drawing	
+			// TODO get data back from physics to draw line for projected path
+		}
+
+		private boolean isOnBoard(Point p) {
+			return p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
+					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH;
+		}
+
+		private boolean isRightClickDrag(MouseEvent e) {
+			return e.getModifiers() == 4;
 		}
 		
 		/** not needed */
