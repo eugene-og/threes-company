@@ -75,25 +75,29 @@ public class Board extends Canvas {
 	
     public void update(Graphics g) {
     	// Adapted from http://home.comcast.net/~jml3on/java/tricks/double-buffering.html
-    	// TODO Do this more efficiently - don't create a new back buffer each time
-		// create the offscreen buffer and associated Graphics
-		offscreenImage = createImage(getWidth(), getHeight());
+    	
+    	// create the offscreen buffer and associated Graphics
+    	if (offscreenImage == null)
+    		offscreenImage = createImage(getWidth(), getHeight());
+    	
 		offscreenSurface = offscreenImage.getGraphics();
 		Rectangle clippingRegion = g.getClipBounds();
-		//Rectangle clippingRegion = new Rectangle(getWidth(), getHeight());
+		
 		// clear the exposed area
 		offscreenSurface.setColor(getBackground());
 		offscreenSurface.fillRect(0, 0, clippingRegion.width, clippingRegion.height);
 		offscreenSurface.setColor(getForeground());
+		
 		// do normal redraw
 		offscreenSurface.translate(-clippingRegion.x, -clippingRegion.y);
 		paint(offscreenSurface);
+		
 		// transfer offscreen to window
 		g.drawImage(offscreenImage, clippingRegion.x, clippingRegion.y, this);
 	}
     
 	public void paint(Graphics g)
-	{
+	{		
 		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
 		DecimalFormat df = new DecimalFormat();
@@ -170,8 +174,6 @@ public class Board extends Canvas {
 			}
 		}
 		
-		
-		
 //		MediaTracker media = new MediaTracker(this);
 //		Image image = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_DIR+"boom_black.png");
 //		media.addImage(image, 0);
@@ -195,7 +197,6 @@ public class Board extends Canvas {
 //			surface.drawRenderedImage(image, xtranslate);
 //		}
 //		catch (Exception e) {e.printStackTrace();}
-		
 	}
 
 	private void drawBoardBorder(Graphics2D surface) {
