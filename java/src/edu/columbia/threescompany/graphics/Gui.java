@@ -114,6 +114,7 @@ public class Gui extends JFrame {
 			"/textures/wood_panels_small.jpg",
 	};
 	private URL _defaultBackgroundUrl = null; // Gets set to the first image loaded
+	private JPanel _actionButtonsPane;
 	
 	public static Gui getInstance(ChatThread thread, List<Player> players) {
 		if (_instance == null) _instance = new Gui(thread, players);
@@ -159,8 +160,8 @@ public class Gui extends JFrame {
 		/* setup actions and queue pane */
 		JPanel actionsPane = new JPanel(new GridLayout(2,1));
 		
-		JPanel actionButtonsPane = getActionsPanel();
-		actionsPane.add(actionButtonsPane, BorderLayout.WEST);
+		_actionButtonsPane = getActionsPanel();
+		actionsPane.add(_actionButtonsPane, BorderLayout.WEST);
 		
 		JPanel actionQueuePane = getQueuePanel();
 		actionsPane.add(actionQueuePane, BorderLayout.EAST);
@@ -426,6 +427,22 @@ public class Gui extends JFrame {
 		_board.drawState(gameState);
 	}
 
+	private void updateActionsBorder(Blob newSelection) {
+		String title;
+		if (newSelection == null) {
+			title = "Available Actions";
+		} else {
+			String blobType = newSelection.getClass().toString();
+			blobType = blobType.substring(blobType.lastIndexOf('.') + 1);
+			title = blobType + ": Available Actions";
+		}
+		_actionButtonsPane.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createTitledBorder(BorderFactory
+						.createLineBorder(Color.GRAY), title),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+	}
+
 	private class ChatFocusListener implements FocusListener {
 		public void focusGained(FocusEvent e) {
 			if (_txtLine.getText().equals("Send message to player"))
@@ -508,6 +525,7 @@ public class Gui extends JFrame {
 			if (newSelection != null) { // clicked a blob that player controls
 				_selectedAction = 0;
 				_graphicalState.setSelectedBlob(newSelection);
+				updateActionsBorder(newSelection);
 				updateAvailableActions();
 				_board.repaint();
 				addChatLine("Selected blob " + _graphicalState.getSelectedBlob());
@@ -742,6 +760,7 @@ public class Gui extends JFrame {
 		_blobsToActivate = new ArrayList<Blob>();
 		_blobsToSpawn = new ArrayList<Blob>();
 		_graphicalState.setSelectedBlob(null);
+		updateActionsBorder(null);
 		_activePlayer = activePlayer;
 		_turnOver.waitUntilTrue();
 		_activePlayer = null;
