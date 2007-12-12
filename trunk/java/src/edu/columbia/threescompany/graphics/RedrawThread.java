@@ -24,4 +24,8 @@ public class RedrawThread {
 			}
 		}).start();
 	}
+
+	public void stop() {
+		_stop = true;
+	}
 }

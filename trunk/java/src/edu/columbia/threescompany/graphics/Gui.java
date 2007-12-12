@@ -114,7 +114,7 @@ public class Gui extends JFrame {
 	};
 	private URL _defaultBackgroundUrl = null; // Gets set to the first image loaded
 	private JPanel _actionButtonsPane;
-	private Object _redrawThread;
+	private RedrawThread _redrawThread;
 	
 	public static Gui getInstance(ChatThread thread, List<Player> players) {
 		if (_instance == null) _instance = new Gui(thread, players);
@@ -478,6 +478,7 @@ public class Gui extends JFrame {
         public void actionPerformed( ActionEvent e ) {
             if( e.getActionCommand().equals( "Exit" ) ) {
             	// TODO want to broadcast message that i'm exiting?
+            	_redrawThread.stop();
             	System.exit(0);
 			}
             else if( e.getActionCommand().equals( "About..." ) ) // Display about dialog box
