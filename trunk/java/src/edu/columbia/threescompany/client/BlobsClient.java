@@ -9,6 +9,8 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -21,8 +23,12 @@ import edu.columbia.threescompany.client.communication.ServerConnection;
 import edu.columbia.threescompany.client.communication.ServerMessage;
 import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
+import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.game.graphics.GUIGameMove;
+import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.graphics.PlayerInfoGui;
 import edu.columbia.threescompany.graphics.PreGameGui;
@@ -35,6 +41,8 @@ public class BlobsClient {
 	private static ChatThread _chatThread;
 	private static Gui _gui;
 	private static List<Player> _players;
+	private static boolean isAutoMode = false;
+	private static int moveCount = 0;
 	
 	public static void main(String[] args) throws Exception {
 		doPlayerSetup();
@@ -118,6 +126,7 @@ public class BlobsClient {
 	}
 	
 	private static void connectToServer(String[] args) throws UnknownHostException, IOException {
+		if (args.length == 3 && args[2].equals("auto")) isAutoMode = true;
 		if (args.length == 2)
 			_serverConnection = connectFromHostAndPort(args[0], args[1]);
 		else if (args.length == 1)
@@ -216,13 +225,38 @@ public class BlobsClient {
 	}
 
 	private static void yourMove(Player activePlayer) throws IOException {
-		final GameMove move = new GameMove(_gui.getMoveFor(activePlayer));
+		GameMove move = null;
+		if (isAutoMode) {
+			move = new GameMove(getAutoGuiMove(activePlayer));
+		} else {
+			move = new GameMove(_gui.getMoveFor(activePlayer));
+		}
 		// sendMove used to happen in a new thread spawned here for that. But this was broken because the state could
 		// change before the send thread sent. I tried to fix this by clone()ing the state and sending a copy. But 
 		// then the move references the wrong blobs and life is bad. So for now we'll just send synchronously before
 		// we change anything.
 		_serverConnection.sendMove(move, _gameState);
 		_gameState.executeMove(move, _gui);
+	}
+
+	private static GUIGameMove getAutoGuiMove(Player activePlayer) {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {}
+		double offset;
+		if (moveCount%4 == 1.0 || moveCount%4 == 2.0) {
+			offset = 1.0;
+		} else {
+			offset = -1.0;
+		}
+		HashMap<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
+		for (GameObject gameObject : _gameState.getObjects()) {
+			if (gameObject instanceof Blob && activePlayer.equals(gameObject.getOwner())) {
+				finalPositions.put((Blob) gameObject, new Coordinate(gameObject.getPosition().x+offset, gameObject.getPosition().y));
+			}
+		}
+		moveCount++;
+		return new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
 	}
 
 	private static void notYourTurnDialog() {
