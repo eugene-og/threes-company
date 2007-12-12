@@ -19,9 +19,9 @@ public class AnchorPointTest extends BaseTestCase {
 	public void testCollision() {
 		GameObject blob = BlobTestTools.getBoringBlob(0, 0);
 		AnchorPoint point = new AnchorPoint(0.8, 0);
-		assertTrue("Should collide", point.collidesWith(blob));
+		assertTrue("Should collide", point.collidingWith(blob));
 		blob = BlobTestTools.getBoringBlob(-0.5, 0);
-		assertFalse("Should not collide", point.collidesWith(blob));
+		assertFalse("Should not collide", point.collidingWith(blob));
 	}
 	
 	public void testAnchoring() {

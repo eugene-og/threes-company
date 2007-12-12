@@ -47,4 +47,14 @@ public abstract class BaseTestCase extends TestCase {
 		fail("Coordinates should be equal (expected " + expected + ", got " + 
 				actual + ")");
 	}
+
+	protected void assertSignificantlyGreaterThan(String message, double lhs, double rhs) {
+		assertTrue(message + " (" + lhs + " should've been 2 epsilons greater than " + rhs,
+				   lhs > rhs + 2*EPSILON);
+	}
+	
+	protected void assertSignificantlyLessThan(String message, double lhs, double rhs) {
+		assertTrue(message + " (" + lhs + " should've been 2 epsilons less than " + rhs,
+				   lhs < rhs - 2*EPSILON);
+	}
 }

@@ -12,7 +12,6 @@ public class AnchorPoint extends ImmovableGameObject {
 	}	
 	
 	public void die() { /* I AM IMMUNE TO DEATH */ }
-	public void grow() { /* I AM IMMUNE TO GROWTH */ }
 
 	public Force actOn(GameObject obj) {
 		return Force.NULL_FORCE;
@@ -26,11 +25,12 @@ public class AnchorPoint extends ImmovableGameObject {
 		if (!(rhs instanceof Blob)) return false;	/* We don't care. */
 		Blob blob = (Blob) rhs;
 		
-		blob.setAnchored(collidesWith(blob));
+		blob.setAnchored(collidingWith(blob));
 		return false;
 	}
 
-	public boolean collidesWith(GameObject blob) {
+	public boolean collidingWith(GameObject blob) {
+		/* Has no radius! */
 		return _position.distanceFrom(blob.getPosition()) <= blob.getRadius();
 	}
 

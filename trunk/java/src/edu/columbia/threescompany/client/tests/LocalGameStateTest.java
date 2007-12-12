@@ -84,11 +84,10 @@ public class LocalGameStateTest extends BaseTestCase {
 		assertFalse("Boring blob should be alive", boringBlob.isDead());
 		assertFalse("Push blob should be alive", pushBlob.isDead());
 		
-		assertTrue("Boring blob should have significantly deviated from (x=5) line" +
-				   " (y-position was " + boringBlob.getPosition().y + ")",
-				   boringBlob.getPosition().y > 5 + 2 * BaseTestCase.EPSILON);
-		assertTrue("Push blob should have been pushed backward by Newton's 3rd",
-				   pushBlob.getPosition().y < 3 - 2 * BaseTestCase.EPSILON);
+		assertSignificantlyGreaterThan("Boring blob should have significantly deviated from (x=5) line",
+								boringBlob.getPosition().y, 5);
+		assertSignificantlyLessThan("Push blob should have been pushed backward by Newton's 3rd",
+				   				pushBlob.getPosition().y, 3);
 		
 		/* Note that PushBlob and BoringBlob's x-coordinates can't be guessed
 		 * all that easily, since Newton's 3 means that PushBlob was initially
