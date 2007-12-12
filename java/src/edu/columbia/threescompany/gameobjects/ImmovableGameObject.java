@@ -15,4 +15,8 @@ public abstract class ImmovableGameObject extends GameObject {
 	public void applyForce(Force force) {
 		/* I AM IMMUNE TO FORCE */
 	}
+	
+	public void grow() {
+		/* I AM IMMUNE TO GROWTH */
+	}
 }

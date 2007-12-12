@@ -12,7 +12,6 @@ public class APCIPoint extends ImmovableGameObject {
 	}	
 	
 	public void die() { /* I AM IMMUNE TO DEATH */ }
-	public void grow() { /* I AM IMMUNE TO GROWTH */ }
 
 	public Force actOn(GameObject obj) {
 		return Force.NULL_FORCE;

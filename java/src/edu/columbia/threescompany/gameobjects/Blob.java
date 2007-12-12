@@ -52,8 +52,12 @@ public abstract class Blob extends GameObject implements Serializable {
 	
 	public void applyIrresistibleForce(Force force) {
 		// You can't fight the invisible hand of the player!
-		_position.x += force.x / _weight;
-		_position.y += force.y / _weight;
+		_position.x += force.x / getEffectiveWeight();
+		_position.y += force.y / getEffectiveWeight();
+	}
+	
+	private double getEffectiveWeight() {
+		return _weight / (_sliding ? GameParameters.SLIPPERINESS : 1);
 	}
 
 	public void grow() {
@@ -92,9 +96,13 @@ public abstract class Blob extends GameObject implements Serializable {
 	public void setAnchored(boolean anchored) {
 		_anchored = anchored;
 	}
+	
+	public void setSliding(boolean sliding) {
+		_sliding = sliding;
+	}
 
 	protected Player _owner;
 	protected boolean _dead;
 	protected boolean _anchored;
+	protected boolean _sliding;
 }
-

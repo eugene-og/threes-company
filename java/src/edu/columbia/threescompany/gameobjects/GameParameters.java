@@ -24,6 +24,9 @@ public class GameParameters {
 	
 	/* How many milliseconds between average animation frames? (Variable!) */
 	public static final int AVERAGE_MS_FRAME_GAP = 50;
+
+	/* How much does stuff slide over a slippery spot? */
+	public static final int SLIPPERINESS = 3;
 	
 	/* Base AP costs (tweakable) */
 	public static final int BASE_ROTATE_COST = 1;
