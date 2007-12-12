@@ -13,6 +13,7 @@ public class PhysicalMove extends GameMoveComponent implements Serializable {
 	private static final long serialVersionUID = -8445815830982267666L;
 	private double _fx, _fy;
 	private int _duration;
+	private int _step = 0;
 	private Coordinate _vector;
 	
 	public PhysicalMove(Coordinate finalPos, GameObject target) {
@@ -39,7 +40,13 @@ public class PhysicalMove extends GameMoveComponent implements Serializable {
 	public void execute(LocalGameState state) {
 		if (_target.isDead()) return;
 		
-		Force f = new Force(_fx, _fy);
+		/* This integrates to 1 (almost) over the curve, but creates friction */
+		_step++;
+		double relativeForceStrength = 2.1 * (((double) (_duration - _step)) / (double) _duration);
+		System.out.println("Step " + _step + " of " + _duration + ", rel str = " + relativeForceStrength);
+		
+		Force f = new Force(_fx * relativeForceStrength,
+							_fy * relativeForceStrength);
 		((Blob) _target).applyIrresistibleForce(f);
 	}
 	
