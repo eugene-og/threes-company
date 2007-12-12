@@ -43,7 +43,7 @@ public class PhysicalMove extends GameMoveComponent implements Serializable {
 		/* This integrates to 1 (almost) over the curve, but creates friction */
 		_step++;
 		double relativeForceStrength = 2.1 * (((double) (_duration - _step)) / (double) _duration);
-		System.out.println("Step " + _step + " of " + _duration + ", rel str = " + relativeForceStrength);
+	//	System.out.println("Step " + _step + " of " + _duration + ", rel str = " + relativeForceStrength);
 		
 		Force f = new Force(_fx * relativeForceStrength,
 							_fy * relativeForceStrength);
