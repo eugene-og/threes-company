@@ -63,6 +63,9 @@ public class LocalGameState implements Serializable {
 	}
 
 	private void executeMoveStep(GameMove move, Gui gui, int t, int tmax) {
+		/* Synchronize this to the expected clock */
+		long startTime = System.currentTimeMillis();
+		
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
 			granularMove.execute(this);
 		for (EventMove eventMove : move.eventMovesAt(t))
@@ -74,8 +77,10 @@ public class LocalGameState implements Serializable {
 		if (gui != null) {
 			gui.drawState(this);
 			try {
-				/* TODO: Adjust this value so moves animate nicely. */
-				Thread.sleep(sleepTimeForFrame(t, tmax));
+				long elapsedTime = System.currentTimeMillis() - startTime;
+				long sleepTime = sleepTimeForFrame(t, tmax) - elapsedTime;
+				if (sleepTime > 0)
+					Thread.sleep(sleepTime);
 			} catch (InterruptedException exception) {}
 		}
 	}

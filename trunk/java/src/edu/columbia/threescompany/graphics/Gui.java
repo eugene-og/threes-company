@@ -21,7 +21,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -47,8 +46,8 @@ import javax.swing.UIManager;
 
 import edu.columbia.threescompany.client.ChatThread;
 import edu.columbia.threescompany.client.LocalGameState;
-import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.ConditionVariable;
+import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
@@ -115,6 +114,7 @@ public class Gui extends JFrame {
 	};
 	private URL _defaultBackgroundUrl = null; // Gets set to the first image loaded
 	private JPanel _actionButtonsPane;
+	private Object _redrawThread;
 	
 	public static Gui getInstance(ChatThread thread, List<Player> players) {
 		if (_instance == null) _instance = new Gui(thread, players);
@@ -192,6 +192,8 @@ public class Gui extends JFrame {
 
 		_board.initGraphicsBuffer();
 		_board.setBackground(_defaultBackgroundUrl);
+		
+		_redrawThread = new RedrawThread(_board);
 	}
 
 	private JPanel getTexturesPane() {
