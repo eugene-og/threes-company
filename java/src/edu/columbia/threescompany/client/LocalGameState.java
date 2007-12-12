@@ -63,7 +63,6 @@ public class LocalGameState implements Serializable {
 	}
 
 	private void executeMoveStep(GameMove move, Gui gui, int t, int tmax) {
-		/* Synchronize this to the expected clock */
 		long startTime = System.currentTimeMillis();
 		
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
@@ -77,6 +76,9 @@ public class LocalGameState implements Serializable {
 		if (gui != null) {
 			gui.drawState(this);
 			try {
+				/* Smooth out the simulation by taking this into account
+				 * (it's usually < 5 ms, though)
+				 */
 				long elapsedTime = System.currentTimeMillis() - startTime;
 				long sleepTime = sleepTimeForFrame(t, tmax) - elapsedTime;
 				if (sleepTime > 0)
@@ -86,9 +88,10 @@ public class LocalGameState implements Serializable {
 	}
 	
 	private long sleepTimeForFrame(int t, int tmax) {
+		/* Starts at 0.2 * GAP, ends at 3.3 * GAP, moves linearly */
 		return GameParameters.AVERAGE_MS_FRAME_GAP;
-		//int averageWait = GameParameters.AVERAGE_MS_FRAME_GAP;
-		//return (long) (averageWait * (1.5 - (t / tmax)));
+		//return (long) (GameParameters.AVERAGE_MS_FRAME_GAP*
+					  //(0.2 + 3.y * ((double) t / (double) tmax)));
 	}
 
 	private void checkCollisions() {
