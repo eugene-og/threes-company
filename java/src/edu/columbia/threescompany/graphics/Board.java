@@ -79,9 +79,8 @@ public class Board extends Canvas {
 		// create the offscreen buffer and associated Graphics
 		offscreenImage = createImage(getWidth(), getHeight());
 		offscreenSurface = offscreenImage.getGraphics();
-		//Rectangle clippingRegion = g.getClipBounds();
-		// TODO We'll redraw the whole thing for now to make sure we're not leaving junk around we shouldn't be
-		Rectangle clippingRegion = new Rectangle(getWidth(), getHeight());
+		Rectangle clippingRegion = g.getClipBounds();
+		//Rectangle clippingRegion = new Rectangle(getWidth(), getHeight());
 		// clear the exposed area
 		offscreenSurface.setColor(getBackground());
 		offscreenSurface.fillRect(0, 0, clippingRegion.width, clippingRegion.height);
@@ -265,7 +264,8 @@ public class Board extends Canvas {
 	public void drawState(LocalGameState gameState)
 	{
 		_gameState = gameState;
-		repaint();
+		/* This is moved to RedrawThread --ZvS */
+//		repaint();
 	}
 	
 	public void setBackground(URL backgroundUrl) {
