@@ -35,6 +35,7 @@ public class AllTests {
 		suite.addTestSuite(ExplodingBlobTest.class);
 		suite.addTestSuite(DeathRayBlobTest.class);
 		suite.addTestSuite(SlipperyBlobTest.class);
+		suite.addTestSuite(SlipperySpotTest.class);
 		
 		/* Fancy objects */
 		suite.addTestSuite(WallTest.class);

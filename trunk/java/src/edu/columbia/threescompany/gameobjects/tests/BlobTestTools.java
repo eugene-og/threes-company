@@ -46,6 +46,9 @@ public class BlobTestTools {
 	}
 
 	public static LocalGameState getSingleBlobState(double x, double y) {
+		if (x < 0 || y < 0)
+			throw new RuntimeException("Don't use negative coordinate values!");
+		
 		GameObject blob = getBoringBlob(x, y);
 		List<GameObject> objList = new ArrayList<GameObject>(1);
 		objList.add(blob);

@@ -99,14 +99,13 @@ public class LocalGameStateTest extends BaseTestCase {
 		/* Initial:		Final:
 		 * ==B===B==    ======B==
 		 */
-		LocalGameState state = BlobTestTools.getSingleBlobState(-1.2, 0);
-		GameObject blob2 = new BlobTestTools.BoringBlob(2, 0, 1, BlobTestTools.PLAYER2);
-		blob2.grow();
+		LocalGameState state = BlobTestTools.getSingleBlobState(1.8, 0);
+		Blob blob1 = (Blob) state.getObjects().get(0);
+		GameObject blob2 = new BlobTestTools.BoringBlob(5.0, 0.0, 2.0, BlobTestTools.PLAYER2);
 		state.addObject(blob2);
 		
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
-		Blob blob1 = (Blob) state.getObjects().get(0);
-		finalPositions.put(blob1, new Coordinate(2, 0));
+		finalPositions.put(blob1, new Coordinate(5.0, 0));
 		
 		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
 		state.executeMove(new GameMove(move));
