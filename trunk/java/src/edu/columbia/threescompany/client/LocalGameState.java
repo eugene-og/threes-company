@@ -260,7 +260,16 @@ public class LocalGameState implements Serializable {
 		return s.toString();
 	}
 	
+	public Player getWinner() {
+		/* Precondition: Game is over. */
+		for (Player player : _players)
+			if (hasAnyBlobsLeft(player)) return player;
+		
+		return Player.NULL_PLAYER;
+	}
+	
 	private List<GameObject> _gameObjects;
 	private List<Player> _players;
 	private Player _activePlayer;
+
 }

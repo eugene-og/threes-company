@@ -130,12 +130,12 @@ public class BlobsServer {
 			gameState.executeMove(pair._move, null);
 			sendStateToAllPlayers(gameState);
 		}
-		sendGameOver();
+		sendGameOver(gameState.getWinner());
 		SoundEngine.play(SoundEngine.GAMEOVER);
 	}
 
-	private void sendGameOver() throws IOException {
-		sendMessageToAllPlayers(new GameOverMessage());
+	private void sendGameOver(Player winner) throws IOException {
+		sendMessageToAllPlayers(new GameOverMessage(winner));
 	}
 
 	public void sendStateToAllPlayers(LocalGameState gameState) throws IOException {

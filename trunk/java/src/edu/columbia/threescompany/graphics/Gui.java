@@ -547,6 +547,7 @@ public class Gui extends JFrame {
 				// Debugging output
 				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getName());
 			}
+			
 			if (newSelection != null && !newSelection.getOwner().equals(_activePlayer)) {
 				newSelection = null;
 				addChatLine("Blob does not belong to you.");

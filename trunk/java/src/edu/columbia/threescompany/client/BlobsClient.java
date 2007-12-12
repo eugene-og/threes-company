@@ -147,8 +147,8 @@ public class BlobsClient {
 		return new ServerConnection(host, Integer.valueOf(port));
 	}
 
-	private static void gameOverDialog() {
-		JOptionPane.showMessageDialog(null, "Good game!  Try again.", 
+	private static void gameOverDialog(Player winner) {
+		JOptionPane.showMessageDialog(null, (winner.getName() + " is the champion!"),
 											"Game over",
 											JOptionPane.INFORMATION_MESSAGE );
 	}
@@ -201,7 +201,8 @@ public class BlobsClient {
 			System.err.println("Received move: " + move);
 			_gameState.executeMove(move, _gui);
 		} else if (message instanceof GameOverMessage) {
-			gameOverDialog();
+			Player winner = ((GameOverMessage) message).getWinner();
+			gameOverDialog(winner);
 		}
 	}
 
