@@ -497,8 +497,9 @@ public class Gui extends JFrame {
 			if (isRightClick(e)) {
 				/* There's cost numbers hangin' around */
 				_board.repaint();
-				
-				/* ZvS: We consider this a move, right?!? I'm making it act that way: */
+
+				/* ZvS: We consider this a move, right?!?
+				   I'm making it act that way: */
 				addMoveForCurrentBlob(getClickCoordinate(p));
 				
 				return;
@@ -524,15 +525,7 @@ public class Gui extends JFrame {
 			// The world variables are locations in world/game space (as opposed to screen space)
 			Coordinate worldClick = getClickCoordinate(p);
 			// TODO have screen to world and world to screen in only one place
-			Blob newSelection = blobClickedOn(worldClick);
-			if (newSelection != null) {
-				// Debugging output
-				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getName());
-			}
-			if (newSelection != null && !newSelection.getOwner().equals(_activePlayer)) {
-				newSelection = null;
-				addChatLine("Blob does not belong to you.");
-			}
+			Blob newSelection = getNewSelection(worldClick);
 			if (newSelection != null) { // clicked a blob that player controls
 				_selectedAction = 0;
 				_graphicalState.setSelectedBlob(newSelection);
@@ -547,15 +540,31 @@ public class Gui extends JFrame {
 			}
 		}
 
-		private void addMoveForCurrentBlob(Coordinate worldClick) {
-			double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
+		private Blob getNewSelection(Coordinate worldClick) {
+			Blob newSelection = blobClickedOn(worldClick);
+			if (newSelection != null) {
+				// Debugging output
+				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getName());
+			}
+			if (newSelection != null && !newSelection.getOwner().equals(_activePlayer)) {
+				newSelection = null;
+				addChatLine("Blob does not belong to you.");
+			}
+			return newSelection;
+		}
+
+		private void addMoveForCurrentBlob(Coordinate position) {
+			Blob selectedBlob = _graphicalState.getSelectedBlob();
+			if (selectedBlob == null) return;
+			
+			double cost = ActionPointEngine.getCostOfPhysicalMove(selectedBlob, position);
 			if (_ap - cost <= 0.0) {
 				showNotEnoughAPDialog("move this blob");
 			} else {
-				_blobMoves.put(_graphicalState.getSelectedBlob(), worldClick);
-				addQueueLine("Moving blob to " + worldClick.toRoundedString() + " with cost of " + cost);
+				_blobMoves.put(selectedBlob, position);
+				addQueueLine("Moving blob to " + position.toRoundedString() + " with cost of " + cost);
 				addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-						" for blob " + _graphicalState.getSelectedBlob() + " to " + worldClick.toString());
+						" for blob " + selectedBlob + " to " + position.toString());
 				_ap -= cost;
 				setAP();
 			}
@@ -615,7 +624,7 @@ public class Gui extends JFrame {
 			if (isRightClick(e)) { // right button pressed
 				Point p = e.getPoint();
 				Coordinate worldClick = getClickCoordinate(p);
-				Blob newSelection = blobClickedOn(worldClick);
+				Blob newSelection = getNewSelection(worldClick);
 				
 				if (newSelection != null)
 					_graphicalState.setSelectedBlob(newSelection);
