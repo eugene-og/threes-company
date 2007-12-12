@@ -630,17 +630,21 @@ public class Gui extends JFrame {
 				if (newSelection != null)
 					_graphicalState.setSelectedBlob(newSelection);
 				
-				if (_graphicalState.getSelectedBlob() != null) {
-					drawMoveCost(worldClick);
-				}
+				drawMoveCost(worldClick);
 			}
 		}
 
 		private void drawMoveCost(Coordinate worldClick) {
 			// clicked a destination for a blob, display cost until released
-			double cost = ActionPointEngine.getCostOfPhysicalMove(_graphicalState.getSelectedBlob(), worldClick);
+			Blob selectedBlob = _graphicalState.getSelectedBlob();
+			if (selectedBlob == null) return;
+			
+			double cost = ActionPointEngine.getCostOfPhysicalMove(selectedBlob, worldClick);
 			_board.drawMoveCost(worldClick, cost, cost < _ap);
 			_board.repaint();
+			
+			// TODO Send this Point to real-time physics engine for line drawing	
+			// TODO get data back from physics to draw line for projected path
 		}
 
 		private boolean isRightClick(MouseEvent e) {
@@ -649,14 +653,10 @@ public class Gui extends JFrame {
 		
 		public void mouseDragged(MouseEvent e) {
 			Point p = e.getPoint();
-			if (isOnBoard(p) && isRightClickDrag(e)) {
-				if (_graphicalState.getSelectedBlob() != null) {
-					// clicked a destination for a blob
-					drawMoveCost(getClickCoordinate(p));
-				}
-			}
-			// TODO Send this Point to real-time physics engine for line drawing	
-			// TODO get data back from physics to draw line for projected path
+			Coordinate worldClick = getClickCoordinate(p);
+			
+			if (isOnBoard(p) && isRightClickDrag(e))
+					drawMoveCost(worldClick);
 		}
 
 		private boolean isOnBoard(Point p) {
