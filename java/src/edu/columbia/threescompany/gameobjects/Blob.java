@@ -35,11 +35,14 @@ public abstract class Blob extends GameObject implements Serializable {
 		double dRadius = GameParameters.BLOB_SIZE_LIMIT * GameParameters.BLOB_GROWTH_FACTOR;
 		_position.x -= dRadius;
 		
+		return copyBlob(_position.x + 2 * dRadius, _position.y, _radius);
+	}
+	
+	protected GameObject copyBlob(double x, double y, double radius) {
 		try {
 			Constructor<? extends Blob> con = getClass().getConstructor(
 					new Class[]{double.class, double.class, double.class, Player.class});
-			return con.newInstance(_position.x + 2 * dRadius,
-								   _position.y, _radius, _owner);
+			return con.newInstance(x, y, radius, _owner);
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't spawn blob in Java!", e);
 		}
