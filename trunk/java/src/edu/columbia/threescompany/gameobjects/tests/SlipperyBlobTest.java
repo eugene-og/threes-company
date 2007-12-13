@@ -43,4 +43,13 @@ public class SlipperyBlobTest extends BaseTestCase {
 		assertSignificantlyGreaterThan("Radius should be larger", spot.getRadius(),
 									   slipperyBlob.getRadius());
 	}
+	
+	public void testSpawning() {
+		LocalGameState state = LocalGameState.getSpecifiedGameState(new ArrayList<GameObject>());
+		SlipperyBlob slipperyBlob = new SlipperyBlob(0.0, 0.0, Player.NULL_PLAYER, state);
+		state.addObject(slipperyBlob);
+		
+		/* Just checking for exceptions. */
+		slipperyBlob.spawn();
+	}
 }
