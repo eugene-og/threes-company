@@ -158,8 +158,11 @@ public class BlobsClient {
 	private static void doPlayerSetup() {
 		GameType gameType = PreGameGui.getGameType();
 		
+		// We'll always run the embedded server for now. If they're acting as
+		// a network client, it won't be used. No biggie.
+		// TODO Add explicit support for being a network server or client. 
+		runEmbeddedServer();
 		if (gameType == GameType.HOTSEAT) {
-			runEmbeddedServer();
 			_players = PlayerInfoGui.getPlayers(2);
 		} else if (gameType == GameType.NETWORK) {
 			_players = PlayerInfoGui.getPlayers(1);
