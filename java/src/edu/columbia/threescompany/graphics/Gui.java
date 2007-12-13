@@ -259,47 +259,57 @@ public class Gui extends JFrame {
 	}
 
 	private JMenuBar getNewMenuBar() {
-		JMenuBar menubar = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
-        fileMenu.setMnemonic('F');
+		MenuItemListener menuHandler = new MenuItemListener();
+		Insets in;
 
-        // Setup exit menuitem with 'X' icon
-        JMenuItem menuitem = new JMenuItem(" Exit", 'E');
-        menuitem.setIcon(new ImageIcon(GuiConstants.IMAGES_MENU_DIR+"exit16.gif"));
-        Insets in = menuitem.getInsets(); in.left -= 16;
-		menuitem.setMargin(in);
+		// Setup exit menuitem with 'X' icon
+		JMenuItem menuitem = new JMenuItem("Exit", 'E');
+		// menuitem.setIcon(new
+		// ImageIcon(GuiConstants.IMAGES_MENU_DIR+"exit16.gif"));
+		// in = menuitem.getInsets();
+		// in.left -= 16;
+		// menuitem.setMargin(in);
 		menuitem.setActionCommand("Exit");
-        menuitem.addActionListener(new MenuItemListener());
-        fileMenu.add(menuitem);
-        menubar.add(fileMenu);
+		menuitem.addActionListener(menuHandler);
 
-        // Setup the Help menu
-        JMenu helpMenu = new JMenu("Help");
-        helpMenu.setMnemonic('H');
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic('F');
+		fileMenu.add(menuitem);
+		fileMenu.getPopupMenu().setLightWeightPopupEnabled(false);
 
-//        // Setup contents menuitem with question mark icon
-//        menuitem = new JMenuItem(" Contents", 'C');
-//        menuitem.setIcon(new ImageIcon(GuiConstants.IMAGES_MENU_DIR+"help16.gif"));
-//        in = menuitem.getInsets(); in.left -= 16;
-//		menuitem.setMargin(in);
-//		menuitem.setActionCommand("Contents");
-//		menuitem.addActionListener(new MenuItemListener());
-//        menuitem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
-//        
-//        helpMenu.add(menuitem);
-//        helpMenu.addSeparator();
+		// Setup contents menuitem with question mark icon
+		menuitem = new JMenuItem("Help", 'H');
+		// menuitem.setIcon(new
+		// ImageIcon(GuiConstants.IMAGES_MENU_DIR+"help16.gif"));
+		// in = menuitem.getInsets();
+		// in.left -= 16;
+		// menuitem.setMargin(in);
+		menuitem.setActionCommand("Help");
+		menuitem.addActionListener(menuHandler);
+		// menuitem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,
+		// ActionEvent.CTRL_MASK));
 
-        // Setup the About menuitem with the exclamation icon
-        menuitem = new JMenuItem(" About...",'A');
-        menuitem.setIcon(new ImageIcon(GuiConstants.IMAGES_MENU_DIR+"about16.gif"));
-        in = menuitem.getInsets(); in.left -= 16;
-		menuitem.setMargin(in);
-        menuitem.setActionCommand("About...");
-        menuitem.addActionListener(new MenuItemListener());
-        helpMenu.add(menuitem);
+		// Setup the About menuitem with the exclamation icon
+		JMenuItem aboutItem = new JMenuItem("About", 'A');
+//		aboutItem.setIcon(new ImageIcon(GuiConstants.IMAGES_MENU_DIR + "about16.gif"));
+//		in = aboutItem.getInsets();
+//		in.left -= 16;
+//		aboutItem.setMargin(in);
+		aboutItem.setActionCommand("About");
+		aboutItem.addActionListener(menuHandler);
 
-        menubar.add(helpMenu);
-        return menubar;
+		// Setup the Help menu
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic('H');
+		helpMenu.add(menuitem);
+		helpMenu.addSeparator();
+		helpMenu.add(aboutItem);
+		helpMenu.getPopupMenu().setLightWeightPopupEnabled(false);
+
+		JMenuBar menubar = new JMenuBar();
+		menubar.add(fileMenu);
+		menubar.add(helpMenu);
+		return menubar;
 	}
 
 	private JPanel getAPPane() {
@@ -481,13 +491,13 @@ public class Gui extends JFrame {
             	_redrawThread.stop();
             	System.exit(0);
 			}
-            else if( e.getActionCommand().equals( "About..." ) ) // Display about dialog box
+            else if( e.getActionCommand().equals( "About" ) ) // Display about dialog box
                 JOptionPane.showMessageDialog(null, GuiConstants.HELP_ABOUT,
-                									"About...",
+                									"About Blobs",
                 									JOptionPane.INFORMATION_MESSAGE );
-            else if( e.getActionCommand().equals( "Contents" ) ) // Display license dialog
-            	JOptionPane.showMessageDialog(null, "Help?  Get playing!", "Contents", 
-													JOptionPane.INFORMATION_MESSAGE );
+            else if( e.getActionCommand().equals( "Help" ) ) {
+            	new HelpFrame();
+            }
         }
     }
     
