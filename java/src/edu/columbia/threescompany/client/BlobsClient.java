@@ -126,8 +126,10 @@ public class BlobsClient {
 	}
 	
 	private static void connectToServer(String[] args) throws UnknownHostException, IOException {
-		if (args.length == 3 && args[2].equals("auto")) isAutoMode = true;
-		if (args.length == 2)
+		if (args.length == 3 && args[2].equals("auto")) {
+			isAutoMode = true;
+			_serverConnection = connectFromHostAndPort(args[0], args[1]);
+		} else if (args.length == 2)
 			_serverConnection = connectFromHostAndPort(args[0], args[1]);
 		else if (args.length == 1)
 			_serverConnection = connectFromHost(args[0]);
