@@ -1,15 +1,16 @@
 package edu.columbia.threescompany.gameobjects;
 
+import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
-public class SlipperyBlob extends Blob {
-	public SlipperyBlob(double x, double y, double radius, Player owner) {
-		super(x, y, radius, owner);
+public class SlipperyBlob extends StateModifyingBlob {
+	public SlipperyBlob(double x, double y, double radius, Player owner, LocalGameState state) {
+		super(x, y, radius, owner, state);
 	}
 	
-	public SlipperyBlob(double x, double y, Player owner) {
-		super(x, y, owner);
+	public SlipperyBlob(double x, double y, Player owner, LocalGameState state) {
+		this(x, y, GameParameters.BLOB_INITIAL_SIZE, owner, state);
 	}
 
 	private static final long serialVersionUID = 8421390274567998819L;
@@ -19,12 +20,14 @@ public class SlipperyBlob extends Blob {
 	}
 
 	public void activate(boolean activated) {
-		if (activated) return;
+		if (!activated || isDead()) return;
 		
-		// TODO die and create an OilSlick [on deactivation]
+		this.die();
+		SlipperySpot spot = new SlipperySpot(this.getPosition().x, this.getPosition().y, this.getRadius() * 2);
+		_state.addObject(spot);	
 	}
 
 	public GameObject clone() {
-		return new SlipperyBlob(_position.x, _position.y, _radius, _owner);
+		return new SlipperyBlob(_position.x, _position.y, _radius, _owner, _state);
 	}
 }

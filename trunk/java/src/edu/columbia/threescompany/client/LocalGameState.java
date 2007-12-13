@@ -217,7 +217,7 @@ public class LocalGameState implements Serializable {
 		initialGameState.addObject(new PullBlob((GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*5/8, getRandomBlobSize(), players.get(0)));
 		initialGameState.addObject(new PullBlob((GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*7/8, getRandomBlobSize(), players.get(0)));
 		initialGameState.addObject(new DeathRayBlob((GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*2/8, getRandomBlobSize(), players.get(0)));
-		initialGameState.addObject(new SlipperyBlob((GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*4/8, getRandomBlobSize(), players.get(0)));
+		initialGameState.addObject(new SlipperyBlob((GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*4/8, getRandomBlobSize(), players.get(0), initialGameState));
 		initialGameState.addObject(new ExplodingBlob((GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*6/8, getRandomBlobSize(), players.get(0), initialGameState));
 		
 		initialGameState.addObject(new PushBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*1/8, getRandomBlobSize(), players.get(1)));
@@ -225,7 +225,7 @@ public class LocalGameState implements Serializable {
 		initialGameState.addObject(new PullBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*5/8, getRandomBlobSize(), players.get(1)));
 		initialGameState.addObject(new PullBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/10), GameParameters.BOARD_SIZE*7/8, getRandomBlobSize(), players.get(1)));
 		initialGameState.addObject(new DeathRayBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*2/8, getRandomBlobSize(), players.get(1)));
-		initialGameState.addObject(new SlipperyBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*4/8, getRandomBlobSize(), players.get(1)));
+		initialGameState.addObject(new SlipperyBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*4/8, getRandomBlobSize(), players.get(1), initialGameState));
 		initialGameState.addObject(new ExplodingBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*6/8, getRandomBlobSize(), players.get(1), initialGameState));
 		
 		initialGameState.addObject(new AnchorPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2));
