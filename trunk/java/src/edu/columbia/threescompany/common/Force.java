@@ -17,8 +17,8 @@ public class Force extends Coordinate {
 	}
 	
 	public static Force newRawForce(double Fx, double Fy) {
-		return new Force(Fx * GameParameters.GRANULARITY_OF_PHYSICS,
-						 Fy * GameParameters.GRANULARITY_OF_PHYSICS);
+		return new Force(Fx * GameParameters.GRANULARITY_OF_PHYSICS * 10,
+						 Fy * GameParameters.GRANULARITY_OF_PHYSICS * 10);
 	}
 
 	public Force inverse() {
