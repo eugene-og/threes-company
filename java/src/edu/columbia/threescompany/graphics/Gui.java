@@ -270,30 +270,36 @@ public class Gui extends JFrame {
 		MenuItemListener menuHandler = new MenuItemListener();
 //		Insets in;
 
+		JMenuItem settingsItem = new JMenuItem("Settings", 'S');
+		settingsItem.setActionCommand("Settings");
+		settingsItem.addActionListener(menuHandler);
+		
 		// Setup exit menuitem with 'X' icon
-		JMenuItem menuitem = new JMenuItem("Exit", 'E');
+		JMenuItem exitItem = new JMenuItem("Exit", 'E');
 		// menuitem.setIcon(new
 		// ImageIcon(GuiConstants.IMAGES_MENU_DIR+"exit16.gif"));
 		// in = menuitem.getInsets();
 		// in.left -= 16;
 		// menuitem.setMargin(in);
-		menuitem.setActionCommand("Exit");
-		menuitem.addActionListener(menuHandler);
+		exitItem.setActionCommand("Exit");
+		exitItem.addActionListener(menuHandler);
 
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic('F');
-		fileMenu.add(menuitem);
+		fileMenu.add(settingsItem);
+		fileMenu.addSeparator();
+		fileMenu.add(exitItem);
 		fileMenu.getPopupMenu().setLightWeightPopupEnabled(false);
 
 		// Setup contents menuitem with question mark icon
-		menuitem = new JMenuItem("Help", 'H');
+		JMenuItem helpItem = new JMenuItem("Help", 'H');
 		// menuitem.setIcon(new
 		// ImageIcon(GuiConstants.IMAGES_MENU_DIR+"help16.gif"));
 		// in = menuitem.getInsets();
 		// in.left -= 16;
 		// menuitem.setMargin(in);
-		menuitem.setActionCommand("Help");
-		menuitem.addActionListener(menuHandler);
+		helpItem.setActionCommand("Help");
+		helpItem.addActionListener(menuHandler);
 		// menuitem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,
 		// ActionEvent.CTRL_MASK));
 
@@ -309,7 +315,7 @@ public class Gui extends JFrame {
 		// Setup the Help menu
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
-		helpMenu.add(menuitem);
+		helpMenu.add(helpItem);
 		helpMenu.addSeparator();
 		helpMenu.add(aboutItem);
 		helpMenu.getPopupMenu().setLightWeightPopupEnabled(false);
@@ -501,6 +507,8 @@ public class Gui extends JFrame {
             	_redrawThread.stop();
             	System.exit(0);
 			}
+            else if (e.getActionCommand().equals("Settings"))
+            	new SettingsFrame();
             else if( e.getActionCommand().equals( "About" ) ) // Display about dialog box
                 JOptionPane.showMessageDialog(null, GuiConstants.HELP_ABOUT,
                 									"About Blobs",

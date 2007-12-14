@@ -11,6 +11,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import edu.columbia.threescompany.client.Settings;
+
 public class SoundEngine extends Thread {
 	private static String PATH = "sound" + File.separator;
 	
@@ -42,7 +44,7 @@ public class SoundEngine extends Thread {
 	}
 
 	public void run() {
-
+		if (!Settings.getInstance().soundOn) return;
 		File soundFile = new File(filename);
 		if (!soundFile.exists()) {
 			System.err.println("Wave file not found: " + filename);
