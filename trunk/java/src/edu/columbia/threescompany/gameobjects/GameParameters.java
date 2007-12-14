@@ -24,6 +24,9 @@ public class GameParameters {
 	
 	/* How many milliseconds between average animation frames? (Variable!) */
 	public static final int AVERAGE_MS_FRAME_GAP = 50;
+	
+	/* FRAME_DELAY is used by the redraw thread. How's it different than AVERAGE_MS_GAP? */
+	public static final int FRAME_DELAY = 5;
 
 	/* How much does stuff slide over a slippery spot? */
 	public static final int SLIPPERINESS = 3;
