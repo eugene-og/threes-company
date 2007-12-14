@@ -1,7 +1,5 @@
 package edu.columbia.threescompany.gameobjects;
 
-import edu.columbia.threescompany.graphics.GuiConstants;
-
 public class GameParameters {
 	public static final double BLOB_SIZE_LIMIT = 1.5;
 	public static final double BLOB_INITIAL_SIZE = 0.5;
