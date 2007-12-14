@@ -33,10 +33,10 @@ public class AnchorPointTest extends BaseTestCase {
 		 * =P========B===
 		 */
 		
-		LocalGameState state = BlobTestTools.getSingleBlobState(5.5, 0);
+		LocalGameState state = BlobTestTools.getSingleBlobState(7.5, 0);
 		GameObject boringBlob = state.getObjects().get(0);
-		Blob pushBlob = new PushBlob(3.0, 0.0, 1.0, BlobTestTools.PLAYER);
-		AnchorPoint anchorPoint = new AnchorPoint(7.5, 0);
+		Blob pushBlob = new PushBlob(5.0, 0.0, 1.0, BlobTestTools.PLAYER);
+		AnchorPoint anchorPoint = new AnchorPoint(9.5, 0);
 		
 		state.addObject(anchorPoint);
 		state.addObject(pushBlob);
@@ -56,14 +56,14 @@ public class AnchorPointTest extends BaseTestCase {
 		assertEquals("Boring blob shouldn't move in Y-direction at all",
 					 boringBlob.getPosition().y, 0.0);
 		assertEquals("Anchor point shouldn't move at all",
-				     new Coordinate(7.5, 0), anchorPoint.getPosition());
-		assertTrue("Boring blob should move", boringBlob.getPosition().x > 5.5 + 0.2);
+				     new Coordinate(9.5, 0), anchorPoint.getPosition());
+		assertTrue("Boring blob should move", boringBlob.getPosition().x > 7.5 + 0.2);
 		assertTrue("Boring blob shouldn't move after hitting the anchor",
-				   boringBlob.getPosition().x < 6.6);
+				   boringBlob.getPosition().x < 8.6);
 		assertTrue("Push blob should have moved more than boring blob did " +
 				   "(its position was " + pushBlob.getPosition() + ") -- " +
 				   " probably a Newton's 3rd failure",
-				   boringBlob.getPosition().x - 5.5 < 3.0 - (pushBlob.getPosition().x));
+				   boringBlob.getPosition().x - 7.5 < 3.0 - (pushBlob.getPosition().x));
 		assertEquals("Push blob shouldn't move in Y-direction at all",
 				     0.0, pushBlob.getPosition().y);
 	}
