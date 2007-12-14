@@ -108,7 +108,9 @@ public class LocalGameState implements Serializable {
 					if (!(obj1 instanceof Blob))
 						continue;
 					
-					if ( (obj1.getRadius()-obj2.getRadius()/2) < GameParameters.BLOB_INITIAL_SIZE)
+					if ((int)obj1.getRadius()*10 == (int)obj2.getRadius()*10)
+						killList.add(obj1);
+					else if ( (obj1.getRadius()-obj2.getRadius()/2) < GameParameters.BLOB_INITIAL_SIZE)
 						killList.add(obj1);
 					else
 						obj1.setRadius(obj1.getRadius()-obj2.getRadius()/2);
