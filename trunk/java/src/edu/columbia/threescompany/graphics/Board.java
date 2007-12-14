@@ -39,6 +39,10 @@ public class Board extends Canvas {
 	Graphics offscreenSurface;
 	Image offscreenImage = null;
 	private URL _backgroundUrl;
+
+	private double _movementCost;
+
+	private Coordinate _mousePosition;
 	
 	private static final double SCALE_FACTOR = GuiConstants.BOARD_LENGTH/GameParameters.BOARD_SIZE;
 
@@ -188,6 +192,10 @@ public class Board extends Canvas {
 				surface.setStroke(new BasicStroke(2.0f));
 				surface.draw(selectionIndicator);
 			}
+			
+			if (_mousePosition != null) {
+				drawMoveCost(surface, worldToScreen(_mousePosition), _movementCost, true); // TODO check if able
+			}
 		}
 		
 //		MediaTracker media = new MediaTracker(this);
@@ -215,6 +223,10 @@ public class Board extends Canvas {
 //		catch (Exception e) {e.printStackTrace();}
 	}
 
+	private Coordinate worldToScreen(Coordinate position) {
+		return new Coordinate(position.x * SCALE_FACTOR, position.y * SCALE_FACTOR);
+	}
+
 	private void drawDeathRay(Graphics2D surface, DeathRayBlob item, Color textColor) {
 		// draw death ray
 		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
@@ -238,7 +250,7 @@ public class Board extends Canvas {
 		//surface.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
 		surface.setColor(textColor);
 	}
-
+	
 	private void drawBoardBorder(Graphics2D surface) {
 		surface.drawLine(0, 0, GuiConstants.BOARD_LENGTH, 0);
 		surface.drawLine(GuiConstants.BOARD_LENGTH, 0, GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH);
@@ -314,14 +326,22 @@ public class Board extends Canvas {
 		repaint();
 	}
 	
-	public void drawMoveCost(Coordinate pos, double cost, boolean able) {
-		Graphics2D surface = (Graphics2D) getGraphics();
+	public void drawMoveCost(Graphics2D surface, Coordinate pos, double cost, boolean able) {
 		DecimalFormat df = new DecimalFormat();
 		df.setMinimumFractionDigits(1);
 		df.setMaximumFractionDigits(1);
 		if (able) surface.setColor(Color.BLACK);
 		else surface.setColor(Color.RED);
 		surface.setFont(new Font("Tahoma", Font.BOLD, 10));
-		surface.drawString(df.format(cost), (float)(pos.x*SCALE_FACTOR), (float)(pos.y*SCALE_FACTOR));
+		surface.drawString(df.format(cost), (float)(pos.x), (float)(pos.y));
+	}
+
+	/**
+	 * Sets the cost that the board will draw at the given position in world coordinates.
+	 * If mousePos is set to null, the board won't draw a cost.
+	 */
+	public void setMovementCost(Coordinate mousePos, double cost) {
+		_movementCost = cost;
+		_mousePosition = mousePos;
 	}
 }
