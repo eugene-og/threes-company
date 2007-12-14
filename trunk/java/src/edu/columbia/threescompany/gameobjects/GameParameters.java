@@ -1,5 +1,7 @@
 package edu.columbia.threescompany.gameobjects;
 
+import edu.columbia.threescompany.graphics.GuiConstants;
+
 public class GameParameters {
 	public static final double BLOB_SIZE_LIMIT = 1.5;
 	public static final double BLOB_INITIAL_SIZE = 0.5;
@@ -27,6 +29,9 @@ public class GameParameters {
 
 	/* How much does stuff slide over a slippery spot? */
 	public static final int SLIPPERINESS = 3;
+	
+	/* Area of effect for blob forces */
+	public static final double FORCE_RADIUS = BOARD_SIZE / 5;
 	
 	/* Base AP costs (tweakable) */
 	public static final int BASE_ROTATE_COST = 1;
