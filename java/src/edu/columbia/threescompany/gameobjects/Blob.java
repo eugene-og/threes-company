@@ -89,7 +89,7 @@ public abstract class Blob extends GameObject implements Serializable {
 		if (rhs == this) return false;
 		if (!(rhs instanceof Blob)) return false;
 		if (!collidingWith(rhs)) return false;
-		return (rhs.getRadius() <= _radius);
+		return ((int)(rhs.getRadius()*10) <= (int)(_radius*10));
 	}
 
 	public boolean isAnchored() {
