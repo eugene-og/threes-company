@@ -511,7 +511,7 @@ public class Gui extends JFrame {
 
 				/* ZvS: We consider this a move, right?!?
 				   I'm making it act that way: */
-				addMoveForCurrentBlob(getClickCoordinate(p));
+				//addMoveForCurrentBlob(getClickCoordinate(p));
 				
 				return;
 			}
