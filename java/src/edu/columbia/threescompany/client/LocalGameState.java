@@ -123,7 +123,12 @@ public class LocalGameState implements Serializable {
 	private void applyForces() {
 		for (GameObject obj1 : _gameObjects) {
 			for (GameObject obj2 : _gameObjects) {
-				if (obj1.isDead() || obj2.isDead() || !(obj1 instanceof Blob) || !(obj2 instanceof Blob)) continue;
+				if (obj1.isDead() || 
+					obj2.isDead() || 
+					!(obj1 instanceof Blob) || 
+					!(obj2 instanceof Blob) || 
+					obj1.getPosition().distanceFrom(obj2.getPosition()) > GameParameters.FORCE_RADIUS) continue;
+				
 				Force f = obj1.actOn(obj2);
 				
 				/* Newton's 3rd law: */
