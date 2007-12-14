@@ -260,7 +260,7 @@ public class Gui extends JFrame {
 
 	private JMenuBar getNewMenuBar() {
 		MenuItemListener menuHandler = new MenuItemListener();
-		Insets in;
+//		Insets in;
 
 		// Setup exit menuitem with 'X' icon
 		JMenuItem menuitem = new JMenuItem("Exit", 'E');
