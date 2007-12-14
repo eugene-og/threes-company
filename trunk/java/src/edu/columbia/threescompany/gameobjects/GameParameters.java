@@ -34,6 +34,9 @@ public class GameParameters {
 	/* Area of effect for blob forces */
 	public static final double FORCE_RADIUS = BOARD_SIZE / 5;
 	
+	/* Percentage difference between two colliding blobs for double kill */ 
+	public static final double PERCENTAGE_DIFFERENCE_FOR_KILL = 0.10;
+	
 	/* Base AP costs (tweakable) */
 	public static final int BASE_ROTATE_COST = 1;
 	public static final int BASE_PHYSICAL_MOVE_COST = 2;

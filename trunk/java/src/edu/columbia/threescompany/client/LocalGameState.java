@@ -108,12 +108,14 @@ public class LocalGameState implements Serializable {
 					if (!(obj1 instanceof Blob))
 						continue;
 					
-					if ((int)obj1.getRadius()*10 == (int)obj2.getRadius()*10)
+					double percent_diff = (obj1.getRadius()-obj2.getRadius())/obj1.getRadius();
+					if ((int)(obj1.getRadius()*100) == (int)(obj2.getRadius()*100)) {
 						killList.add(obj1);
-					else if ( (obj1.getRadius()-obj2.getRadius()/2) < GameParameters.BLOB_INITIAL_SIZE)
+					} else if (percent_diff < GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL) {
 						killList.add(obj1);
-					else
-						obj1.setRadius(obj1.getRadius()-obj2.getRadius()/2);
+					} else {
+						obj1.setRadius((obj1.getRadius()-obj2.getRadius())+GameParameters.BLOB_INITIAL_SIZE);
+					}
 				}
 			}
 		
