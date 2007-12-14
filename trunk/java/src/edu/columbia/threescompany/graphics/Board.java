@@ -132,7 +132,12 @@ public class Board extends Canvas {
 				surface.setColor(Color.black);
 				drawHole(surface, (Hole) item);
 				continue;
-			}
+			} 
+//			else if (item instanceof DeathRayBlob) {
+//				surface.setColor(Color.black);
+//				drawDeathRay(surface, (DeathRayBlob) item, Color.white);
+//				continue;
+//			}
 			
 			Color textColor = null; //TODO This may change depending on the fill color/texture of the blob
 			if (item instanceof PushBlob) {
@@ -151,14 +156,25 @@ public class Board extends Canvas {
 			Coordinate pos = item.getPosition();
 			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
 			fillShapeWithImage(surface, blobToDraw, bi);
+			
+			if (item instanceof DeathRayBlob) {
+				// draw barrel
+				Coordinate facing = ((DeathRayBlob)item).getLastMoveVector();
+				Ellipse2D barrel = circle(facing.x, facing.y, GameParameters.BLOB_INITIAL_SIZE * 0.75);
+				surface.setColor(Color.black);
+				surface.draw(barrel);
+				surface.fill(barrel);
+			}
+			
 			surface.setStroke(new BasicStroke(3.0f));
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
 				surface.setColor(Color.lightGray);
 			} else {
 				surface.setColor(Color.darkGray);
 			}
-			surface.draw(blobToDraw);
 			
+			surface.draw(blobToDraw);
+				
 			//surface.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
 			surface.setColor(textColor);
 			double x = ((pos.x)*SCALE_FACTOR-16/2); // 16 = approximate width of string
@@ -197,6 +213,30 @@ public class Board extends Canvas {
 //			surface.drawRenderedImage(image, xtranslate);
 //		}
 //		catch (Exception e) {e.printStackTrace();}
+	}
+
+	private void drawDeathRay(Graphics2D surface, DeathRayBlob item, Color textColor) {
+		// draw death ray
+		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
+		Coordinate pos = item.getPosition();
+		Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
+		fillShapeWithImage(surface, blobToDraw, bi);
+		
+		// draw barrel
+		Coordinate lastMove = item.getLastMoveVector();
+		Ellipse2D barrel = circle(lastMove.x, lastMove.y, 2);
+		
+		surface.setStroke(new BasicStroke(3.0f));
+		if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
+			surface.setColor(Color.lightGray);
+		} else {
+			surface.setColor(Color.darkGray);
+		}
+		surface.draw(blobToDraw);
+		surface.draw(barrel);
+		
+		//surface.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
+		surface.setColor(textColor);
 	}
 
 	private void drawBoardBorder(Graphics2D surface) {

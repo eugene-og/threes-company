@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
@@ -220,20 +221,27 @@ public class Gui extends JFrame {
 
 	private JPanel getButtonPane() {
 		JPanel pane = new JPanel(new BorderLayout());
+		
+		JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
 		JButton clearButton = new JButton("Clear Queue");
 		clearButton.setMnemonic(KeyEvent.VK_C);
-		clearButton.setPreferredSize(new Dimension(80, 20));
+		clearButton.setPreferredSize(new Dimension(220, 25));
 		clearButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		clearButton.addActionListener(new MainButtonListener());
+		p.add(clearButton);
+		p.setBackground(GuiConstants.BG_COLOR);
+		pane.add(p, BorderLayout.NORTH);
 		
+		p = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
 		JButton donebutton = new JButton("Done");
 		donebutton.setMnemonic(KeyEvent.VK_D);
-		donebutton.setPreferredSize(new Dimension(80, 20));
+		donebutton.setPreferredSize(new Dimension(220, 25));
 		donebutton.setFont(new Font("Tahoma", Font.BOLD, 14));
 		donebutton.addActionListener(new MainButtonListener());
+		p.add(donebutton);
+		p.setBackground(GuiConstants.BG_COLOR);
+		pane.add(p, BorderLayout.SOUTH);
 		
-		pane.add(clearButton, BorderLayout.NORTH);
-		pane.add(donebutton, BorderLayout.SOUTH);
 		pane.setBackground(GuiConstants.BG_COLOR);
 		return pane;
 	}
@@ -247,6 +255,7 @@ public class Gui extends JFrame {
 		_txtAreaQueue.setFont(GuiConstants.CHAT_FONT);
 		_txtAreaQueue.setForeground(Color.BLACK);
 		_txtAreaQueue.setBackground(Color.WHITE);
+		_txtAreaQueue.setLineWrap(true);
 		JScrollPane scrollPane = new JScrollPane(_txtAreaQueue);
 		pane.add(scrollPane, BorderLayout.CENTER);
 		
@@ -260,7 +269,7 @@ public class Gui extends JFrame {
 
 	private JMenuBar getNewMenuBar() {
 		MenuItemListener menuHandler = new MenuItemListener();
-//		Insets in;
+		Insets in;
 
 		// Setup exit menuitem with 'X' icon
 		JMenuItem menuitem = new JMenuItem("Exit", 'E');
@@ -347,6 +356,8 @@ public class Gui extends JFrame {
 		_txtAreaChat.setEditable(false);
 		_txtAreaChat.setFont(GuiConstants.CHAT_FONT);
 		_txtAreaChat.setForeground(Color.GRAY);
+		_txtAreaChat.setLineWrap(true);
+		//_txtAreaChat.setAutoscrolls(true);
 		JScrollPane scrollPane = new JScrollPane(_txtAreaChat);
 		pane.add(scrollPane, BorderLayout.NORTH);
 		
@@ -368,7 +379,7 @@ public class Gui extends JFrame {
 	
 	private JPanel getActionsPanel() {
 		setupButtons();
-		JPanel pane = new JPanel(new GridLayout(3,3));
+		JPanel pane = new JPanel(new GridLayout(4,2));
 		//pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		pane.setBackground(GuiConstants.BG_COLOR);
 		pane.setBorder(	BorderFactory.createCompoundBorder(
@@ -384,9 +395,9 @@ public class Gui extends JFrame {
 
 	private JButton getActionButton(String label, int i) {
 		_buttons.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
-		_buttons.get(i).setPreferredSize(new Dimension(90, 20));
+		_buttons.get(i).setPreferredSize(new Dimension(100, 20));
 		_buttons.get(i).setEnabled(false);
-		_buttons.get(i).setFont(GuiConstants.BUTTON_FONT);
+		_buttons.get(i).setFont(GuiConstants.BUTTON_DISABLED_FONT);
 		_buttons.get(i).setBackground(Color.WHITE);
 		_buttons.get(i).addActionListener(new ActionButtonListener());
 		_buttons.get(i).setActionCommand(label);
@@ -511,7 +522,7 @@ public class Gui extends JFrame {
 
 				/* ZvS: We consider this a move, right?!?
 				   I'm making it act that way: */
-				//addMoveForCurrentBlob(getClickCoordinate(p));
+				addMoveForCurrentBlob(getClickCoordinate(p));
 				
 				return;
 			}
@@ -545,8 +556,33 @@ public class Gui extends JFrame {
 				_board.repaint();
 				addChatLine("Selected blob " + _graphicalState.getSelectedBlob());
 			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
-				if (_selectedAction == 0) { // move action
+				if (_selectedAction == ACTION_MOVE) { // move action
 					addMoveForCurrentBlob(worldClick);
+				} else if (_selectedAction == ACTION_ROTATE) {
+					addRotationForCurrentBlob(worldClick);
+				}
+			}
+		}
+
+		private void addRotationForCurrentBlob(Coordinate position) {
+			Blob selectedBlob = _graphicalState.getSelectedBlob();
+			if (selectedBlob == null) return;
+			
+			double cost = ActionPointEngine.getCostOfRotate();
+			if (_ap - cost <= 0.0) {
+				showNotEnoughAPDialog("rotate this blob");
+			} else {
+				//_blobMoves.put(selectedBlob, position);
+				if (selectedBlob instanceof DeathRayBlob) {
+					((DeathRayBlob)selectedBlob).setTheta(position);
+					addQueueLine("Rotating blob to " + ((DeathRayBlob)selectedBlob).getTheta() + " with cost of " + cost);
+					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+							" for blob " + selectedBlob + " to " + position.toString());
+					_ap -= cost;
+					setAP();
+					_board.repaint();
+				} else {
+					addChatLine("Rotating only for Death Rays right now");
 				}
 			}
 		}

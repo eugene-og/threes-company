@@ -11,29 +11,22 @@ public class GuiConstants {
 	public static final int		BOARD_LENGTH = 600;
 	
 	public static final int		GUI_WIDTH = 840;
-	
 	public static final int		GUI_HEIGHT = 680;
 	
 	public static final int		PREGAME_GUI_WIDTH = 320;
-	
 	public static final int		PREGAME_GUI_HEIGHT = 200;
 	
 	public static final int		PLAYER_GUI_WIDTH = 320;
-	
 	public static final int		PLAYER_GUI_HEIGHT = 200;
 	
 	public static final Font	CHAT_FONT = new Font("Tahoma", Font.PLAIN, 9);
-	
-	public static final Font	BUTTON_FONT = new Font("Tahoma", Font.PLAIN, 9);
-	
+	public static final Font	BUTTON_DISABLED_FONT = new Font("Tahoma", Font.PLAIN, 10);
+	public static final Font	BUTTON_ENABLED_FONT = new Font("Tahoma", Font.BOLD, 10);
 	public static final Font	AP_LABEL_FONT = new Font("Tahoma", Font.BOLD, 9);
-	
-	public static final Font	BUTTON_ENABLED_FONT = new Font("Tahoma", Font.BOLD, 8);
 	
 	public static final Color	BG_COLOR = Color.WHITE;
 	
 	public static final String	IMAGES_DIR = "images" + File.separator;
-	
 	public static final String	IMAGES_MENU_DIR = "images" + File.separator + "menu" + File.separator;
 	
     /** String for About box. */

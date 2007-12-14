@@ -8,14 +8,22 @@ public class DeathRayBlob extends Blob {
 	private static final long serialVersionUID = 4191070966886734000L;
 	private boolean _activated;
 	
+	public DeathRayBlob(double x, double y, double radius, Player owner, double _theta) {
+		super(x, y, radius, owner);
+		recalculateStrength();
+		this._theta = _theta;
+	}
+	
 	public DeathRayBlob(double x, double y, double radius, Player owner) {
 		super(x, y, radius, owner);
 		recalculateStrength();
+		_theta = Math.random() * 360;
 	}
 	
 	public DeathRayBlob(double x, double y, Player owner) {
 		super(x, y, owner);
 		recalculateStrength();
+		_theta = Math.random() * 360;
 	}
 
 	public void activate(boolean activated) {
@@ -57,6 +65,7 @@ public class DeathRayBlob extends Blob {
 	public void grow() {
 		super.grow();
 		recalculateStrength();
+		
 	}
 	
 	public GameObject spawn() {
@@ -72,9 +81,37 @@ public class DeathRayBlob extends Blob {
 	}
 	
 	public GameObject clone() {
-		return new DeathRayBlob(_position.x, _position.y, _radius, _owner);
+		return new DeathRayBlob(_position.x, _position.y, _radius, _owner, _theta);
 	}
 	
+	public Coordinate getLastMoveVector() {
+		return new Coordinate(getPolarX(_theta), getPolarY(_theta)); 		
+	}
+	
+	public double getPolarX(double theta) {
+		return getPosition().x + ((GameParameters.BLOB_INITIAL_SIZE + getRadius()) * Math.cos(Math.toRadians(theta)));
+	}
+
+	private double getPolarY(double theta) {
+		return getPosition().y - ((GameParameters.BLOB_INITIAL_SIZE + getRadius()) * Math.sin(Math.toRadians(theta)));
+	}
+	
+	public void setTheta(Coordinate dest) {
+		Coordinate src = getPosition();
+		double x = dest.x - src.x;
+		double y = src.y - dest.y;
+		int quad = 0;
+		
+		if (x < 0) quad = 180;
+		else if (y < 0) quad = 360;
+		_theta = Math.toDegrees(Math.atan(y/x)) + quad;
+	}
+	
+	public double getTheta() {
+		return _theta;
+	}
+
 	private Coordinate _lastMove = null;
+	private double _theta = 0.0;
 	private double _strength;
 }
