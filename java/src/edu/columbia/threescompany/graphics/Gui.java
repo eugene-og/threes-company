@@ -144,7 +144,6 @@ public class Gui extends JFrame {
 		JPanel mainControlsPane = new JPanel(new BorderLayout());
 		JPanel controlsPane = new JPanel(new BorderLayout());
 		
-		// TODO canvas draws on top of menus?? wtf
 		/* setup menubar, main pane, and board pane */
 		JMenuBar menubar = getNewMenuBar();
 		JPanel mainpane = getMainPane(); 
@@ -269,7 +268,7 @@ public class Gui extends JFrame {
 
 	private JMenuBar getNewMenuBar() {
 		MenuItemListener menuHandler = new MenuItemListener();
-		Insets in;
+//		Insets in;
 
 		// Setup exit menuitem with 'X' icon
 		JMenuItem menuitem = new JMenuItem("Exit", 'E');
@@ -516,17 +515,6 @@ public class Gui extends JFrame {
     {
     	public void mouseReleased(MouseEvent e) {
 			Point p = e.getPoint();
-			if (isRightClick(e)) {
-				/* There's cost numbers hangin' around */
-				_board.repaint();
-
-				/* ZvS: We consider this a move, right?!?
-				   I'm making it act that way: */
-				addMoveForCurrentBlob(getClickCoordinate(p));
-				
-				return;
-			}
-			
 			if (_gameState == null) { // drawBoard hasn't been called yet
 				return;
 			}
@@ -534,13 +522,7 @@ public class Gui extends JFrame {
 				return;
 			}
 			
-			if (isLeftClick(e)) {
-				processClick(p);
-			}
-		}
-
-		private boolean isLeftClick(MouseEvent e) {
-			return e.getButton() == MouseEvent.BUTTON1;
+			processClick(p);
 		}
     	
     	private void processClick(Point p) {
@@ -662,64 +644,33 @@ public class Gui extends JFrame {
 		}
 		
 		private Coordinate getClickCoordinate(Point p) {
+			// TODO use board's screenToWorld
 			double worldX = (double)p.x * (int)GameParameters.BOARD_SIZE / _board.getWidth();
 			double worldY = (double)p.y * (int)GameParameters.BOARD_SIZE / _board.getHeight();
 			Coordinate worldClick = new Coordinate(worldX, worldY);
 			return worldClick;
 		}
 		
-		public void mousePressed(MouseEvent e) {
-			if (isRightClick(e)) { // right button pressed
-				Point p = e.getPoint();
-				Coordinate worldClick = getClickCoordinate(p);
-				Blob newSelection = getNewSelection(worldClick);
-				
-				if (newSelection != null)
-					_graphicalState.setSelectedBlob(newSelection);
-				
-				drawMoveCost(worldClick);
-			}
-		}
-
-		private void drawMoveCost(Coordinate worldClick) {
-			// clicked a destination for a blob, display cost until released
+		public void mouseMoved(MouseEvent e) {
 			Blob selectedBlob = _graphicalState.getSelectedBlob();
-			if (selectedBlob == null) return;
-			
+			Point p = e.getPoint();
+			if (selectedBlob == null || !isOnBoard(p)) return;
+			Coordinate worldClick = getClickCoordinate(p);
 			double cost = ActionPointEngine.getCostOfPhysicalMove(selectedBlob, worldClick);
-			_board.drawMoveCost(worldClick, cost, cost < _ap);
-			_board.repaint();
-			
-			// TODO Send this Point to real-time physics engine for line drawing	
-			// TODO get data back from physics to draw line for projected path
-		}
-
-		private boolean isRightClick(MouseEvent e) {
-			return e.getButton() == MouseEvent.BUTTON3;
+			_board.setMovementCost(getClickCoordinate(p), cost);
 		}
 		
-		public void mouseDragged(MouseEvent e) {
-			Point p = e.getPoint();
-			Coordinate worldClick = getClickCoordinate(p);
-			
-			if (isOnBoard(p) && isRightClickDrag(e))
-					drawMoveCost(worldClick);
-		}
-
 		private boolean isOnBoard(Point p) {
 			return p.x > 0 && p.x < GuiConstants.BOARD_LENGTH
 					&& p.y > 0 && p.y < GuiConstants.BOARD_LENGTH;
-		}
-
-		private boolean isRightClickDrag(MouseEvent e) {
-			return e.getModifiers() == 4;
 		}
 		
 		/** not needed */
 		public void mouseEntered(MouseEvent e) {}
 		public void mouseExited(MouseEvent e) {}
-		public void mouseMoved(MouseEvent e) {}
 		public void mouseClicked(MouseEvent e) {}
+		public void mouseDragged(MouseEvent e) {}
+		public void mousePressed(MouseEvent e) {}
 	}
     
 	private class MainButtonListener implements ActionListener {
@@ -839,7 +790,6 @@ public class Gui extends JFrame {
 	}
 	
 	public GUIGameMove getMoveFor(Player activePlayer) {
-		// TODO Moves need a lot of work
 		addChatLine("It's player " + activePlayer + "'s turn.");
 		_ap = activePlayer.getActionPoints();
 		setAP();
@@ -848,6 +798,7 @@ public class Gui extends JFrame {
 		_blobsToActivate = new ArrayList<Blob>();
 		_blobsToSpawn = new ArrayList<Blob>();
 		_graphicalState.setSelectedBlob(null);
+		_board.setMovementCost(null, 0);
 		updateActionsBorder(null);
 		_activePlayer = activePlayer;
 		_turnOver.waitUntilTrue();
