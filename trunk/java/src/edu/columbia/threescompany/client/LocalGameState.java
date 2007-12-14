@@ -114,7 +114,11 @@ public class LocalGameState implements Serializable {
 					} else if (percent_diff < GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL) {
 						killList.add(obj1);
 					} else {
-						obj1.setRadius((obj1.getRadius()-obj2.getRadius())+GameParameters.BLOB_INITIAL_SIZE);
+						/* add difference to initial size divided by growth factor -- instead of just
+						 * initial size -- to cancel out effect of growing immediately after turn 
+						 * ends (take more damage) */
+						obj1.setRadius((obj1.getRadius()-obj2.getRadius()) + 
+								GameParameters.BLOB_INITIAL_SIZE/GameParameters.BLOB_GROWTH_FACTOR);
 					}
 				}
 			}
