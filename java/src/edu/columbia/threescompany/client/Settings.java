@@ -11,5 +11,7 @@ public class Settings {
 		if (_instance == null) _instance = new Settings();
 		return _instance;
 	}
+	
+	private Settings() {}
 
 }

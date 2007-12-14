@@ -23,7 +23,6 @@ import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 import edu.columbia.threescompany.graphics.Gui;
 import edu.columbia.threescompany.sound.SoundEngine;
-import edu.columbia.threescompany.sound.SoundEngine;
 
 public class LocalGameState implements Serializable {
 	private static final long serialVersionUID = 8708609010775403554L;
@@ -129,7 +128,8 @@ public class LocalGameState implements Serializable {
 		
 		for (GameObject obj : killList) {
 			obj.die();
-			if (playSounds) new SoundEngine(SoundEngine.BUBBLE).run();
+			if (playSounds) 
+				BlobsClient.getSoundEngine().play(SoundEngine.BUBBLE);
 		}
 	}
 	
