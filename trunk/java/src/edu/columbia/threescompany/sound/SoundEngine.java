@@ -1,7 +1,7 @@
 package edu.columbia.threescompany.sound;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -16,7 +16,7 @@ import edu.columbia.threescompany.client.Settings;
 import edu.columbia.threescompany.common.ConditionVariable;
 
 public class SoundEngine extends Thread {
-	private static String PATH = "sound" + File.separator;
+	private static String PATH = "/";
 	
 	public static String EXPLODE 	= PATH + "explosion.wav";
 	public static String BUBBLE 	= PATH + "bubble.wav";
@@ -54,8 +54,8 @@ public class SoundEngine extends Thread {
 	public void run(Position curPosition) {
 		while(true) {
 			hasFileToPlay.waitUntilTrue();
-			File soundFile = new File(filename);
-			if (!soundFile.exists()) {
+			URL soundFile = this.getClass().getResource(filename);
+			if (soundFile == null) {
 				System.err.println("Wave file not found: " + filename);
 			}
 	
