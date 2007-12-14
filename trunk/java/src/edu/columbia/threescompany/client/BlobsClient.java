@@ -34,6 +34,7 @@ import edu.columbia.threescompany.graphics.PlayerInfoGui;
 import edu.columbia.threescompany.graphics.PreGameGui;
 import edu.columbia.threescompany.server.BlobsServer;
 import edu.columbia.threescompany.server.CommunicationConstants;
+import edu.columbia.threescompany.sound.SoundEngine;
 
 public class BlobsClient {
 	private static LocalGameState _gameState;
@@ -43,8 +44,11 @@ public class BlobsClient {
 	private static List<Player> _players;
 	private static boolean isAutoMode = false;
 	private static int moveCount = 0;
+	private static SoundEngine soundEngine;
+	
 	
 	public static void main(String[] args) throws Exception {
+		startSoundEngine();
 		doPlayerSetup();
 		if (args.length == 0)
 			args = new String[] {PlayerInfoGui.getServerAddress(), PlayerInfoGui.getServerPort()};
@@ -72,6 +76,11 @@ public class BlobsClient {
 			handleMessage(message);
 		
 		//gameOverDialog();
+	}
+
+	private static void startSoundEngine() {
+		soundEngine = new SoundEngine();
+		soundEngine.start();
 	}
 
 	public static Object[] authenticatePlayers(String[] args, List<Player> players) throws NumberFormatException, AuthenticationException, IOException {
@@ -273,6 +282,10 @@ public class BlobsClient {
 
 	public static LocalGameState getGameState() {
 		return _gameState;
+	}
+	
+	public static SoundEngine getSoundEngine() {
+		return soundEngine;
 	}
 
 }

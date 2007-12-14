@@ -12,6 +12,7 @@ import org.quickserver.net.qsadmin.gui.QSAdminMain;
 import org.quickserver.net.server.ClientHandler;
 import org.quickserver.net.server.QuickServer;
 
+import edu.columbia.threescompany.client.BlobsClient;
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.client.communication.ExecuteMoveMessage;
 import edu.columbia.threescompany.client.communication.GameOverMessage;
@@ -131,7 +132,7 @@ public class BlobsServer {
 			sendStateToAllPlayers(gameState);
 		}
 		sendGameOver(gameState.getWinner());
-		new SoundEngine(SoundEngine.GAMEOVER).run();
+		BlobsClient.getSoundEngine().play(SoundEngine.GAMEOVER);
 	}
 
 	private void sendGameOver(Player winner) throws IOException {
