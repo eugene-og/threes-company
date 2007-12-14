@@ -22,11 +22,14 @@ import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 import edu.columbia.threescompany.graphics.Gui;
+import edu.columbia.threescompany.sound.SoundEngine;
+import edu.columbia.threescompany.sound.SoundEngine;
 
 public class LocalGameState implements Serializable {
 	private static final long serialVersionUID = 8708609010775403554L;
 	
 	public void executeMove(GameMove move, Gui gui) {
+		boolean playSounds = gui != null;
 		/* t is our time variable -- basically, we execute GRANULARITY tiny
 		 * moves, sequentially. */
 		double turnLength = move.getDuration();
@@ -39,7 +42,7 @@ public class LocalGameState implements Serializable {
 		deactivateBlobs();
 		growBlobs();
 		resetAP();
-		checkCollisions();
+		checkCollisions(playSounds);
 		
 		System.out.println("Game objects after executing move:");
 		for (GameObject item : _gameObjects) {
@@ -63,6 +66,7 @@ public class LocalGameState implements Serializable {
 	}
 
 	private void executeMoveStep(GameMove move, Gui gui, int t, int tmax) {
+		boolean playSounds = gui != null;
 		long startTime = System.currentTimeMillis();
 		
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
@@ -71,7 +75,7 @@ public class LocalGameState implements Serializable {
 			eventMove.execute(this);
 		
 		applyForces();
-		checkCollisions();
+		checkCollisions(playSounds);
 		
 		if (gui != null) {
 			gui.drawState(this);
@@ -94,14 +98,14 @@ public class LocalGameState implements Serializable {
 					  //(0.2 + 3.y * ((double) t / (double) tmax)));
 	}
 
-	private void checkCollisions() {
+	private void checkCollisions(boolean playSounds) {
 		List<GameObject> killList = new ArrayList<GameObject>();
 		for (GameObject obj1 : _gameObjects)
 		for (GameObject obj2 : _gameObjects)
 			if (!obj1.isDead() && !obj2.isDead()) {
 				if (obj1.checkCollision(obj2)) {
 					if (obj2 instanceof Blob)
-						killList.add(obj2);
+						addToKillList(killList, obj2);
 					else
 						continue;
 					
@@ -110,9 +114,9 @@ public class LocalGameState implements Serializable {
 					
 					double percent_diff = (obj1.getRadius()-obj2.getRadius())/obj1.getRadius();
 					if ((int)(obj1.getRadius()*100) == (int)(obj2.getRadius()*100)) {
-						killList.add(obj1);
+						addToKillList(killList, obj1);
 					} else if (percent_diff < GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL) {
-						killList.add(obj1);
+						addToKillList(killList, obj1);
 					} else {
 						/* add difference to initial size divided by growth factor -- instead of just
 						 * initial size -- to cancel out effect of growing immediately after turn 
@@ -123,7 +127,15 @@ public class LocalGameState implements Serializable {
 				}
 			}
 		
-		for (GameObject obj : killList) obj.die();
+		for (GameObject obj : killList) {
+			obj.die();
+			if (playSounds) new SoundEngine(SoundEngine.BUBBLE).run();
+		}
+	}
+	
+	private void addToKillList(List<GameObject> killList, GameObject gameObject) {
+		if (gameObject.isDead() || killList.contains(gameObject)) return;
+		killList.add(gameObject);
 	}
 	
 	private void applyForces() {

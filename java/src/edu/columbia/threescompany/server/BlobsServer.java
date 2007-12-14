@@ -131,7 +131,7 @@ public class BlobsServer {
 			sendStateToAllPlayers(gameState);
 		}
 		sendGameOver(gameState.getWinner());
-		SoundEngine.play(SoundEngine.GAMEOVER);
+		new SoundEngine(SoundEngine.GAMEOVER).run();
 	}
 
 	private void sendGameOver(Player winner) throws IOException {
