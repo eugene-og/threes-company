@@ -1,5 +1,5 @@
 #summary Playtest report of r423
-
+<pre>
 Daniel Benamy and a friend (male, 20s)
 Revision 423
 
@@ -93,3 +93,4 @@ Friend: so for things like that, maybe you should have a "you cant do that' noti
 
 Friend: and the objects in the middle dont seem to work
 Friend: unless im mistaken
+</pre>
