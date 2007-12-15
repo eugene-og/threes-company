@@ -27,8 +27,8 @@ public abstract class ForceBlob extends Blob {
 		double distance = _position.distanceFrom(pos);
 		
 		Force force = new Force(_position.x - pos.x, _position.y - pos.y);
-		force.x *= _directionModifier;
-		force.y *= _directionModifier;
+		force.x *= _directionModifier * GameParameters.FORCE_BLOB_STRENGTH;
+		force.y *= _directionModifier * GameParameters.FORCE_BLOB_STRENGTH;
 		
 		/* 1/(r*r) */
 		force.x /= distance * distance;
