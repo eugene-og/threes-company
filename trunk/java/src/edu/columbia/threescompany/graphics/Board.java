@@ -8,9 +8,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
@@ -164,10 +166,12 @@ public class Board extends Canvas {
 			if (item instanceof DeathRayBlob) {
 				// draw barrel
 				Coordinate facing = ((DeathRayBlob)item).getLastMoveVector();
-				Ellipse2D barrel = circle(facing.x, facing.y, GameParameters.BLOB_INITIAL_SIZE * 0.75);
+				Coordinate screenCenter = worldToScreen(item.getPosition());
+				Coordinate screenFacing = worldToScreen(facing);
+				Line2D barrel = new Line2D.Double(screenCenter.x, screenCenter.y, screenFacing.x, screenFacing.y);
 				surface.setColor(Color.black);
+				surface.setStroke(new BasicStroke(4));
 				surface.draw(barrel);
-				surface.fill(barrel);
 			}
 			
 			surface.setStroke(new BasicStroke(3.0f));
