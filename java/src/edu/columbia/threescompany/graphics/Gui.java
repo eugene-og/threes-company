@@ -403,7 +403,7 @@ public class Gui extends JFrame {
 		_buttons.get(i).setEnabled(false);
 		_buttons.get(i).setFont(GuiConstants.BUTTON_DISABLED_FONT);
 		_buttons.get(i).setBackground(Color.WHITE);
-		_buttons.get(i).addActionListener(new ActionButtonListener());
+		_buttons.get(i).addActionListener(new BlobAbilitiesButtonListener());
 		_buttons.get(i).setActionCommand(label);
 		return _buttons.get(i);
 	}
@@ -521,20 +521,18 @@ public class Gui extends JFrame {
     private class BoardMouseListener implements MouseListener, MouseMotionListener
     {
     	public void mouseReleased(MouseEvent e) {
-			Point p = e.getPoint();
 			if (_gameState == null) { // drawBoard hasn't been called yet
 				return;
 			}
 			if (_activePlayer == null) { // It's no one's turn
 				return;
 			}
-			
-			processClick(p);
+			processClick(e.getPoint());
 		}
     	
     	private void processClick(Point p) {
 			// The world variables are locations in world/game space (as opposed to screen space)
-			Coordinate worldClick = getClickCoordinate(p);
+			Coordinate worldClick = pointToWorldCoordinate(p);
 			// TODO have screen to world and world to screen in only one place
 			Blob newSelection = getNewSelection(worldClick);
 			if (newSelection != null) { // clicked a blob that player controls
@@ -554,26 +552,8 @@ public class Gui extends JFrame {
 		}
 
 		private void addRotationForCurrentBlob(Coordinate position) {
-			Blob selectedBlob = _graphicalState.getSelectedBlob();
-			if (selectedBlob == null) return;
-			
-			double cost = ActionPointEngine.getCostOfRotate();
-			if (_ap - cost <= 0.0) {
-				showNotEnoughAPDialog("rotate this blob");
-			} else {
-				//_blobMoves.put(selectedBlob, position);
-				if (selectedBlob instanceof DeathRayBlob) {
-					((DeathRayBlob)selectedBlob).setTheta(position);
-					addQueueLine("Rotating blob to " + ((DeathRayBlob)selectedBlob).getTheta() + " with cost of " + cost);
-					debug("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-							" for blob " + selectedBlob + " to " + position.toString());
-					_ap -= cost;
-					setAP();
-					_board.repaint();
-				} else {
-					addChatLine("Rotating only for Death Rays right now");
-				}
-			}
+			// TODO What is this? Does it do anything in mouse listener?
+			enqueueMove("rotation", position);
 		}
 
 		private Blob getNewSelection(Coordinate worldClick) {
@@ -589,25 +569,8 @@ public class Gui extends JFrame {
 			return newSelection;
 		}
 
-		private void debug(String string) {
-			System.out.println(string);
-		}
-
 		private void addMoveForCurrentBlob(Coordinate position) {
-			Blob selectedBlob = _graphicalState.getSelectedBlob();
-			if (selectedBlob == null) return;
-			
-			double cost = ActionPointEngine.getCostOfPhysicalMove(selectedBlob, position);
-			if (_ap - cost <= 0.0) {
-				showNotEnoughAPDialog("move this blob");
-			} else {
-				_blobMoves.put(selectedBlob, position);
-				addQueueLine("Moving blob to " + position.toRoundedString() + " with cost of " + cost);
-				debug("Queueing action " + _buttonCmds.get(_selectedAction)+ 
-						" for blob " + selectedBlob + " to " + position.toString());
-				_ap -= cost;
-				setAP();
-			}
+			enqueueMove("movement", position);
 		}
 		
 		private Blob blobClickedOn(Coordinate worldClick) {
@@ -653,7 +616,7 @@ public class Gui extends JFrame {
 				setButtonEnabled(ACTION_FORCE);
 		}
 		
-		private Coordinate getClickCoordinate(Point p) {
+		private Coordinate pointToWorldCoordinate(Point p) {
 			// TODO use board's screenToWorld
 			double worldX = (double)p.x * (int)GameParameters.BOARD_SIZE / _board.getWidth();
 			double worldY = (double)p.y * (int)GameParameters.BOARD_SIZE / _board.getHeight();
@@ -665,9 +628,9 @@ public class Gui extends JFrame {
 			Blob selectedBlob = _graphicalState.getSelectedBlob();
 			Point p = e.getPoint();
 			if (selectedBlob == null || !isOnBoard(p)) return;
-			Coordinate worldClick = getClickCoordinate(p);
+			Coordinate worldClick = pointToWorldCoordinate(p);
 			double cost = ActionPointEngine.getCostOfPhysicalMove(selectedBlob, worldClick);
-			_board.setMovementCost(getClickCoordinate(p), cost);
+			_board.setMovementCost(worldClick, cost);
 		}
 		
 		private boolean isOnBoard(Point p) {
@@ -683,6 +646,9 @@ public class Gui extends JFrame {
 		public void mousePressed(MouseEvent e) {}
 	}
     
+	/**
+	 * Listener for Done and Clear Queue buttons
+	 */
 	private class MainButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			if (event.getActionCommand().equals("Done")) {
@@ -701,8 +667,12 @@ public class Gui extends JFrame {
 		}
 	}
 	
-	private class ActionButtonListener implements ActionListener {
+	private class BlobAbilitiesButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
+			// TODO Move as much of this logic as possible into enqueueMove.
+			// While doing this I'd like to get rid of _buttonCmds unless 
+			// they're doing something cool that I don't see.
+			
 			String cmd = event.getActionCommand();
 			String text = "you've selected to ";
 			String message = null;
@@ -751,7 +721,7 @@ public class Gui extends JFrame {
 			}
 			
 			if (_ap - cost <= 0.0) {
-				showNotEnoughAPDialog(message);
+				addChatLine("You do not have enough action points to " + message);
 			} else {
 				if (isSpawn)
 					_blobsToSpawn.add(_graphicalState.getSelectedBlob());
@@ -774,12 +744,6 @@ public class Gui extends JFrame {
 		}
 	}
 	
-	private void showNotEnoughAPDialog(String message) {
-		JOptionPane.showMessageDialog(null, "You do not have enough action points to "+message, 
-				"Not enough action points!",
-				JOptionPane.INFORMATION_MESSAGE );
-	}
-	
 	private void setupButtons() {
 		_buttonCmds.add("Move");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_MOVE)));
@@ -799,6 +763,47 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_FORCE)));
 	}
 	
+	/**
+	 * Enqueues a move for the selected blob. Does nothing if no blob is selected.
+	 * @param destination Meaning depends on move type.
+	 */
+	public void enqueueMove(String moveType, Coordinate destination) {
+		addChatLine("addMove called: " + moveType);
+		Blob selectedBlob = _graphicalState.getSelectedBlob();
+		double cost = -1;
+		if (selectedBlob == null) return;
+		if (moveType == "movement") {			
+			cost = ActionPointEngine.getCostOfPhysicalMove(selectedBlob, destination);
+			if (_ap - cost <= 0.0) {
+				//showNotEnoughAPDialog("move this blob");
+				return;
+			} else {
+				_blobMoves.put(selectedBlob, destination);
+				addQueueLine("Moving blob to " + destination.toRoundedString() + " with cost of " + cost);
+			}
+		} else if (moveType == "rotation") {
+			if (!(selectedBlob instanceof DeathRayBlob)) {
+				addChatLine("Rotating only for Death Rays right now");
+				return;
+			}
+			((DeathRayBlob)selectedBlob).setTheta(destination);
+			cost = ActionPointEngine.getCostOfRotate();
+			if (_ap - cost <= 0.0) {
+				//NotEnoughAPDialog("rotate this blob");
+				return;
+			} else {
+				//_blobMoves.put(selectedBlob, position);
+				addQueueLine("Rotating blob to " + ((DeathRayBlob)selectedBlob).getTheta() + " with cost of " + cost);
+				_board.repaint();
+			}
+		}
+		debug("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+				" for blob " + selectedBlob + " to " + destination.toString());
+		assert(cost > 0);
+		_ap -= cost;
+		setAP();
+	}
+
 	public GUIGameMove getMoveFor(Player activePlayer) {
 		addChatLine("It's " + activePlayer + "'s turn.");
 		_ap = activePlayer.getActionPoints();
