@@ -84,7 +84,7 @@ public class PlayerInfoGui extends JFrame {
 		JLabel label = new JLabel("Player " + (i + 1) + " enter your handle");
 		label.setFont(GuiConstants.CHAT_FONT);
 		_contentPane.add(label);
-		playerNames.add(i, new JTextField("username"+(i+1), 12));
+		playerNames.add(i, new JTextField("Player "+(i+1), 12));
 		_contentPane.add(playerNames.get(i));
 	}
 	
