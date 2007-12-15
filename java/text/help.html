@@ -12,6 +12,16 @@ A turn consists of:
 <li>Blobs growing.</li>
 </ul>
 
+<h2>Attacking</h2>
+When two blobs collide (touch each other) both take damage. If they are similar 
+in size they will both die. If one is significantly bigger than the other, 
+the small one will die and the big one will take damage and shrink. So if you're
+trying to kill an enemy blob, you need a blob at least as big as it or a few
+smaller blobs.
+<p>Blobs take damage from opponent and friendly blobs. Also keep in mind that if
+blobs are near each other and grow, they may grow into each other and collide.
+</p>
+
 <h2>Moves</h2>
 To do something with a blob you must first select it by clicking on it. You can
 then order it to move by clicking somewhere else on the board, or use one of
@@ -21,8 +31,11 @@ right) decreasing. Your action points limit what you can do on a turn.
 Different moves use different amounts of action points. Additionally, the 
 same move can use different amounts of action points depending on the size 
 of the blob making the move.</p>
-<p>You can see how many action points a move of a blob will take by selecting
-a blob and right clicking on the intended destination.</p>
+<p>When you select a blob and move the mouse around, the number next to the 
+cursor tells you how many action points it will take to move there.</p>
+<p>If you seem to be missing action points or would like to undo the moves 
+you've selected, click the clear queue button. This will remove all the moves
+you selected and restore all of your action points. Then you can start over.</p>
  
 <h2>Units</h2>
 You have a few different types of blobs which can do different things:
@@ -42,10 +55,13 @@ big enough to do so. All blobs can also fill in holes on the board.
 <h2>Board</h2>
 The board can have some special areas on it:
 <ul>
-<li>Holes - When blobs move onto or across a hole, they fall through it and 
-die. They also die if they fall off the edge of the board.</li>
-<li>Anchor Points - When a blob is over an anchor point, it can not be moved 
-by a blob force.</li>
-<li>Energy Points - When a blob is over an energy point, that player gets an 
+<li>Anchor Points (in the middle on top) - When a blob is over an 
+anchor point, it can not be moved by a blob force.</li>
+<li>Holes (the board starts with one in the middle) - 
+When blobs move onto or across a hole, they fall through it and 
+die. They also die if they fall off the edge of the board. Explosion blobs can
+create new holes and all blobs can fill existing ones.</li>
+<li>Energy Points (in the middle on the bottom) - 
+When a blob is over an energy point, that player gets an 
 increased number of action points on future turns.</li> 
 </ul>
