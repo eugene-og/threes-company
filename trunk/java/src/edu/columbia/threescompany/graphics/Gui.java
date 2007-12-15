@@ -544,7 +544,7 @@ public class Gui extends JFrame {
 				updateActionsBorder(newSelection);
 				updateAvailableActions();
 				_board.repaint();
-				addChatLine("Selected blob " + _graphicalState.getSelectedBlob());
+				debug("Selected blob " + _graphicalState.getSelectedBlob());
 			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
 				if (_selectedAction == ACTION_MOVE) { // move action
 					addMoveForCurrentBlob(worldClick);
@@ -566,7 +566,7 @@ public class Gui extends JFrame {
 				if (selectedBlob instanceof DeathRayBlob) {
 					((DeathRayBlob)selectedBlob).setTheta(position);
 					addQueueLine("Rotating blob to " + ((DeathRayBlob)selectedBlob).getTheta() + " with cost of " + cost);
-					addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+					debug("Queueing action " + _buttonCmds.get(_selectedAction)+ 
 							" for blob " + selectedBlob + " to " + position.toString());
 					_ap -= cost;
 					setAP();
@@ -580,8 +580,7 @@ public class Gui extends JFrame {
 		private Blob getNewSelection(Coordinate worldClick) {
 			Blob newSelection = blobClickedOn(worldClick);
 			if (newSelection != null) {
-				// Debugging output
-				addChatLine("Clicked blob owned by player " + newSelection.getOwner().getName());
+				debug("Clicked blob owned by player " + newSelection.getOwner().getName());
 			}
 			
 			if (newSelection != null && !newSelection.getOwner().equals(_activePlayer)) {
@@ -589,6 +588,10 @@ public class Gui extends JFrame {
 				addChatLine("Blob does not belong to you.");
 			}
 			return newSelection;
+		}
+
+		private void debug(String string) {
+			System.out.println(string);
 		}
 
 		private void addMoveForCurrentBlob(Coordinate position) {
@@ -601,7 +604,7 @@ public class Gui extends JFrame {
 			} else {
 				_blobMoves.put(selectedBlob, position);
 				addQueueLine("Moving blob to " + position.toRoundedString() + " with cost of " + cost);
-				addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ 
+				debug("Queueing action " + _buttonCmds.get(_selectedAction)+ 
 						" for blob " + selectedBlob + " to " + position.toString());
 				_ap -= cost;
 				setAP();
@@ -758,8 +761,8 @@ public class Gui extends JFrame {
 				
 				
 				addQueueLine("Activate blob " + _buttonCmds.get(_selectedAction) + " with cost of " + cost);
-				addChatLine(text+=message);
-				addChatLine("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
+				debug(text+=message);
+				debug("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 				_ap -= cost;
 				setAP();
 			}
@@ -798,7 +801,7 @@ public class Gui extends JFrame {
 	}
 	
 	public GUIGameMove getMoveFor(Player activePlayer) {
-		addChatLine("It's player " + activePlayer + "'s turn.");
+		addChatLine("It's " + activePlayer + "'s turn.");
 		_ap = activePlayer.getActionPoints();
 		setAP();
 		_turnOver.setFalse();
@@ -871,4 +874,8 @@ public class Gui extends JFrame {
 		public void mouseReleased(MouseEvent arg0) {}
     }
 	
+	private void debug(String string) {
+		System.out.println(string);
+	}
+
 }
