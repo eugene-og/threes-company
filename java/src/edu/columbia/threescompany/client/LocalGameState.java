@@ -254,7 +254,7 @@ public class LocalGameState implements Serializable {
 		initialGameState.addObject(new SlipperyBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*4/8, getRandomBlobSize(), players.get(1), initialGameState));
 		initialGameState.addObject(new ExplodingBlob(GameParameters.BOARD_SIZE-(GameParameters.BOARD_SIZE/5), GameParameters.BOARD_SIZE*6/8, getRandomBlobSize(), players.get(1), initialGameState));
 		
-		initialGameState.addObject(new AnchorPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2));
+		initialGameState.addObject(new AnchorPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2 - 2));
 		initialGameState.addObject(new APCIPoint(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2 + 2));
 		initialGameState.addObject(new Hole(GameParameters.BOARD_SIZE/2, GameParameters.BOARD_SIZE/2 + 10, GameParameters.BLOB_SIZE_LIMIT));
 		
