@@ -230,30 +230,6 @@ public class Board extends Canvas {
 	private Coordinate worldToScreen(Coordinate position) {
 		return new Coordinate(position.x * SCALE_FACTOR, position.y * SCALE_FACTOR);
 	}
-
-	private void drawDeathRay(Graphics2D surface, DeathRayBlob item, Color textColor) {
-		// draw death ray
-		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
-		Coordinate pos = item.getPosition();
-		Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
-		fillShapeWithImage(surface, blobToDraw, bi);
-		
-		// draw barrel
-		Coordinate lastMove = item.getLastMoveVector();
-		Ellipse2D barrel = circle(lastMove.x, lastMove.y, 2);
-		
-		surface.setStroke(new BasicStroke(3.0f));
-		if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
-			surface.setColor(Color.lightGray);
-		} else {
-			surface.setColor(Color.darkGray);
-		}
-		surface.draw(blobToDraw);
-		surface.draw(barrel);
-		
-		//surface.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
-		surface.setColor(textColor);
-	}
 	
 	private void drawBoardBorder(Graphics2D surface) {
 		surface.drawLine(0, 0, GuiConstants.BOARD_LENGTH, 0);
