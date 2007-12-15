@@ -31,6 +31,7 @@ public class GameParameters {
 	/* How much does stuff slide over a slippery spot? */
 	public static final int SLIPPERINESS = 3;
 	
+	public static final int FORCE_BLOB_STRENGTH = 23;
 	/* Area of effect for blob forces */
 	public static final double FORCE_RADIUS = BOARD_SIZE / 5;
 	
