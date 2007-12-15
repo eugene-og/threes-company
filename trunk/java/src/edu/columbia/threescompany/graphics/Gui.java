@@ -768,7 +768,7 @@ public class Gui extends JFrame {
 	 * @param destination Meaning depends on move type.
 	 */
 	public void enqueueMove(String moveType, Coordinate destination) {
-		addChatLine("addMove called: " + moveType);
+		debug("enqueueMove called: " + moveType);
 		Blob selectedBlob = _graphicalState.getSelectedBlob();
 		double cost = -1;
 		if (selectedBlob == null) return;
@@ -796,6 +796,8 @@ public class Gui extends JFrame {
 				addQueueLine("Rotating blob to " + ((DeathRayBlob)selectedBlob).getTheta() + " with cost of " + cost);
 				_board.repaint();
 			}
+		} else {
+			throw new RuntimeException("enqueueMove called with invalid move type");
 		}
 		debug("Queueing action " + _buttonCmds.get(_selectedAction)+ 
 				" for blob " + selectedBlob + " to " + destination.toString());
