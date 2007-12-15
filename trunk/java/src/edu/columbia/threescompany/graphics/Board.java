@@ -172,9 +172,9 @@ public class Board extends Canvas {
 			
 			surface.setStroke(new BasicStroke(3.0f));
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
-				surface.setColor(Color.lightGray);
+				surface.setColor(Color.red);
 			} else {
-				surface.setColor(Color.darkGray);
+				surface.setColor(Color.blue);
 			}
 			
 			surface.draw(blobToDraw);
@@ -287,18 +287,18 @@ public class Board extends Canvas {
 	
 	private void drawAnchorPoint(Graphics2D surface, ImmovableGameObject item) {
 		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
-		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE*0.75);
+		Ellipse2D anchorPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE);
 		fillShapeWithImage(surface, anchorPointToDraw, bi);
 
 		//draw the outline
 		surface.setStroke(new BasicStroke(3.0f));
 		surface.draw(anchorPointToDraw);
-		surface.setColor(Color.white);
+		surface.setColor(Color.black);
 	}
 
 	private void drawAPCIPoint(Graphics2D surface, ImmovableGameObject item) {
 		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
-		Ellipse2D apciPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE*0.75);
+		Ellipse2D apciPointToDraw = circle(item.getPosition().x, item.getPosition().y, GameParameters.BLOB_INITIAL_SIZE);
 		fillShapeWithImage(surface, apciPointToDraw, bi);
 	}
 	

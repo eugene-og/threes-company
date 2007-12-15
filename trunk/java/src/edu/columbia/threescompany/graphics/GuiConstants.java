@@ -43,7 +43,7 @@ public class GuiConstants {
     public static final String SLIPPERY_BLOB_IMAGE = "bggrn01.gif";
     public static final String DEATHRAY_BLOB_IMAGE = "bgbrn07.gif";
     public static final String ANCHOR_POINT_IMAGE = "Anchor0b.gif";
-    public static final String APCI_POINT_IMAGE = "bgblu01.gif";
+    public static final String APCI_POINT_IMAGE = "mq_plus.gif";
     public static final String HOLE_IMAGE = "hole.PNG";
 
 }
