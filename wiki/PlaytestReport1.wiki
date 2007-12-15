@@ -1,0 +1,95 @@
+#summary Playtest report of r423
+
+Daniel Benamy and a friend (male, 20s)
+Revision 423
+
+Filed bugs for technical problems.
+Updated help to incorporate some of the feedback which I removed from here.
+Other feedback below
+
+---------------------------------------
+
+Dan: you should knokw that forces (pushing and pulling) are pretty much useless right now and that slippey and death ray don't work yet
+Dan: also, when you select a blob and move the mouse around, the number by the cursor tell you how many action points it will cost to move there
+Dan: after you've picked some moves, click done
+Dan: if you want to start over, click clear queue
+
+Friend: yea, what does force mean?
+Dan: you push or pull nearby blobs. whether you push or pull depends on the blob you selected- blue it push, red is pull. but forces are very weak right now.
+
+Friend: what are the objects in the center?
+Dan: the anchor (top thing) prevents a blob covering it from being moved by forces
+Dan: the middle one is an enery point which gives you an extra action point while you're on it
+Dan: the bottom one is a hole (like exploding blobs create). blobs that move over it die.
+
+Friend: what does rotating do?
+Dan: if death ray worked, it would come out in the direction you're facing
+
+Friend: what the hell is going on?
+Dan: oh yeah. your blobs can kill each other
+
+Friend: you need to explain this shit a lot more thoroughly
+Dan: ok
+Dan: that blobs take damage?
+Friend: youre honestly asking me?
+Dan: lol
+Dan: i guess the help doesn't talk about blobs colliding huh
+Friend: and the fact that you need to be a higher point value to kill one
+
+Friend: force doesnt do anything either?
+Dan: it does, just very weakly
+Dan: we need to make it stronger
+
+Friend: what just happened to your other dudes
+Dan: they grew into each other and died :-)
+
+Friend: im clueless
+Friend: im trying all this different shit and the same shit keeps happening
+Friend: i.e. i keep dying
+Dan: there's definitely a limited set of options at this point
+Dan: also keep in mind that i've played a few times before
+Friend: yea but nothing is working for me
+
+Dan: this is really very early on
+Friend: it better be, this is embarrassing
+
+Dan: ahh, don't fall in!
+Friend: i was trying to see if i would
+Dan: a little more and you will
+
+Friend: i tried to fill it
+Dan: i guess that needs work too
+Dan: but you had the right idea
+
+Dan: what the hell was that?
+Dan: how'd you do that?
+Friend: i moved my dude to the center of your four and then forced
+Dan: bizarre
+Dan: he like flew off the side of the board
+
+It's boring waiting for players. Need time limit or to see what they're doing or something.
+
+Friend: i didnt realize you gain points by moving
+Dan: all blobs grow at the end of each turn
+Dan: it doesn't matter if you move
+Friend: oh
+
+Dan: i think explosions are broken
+Dan: but they're not big enough
+
+Friend: what the fuck
+Friend: it ignores my moves man
+
+Friend: you should be able to choose the sequence of actions
+
+Friend: and in some situations, it takes the points off for moves but doesnt make the,
+Friend: i cant really figure in what situations
+
+Friend: ita a cool concept though
+Dan: glad you think so
+
+Friend: and also, i tried to split the same piece twice in the same turn and it took the points but only slpit it once
+Friend: so for things like that, maybe you should have a "you cant do that' notification
+
+Friend: and the objects in the middle dont seem to work
+Friend: unless im mistaken
