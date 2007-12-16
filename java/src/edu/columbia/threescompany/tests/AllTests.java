@@ -39,8 +39,8 @@ public class AllTests {
 		suite.addTestSuite(SlipperyBlobTest.class);
 		
 		/* Fancy objects */
-		suite.addTestSuite(WallTest.class);
-		suite.addTestSuite(SpringTest.class);
+//		suite.addTestSuite(WallTest.class);
+//		suite.addTestSuite(SpringTest.class);
 		
 		suite.addTestSuite(ActionPointCapIncreaserTest.class);
 		suite.addTestSuite(AnchorPointTest.class);
