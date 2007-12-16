@@ -5,7 +5,7 @@ public class GameParameters {
 	public static final double BLOB_INITIAL_SIZE = 0.5;
 	public static final double BLOB_GROWTH_FACTOR = 1.095;
 	
-	public static final double DEATH_RAY_RANGE_MULTIPLIER = 3;
+	public static final double DEATH_RAY_RANGE = 3;
 	public static final double BOARD_SIZE = 40; // TODO Can we make this an int? I think it makes screen to world coordinate conversion saner.
 	
 	/* How many pieces moves are broken down into (basically 1/dt).
