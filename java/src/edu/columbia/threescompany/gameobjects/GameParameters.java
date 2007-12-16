@@ -35,6 +35,8 @@ public class GameParameters {
 	/* Area of effect for blob forces */
 	public static final double FORCE_RADIUS = BOARD_SIZE / 5;
 	
+	public static final double EXPLOSION_RADIUS_MULTIPLIER = 2.5;
+	
 	/* Percentage difference between two colliding blobs for double kill */ 
 	public static final double PERCENTAGE_DIFFERENCE_FOR_KILL = 0.10;
 	

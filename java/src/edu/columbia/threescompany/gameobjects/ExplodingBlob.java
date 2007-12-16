@@ -22,7 +22,7 @@ public class ExplodingBlob extends StateModifyingBlob<Hole> {
 		if (!activated || isDead()) return;
 		
 		this.die();
-		Hole hole = new Hole(this.getPosition().x, this.getPosition().y, this.getRadius() * 2);
+		Hole hole = new Hole(this.getPosition().x, this.getPosition().y, this.getRadius() * GameParameters.EXPLOSION_RADIUS_MULTIPLIER);
 		_state.addObject(hole);	
 	}
 }
