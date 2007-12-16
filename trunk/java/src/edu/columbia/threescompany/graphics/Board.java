@@ -106,7 +106,7 @@ public class Board extends Canvas {
 	{		
 		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
-		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//		useAntiAliasing(surface);
 		DecimalFormat df = new DecimalFormat();
 		df.setMinimumFractionDigits(1);
 		df.setMaximumFractionDigits(1);
@@ -230,6 +230,10 @@ public class Board extends Canvas {
 //			surface.drawRenderedImage(image, xtranslate);
 //		}
 //		catch (Exception e) {e.printStackTrace();}
+	}
+
+	private void useAntiAliasing(Graphics2D surface) {
+		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
 	private Coordinate worldToScreen(Coordinate position) {
