@@ -24,8 +24,9 @@ public class APCIPoint extends ImmovableGameObject {
 	public boolean checkCollision(GameObject rhs) {
 		if (!(rhs instanceof Blob)) return false;	/* We don't care. */
 		Blob blob = (Blob) rhs;
+		blob.setEnergized(collidesWith(blob));
 		if (collidesWith(blob)) { //add 1 AP
-			blob.getOwner().addActionPoints(1.0);
+			blob.getOwner().addActionPoints(GameParameters.AP_INCREASE_PER_ENERGY_POINT);
 		}
 		return false; //because nothing gets killed when colliding with ACPI point
 	}

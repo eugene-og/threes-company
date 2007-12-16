@@ -23,6 +23,7 @@ import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.gameobjects.APCIPoint;
 import edu.columbia.threescompany.gameobjects.AnchorPoint;
+import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
@@ -203,6 +204,11 @@ public class Board extends Canvas {
 			double y = stringScreenPos.y + 8 / 2; // 8 = approximate height of string
 			surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
 			
+			if (item instanceof Blob) {
+				if (((Blob)item).isAnchored()) drawAnchoredIndicator(surface, (Blob)item);
+				if (((Blob)item).isEnergized()) drawEnergizedIndicator(surface, (Blob)item);
+			}
+			
 			if (_graphicalState.getSelectedBlob() == item) {
 				surface.setColor(Color.orange);
 				Ellipse2D selectionIndicator = circle(pos.x, pos.y, item.getRadius() + 0.8);
@@ -218,6 +224,20 @@ public class Board extends Canvas {
 		}
 	}
 	
+	private void drawEnergizedIndicator(Graphics2D surface, Blob blob) {
+		surface.setColor(Color.yellow);
+		Ellipse2D selectionIndicator = circle(blob.getPosition().x, blob.getPosition().y, blob.getRadius() + 0.2);
+		surface.setStroke(new BasicStroke(2.0f));
+		surface.draw(selectionIndicator);
+	}
+
+	private void drawAnchoredIndicator(Graphics2D surface, Blob blob) {
+		surface.setColor(Color.black);
+		Ellipse2D selectionIndicator = circle(blob.getPosition().x, blob.getPosition().y, blob.getRadius() + 0.2);
+		surface.setStroke(new BasicStroke(2.0f));
+		surface.draw(selectionIndicator);
+	}
+
 	public Coordinate worldToScreen(Coordinate position) {
 		return new Coordinate(position.x * getWidth() / GameParameters.BOARD_SIZE, 
 		                      position.y * getHeight() / GameParameters.BOARD_SIZE);

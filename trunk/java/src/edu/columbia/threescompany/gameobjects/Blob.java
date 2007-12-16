@@ -95,8 +95,16 @@ public abstract class Blob extends GameObject implements Serializable {
 		return _anchored;
 	}
 	
+	public boolean isEnergized() {
+		return _energized;
+	}
+	
 	public void setAnchored(boolean anchored) {
 		_anchored = anchored;
+	}
+	
+	public void setEnergized(boolean energized) {
+		_energized = energized;
 	}
 	
 	public void setSliding(boolean sliding) {
@@ -106,5 +114,6 @@ public abstract class Blob extends GameObject implements Serializable {
 	protected Player _owner;
 	protected boolean _dead;
 	protected boolean _anchored;
+	protected boolean _energized;
 	protected boolean _sliding;
 }
