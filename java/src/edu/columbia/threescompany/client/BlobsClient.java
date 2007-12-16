@@ -214,7 +214,9 @@ public class BlobsClient {
 			System.err.println("Received move: " + move);
 			_gameState.executeMove(move, _gui);
 		} else if (message instanceof GameOverMessage) {
+			_gui.addChatLine("Game Over!");
 			Player winner = ((GameOverMessage) message).getWinner();
+			BlobsClient.getSoundEngine().play(SoundEngine.GAMEOVER);
 			gameOverDialog(winner);
 		}
 	}
