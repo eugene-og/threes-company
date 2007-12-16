@@ -113,7 +113,6 @@ public class Board extends Canvas {
 	{		
 		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
-//		useAntiAliasing(surface);
 		DecimalFormat df = new DecimalFormat();
 		df.setMinimumFractionDigits(1);
 		df.setMaximumFractionDigits(1);
@@ -127,6 +126,7 @@ public class Board extends Canvas {
 		
 		drawBoardBorder(surface);
 		
+		useAntiAliasing(surface);
 		if (_gameState == null) {
 			surface.drawString("Waiting for start...", 1, getHeight()/2);
 			return;
@@ -336,6 +336,7 @@ public class Board extends Canvas {
 	}
 	
 	public void drawMoveCost(Graphics2D surface, Coordinate pos, double cost, boolean able) {
+		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		DecimalFormat df = new DecimalFormat();
 		df.setMinimumFractionDigits(1);
 		df.setMaximumFractionDigits(1);
