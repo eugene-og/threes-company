@@ -46,8 +46,6 @@ public class Board extends Canvas {
 
 	private Coordinate _mousePosition;
 	
-	private static final double SCALE_FACTOR = GuiConstants.BOARD_LENGTH/GameParameters.BOARD_SIZE;
-
 	public Board(GraphicalGameState graphicalState)
 	{
 		if (graphicalState == null) {
@@ -72,11 +70,19 @@ public class Board extends Canvas {
 	 */
 	private Ellipse2D circle(double centerX, double centerY, double radius) {
 		// TODO We might need to subtract sqrt(radius ^ 2 + radius ^ 2) instead of radius to properly align them. 
-		// Needs testing to check. 
-		return new Ellipse2D.Double((centerX - radius)*SCALE_FACTOR, 
-									(centerY - radius)*SCALE_FACTOR, 
-									(radius * 2)*SCALE_FACTOR, 
-									(radius * 2)*SCALE_FACTOR);
+		// Needs testing to check.
+		// This is now a little more clumsy than it needs to be, but I want all translations between world and screen 
+		// coords to go through screenToWorld and worldToScreen and this is the best way I could figure out to use 
+		// them.
+		double worldLeft = centerX - radius;
+		double worldTop = centerY - radius;
+		double worldRight = centerX + radius;
+		double worldBottom = centerY + radius;
+		Coordinate screenTopLeft = worldToScreen(new Coordinate(worldLeft, worldTop));
+		Coordinate screenBottomRight = worldToScreen(new Coordinate(worldRight, worldBottom));
+		double screenWidth = screenBottomRight.x - screenTopLeft.x;
+		Ellipse2D circle = new Ellipse2D.Double(screenTopLeft.x, screenTopLeft.y, screenWidth, screenWidth);
+		return circle;
 	}
 	
     public void update(Graphics g) {
@@ -121,7 +127,7 @@ public class Board extends Canvas {
 		drawBoardBorder(surface);
 		
 		if (_gameState == null) {
-			surface.drawString("Waiting for start...", 1, GuiConstants.BOARD_LENGTH/2);
+			surface.drawString("Waiting for start...", 1, getHeight()/2);
 			return;
 		}
 		
@@ -188,12 +194,11 @@ public class Board extends Canvas {
 			
 			surface.draw(blobToDraw);
 				
-			//surface.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
 			surface.setColor(textColor);
-			double x = ((pos.x)*SCALE_FACTOR-16/2); // 16 = approximate width of string
-			double y = ((pos.y)*SCALE_FACTOR+8/2); // 8 = approximate height of string
+			Coordinate stringScreenPos = worldToScreen(pos);
+			double x = stringScreenPos.x - 16 / 2; // 16 = approximate width of string
+			double y = stringScreenPos.y + 8 / 2; // 8 = approximate height of string
 			surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
-			//surface.scale(this.getWidth()/GameParameters.BOARD_SIZE, this.getHeight()/GameParameters.BOARD_SIZE);
 			
 			if (_graphicalState.getSelectedBlob() == item) {
 				surface.setColor(Color.orange);
@@ -232,19 +237,26 @@ public class Board extends Canvas {
 //		catch (Exception e) {e.printStackTrace();}
 	}
 
+	public Coordinate worldToScreen(Coordinate position) {
+		return new Coordinate(position.x * getWidth() / GameParameters.BOARD_SIZE, 
+		                      position.y * getHeight() / GameParameters.BOARD_SIZE);
+	}
+	
+	public Coordinate screenToWorld(Coordinate screen) {
+		return new Coordinate(screen.x * GameParameters.BOARD_SIZE / getWidth(), 
+		                      screen.y * GameParameters.BOARD_SIZE / getHeight());
+	}
+	
+	@SuppressWarnings("unused") // Disabled until we resolve framerate
 	private void useAntiAliasing(Graphics2D surface) {
 		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
-	private Coordinate worldToScreen(Coordinate position) {
-		return new Coordinate(position.x * SCALE_FACTOR, position.y * SCALE_FACTOR);
-	}
-	
 	private void drawBoardBorder(Graphics2D surface) {
-		surface.drawLine(0, 0, GuiConstants.BOARD_LENGTH, 0);
-		surface.drawLine(GuiConstants.BOARD_LENGTH, 0, GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH);
-		surface.drawLine(GuiConstants.BOARD_LENGTH, GuiConstants.BOARD_LENGTH, 0, GuiConstants.BOARD_LENGTH);
-		surface.drawLine(0, GuiConstants.BOARD_LENGTH, 0, 0);
+		surface.drawLine(0, 0, getWidth(), 0);
+		surface.drawLine(getWidth(), 0, getWidth(), getHeight());
+		surface.drawLine(getWidth(), getHeight(), 0, getHeight());
+		surface.drawLine(0, getHeight(), 0, 0);
 	}
 
 	private void drawBackground(Graphics2D surface) {
