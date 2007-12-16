@@ -216,30 +216,6 @@ public class Board extends Canvas {
 			}
 			turnAntiAliasingOn(surface);
 		}
-		
-//		MediaTracker media = new MediaTracker(this);
-//		Image image = Toolkit.getDefaultToolkit().getImage(GuiConstants.IMAGES_DIR+"boom_black.png");
-//		media.addImage(image, 0);
-//		try { media.waitForID(0); }
-//		catch (Exception e) {}
-//		//surface.drawImage(image, 0, 0, this);
-
-//		Image tmp = createImage(1000, 1000);
-//		Graphics2D tmpgraphic = (Graphics2D)tmp.getGraphics();
-		//tmpgraphic.scale(GameParameters.BOARD_SIZE/this.getWidth(), GameParameters.BOARD_SIZE/this.getHeight());
-		//tmpgraphic.drawImage(image, 0, 0, null);
-		
-		
-//		try {
-//			// TODO make function that takes image and 0-20 board units and draws it.
-//			BufferedImage image = javax.imageio.ImageIO.read(new File(GuiConstants.IMAGES_DIR+"boom_black.png")); 
-//			AffineTransform xtrans = AffineTransform.getScaleInstance((double)GameParameters.BOARD_SIZE/this.getWidth(),
-//																	  (double)GameParameters.BOARD_SIZE/this.getHeight());
-//			AffineTransform xtranslate = AffineTransform.getTranslateInstance(5, 5);
-//			xtranslate.concatenate(xtrans);
-//			surface.drawRenderedImage(image, xtranslate);
-//		}
-//		catch (Exception e) {e.printStackTrace();}
 	}
 	
 	public Coordinate worldToScreen(Coordinate position) {
