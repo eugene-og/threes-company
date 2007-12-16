@@ -9,6 +9,7 @@ import java.util.Map;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class GameMove implements Serializable {
@@ -114,7 +115,8 @@ public class GameMove implements Serializable {
 
 	public boolean hasActivations() {
 		for (Blob blob : _events.keySet())
-			if (_events.get(blob).getMoveType() == EventMove.MOVE_TYPE.ACTIVATE)
+			if (_events.get(blob).getMoveType() == EventMove.MOVE_TYPE.ACTIVATE &&
+				(blob instanceof ForceBlob))
 				return true;
 		return false;
 	}
