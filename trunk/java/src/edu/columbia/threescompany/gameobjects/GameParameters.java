@@ -44,7 +44,6 @@ public class GameParameters {
 	public static final double PERCENTAGE_DIFFERENCE_FOR_KILL = 0.10;
 	
 	/* Base AP costs (tweakable) */
-	public static final int BASE_ROTATE_COST = 1;
 	public static final int BASE_PHYSICAL_MOVE_COST = 0;
 	public static final int BASE_FORCE_COST = 3;
 	public static final int BASE_EXPLODE_COST = 3;
