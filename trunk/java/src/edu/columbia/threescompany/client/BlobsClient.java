@@ -9,7 +9,6 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +23,7 @@ import edu.columbia.threescompany.client.communication.ServerMessage;
 import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
@@ -271,7 +271,7 @@ public class BlobsClient {
 			}
 		}
 		moveCount++;
-		return new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
+		return new GUIGameMove(finalPositions);
 	}
 
 	private static void notYourTurnDialog() {

@@ -28,7 +28,7 @@ public class SlipperySpotTest extends BaseTestCase {
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
 		finalPositions.put(blob, new Coordinate(9.0, 0.0));
 		
-		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
+		GUIGameMove move = new GUIGameMove(finalPositions);
 		
 		state.executeMove(new GameMove(move));
 		

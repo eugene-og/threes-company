@@ -1,14 +1,15 @@
 package edu.columbia.threescompany.gameobjects.tests;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
@@ -22,8 +23,9 @@ public class SlipperyBlobTest extends BaseTestCase {
 		SlipperyBlob slipperyBlob = new SlipperyBlob(3.0, 3.0, 1.0, Player.NULL_PLAYER, state);
 		state.addObject(slipperyBlob);
 		
-		List<Blob> activation = Arrays.asList(new Blob[] { slipperyBlob });
-		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activation, new ArrayList<Blob>());
+		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>(1);
+		activations.put(slipperyBlob, MOVE_TYPE.ACTIVATE);
+		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations);
 		
 		state.executeMove(new GameMove(move));
 		

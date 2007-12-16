@@ -8,6 +8,7 @@ import java.util.Map;
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.GameMove;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
@@ -25,7 +26,7 @@ public class LocalGameStateTest extends BaseTestCase {
 		
 		finalPositions.put(blob, new Coordinate(2, 3));
 		
-		GUIGameMove guiMove = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
+		GUIGameMove guiMove = new GUIGameMove(finalPositions);
 		GameMove move = new GameMove(guiMove);
 		
 		state.executeMove(move);
@@ -37,7 +38,7 @@ public class LocalGameStateTest extends BaseTestCase {
 				   		   3, blob.getPosition().y);
 		
 		finalPositions.put(blob, new Coordinate(5, 0));
-		guiMove = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
+		guiMove = new GUIGameMove(finalPositions);
 		move = new GameMove(guiMove);
 		
 		state.executeMove(move);
@@ -72,13 +73,13 @@ public class LocalGameStateTest extends BaseTestCase {
 		PushBlob pushBlob = new PushBlob(5, 3, 1, BlobTestTools.PLAYER);
 		state.addObject(pushBlob);
 		
-		List<Blob> activations = new ArrayList<Blob>();
-		activations.add(pushBlob);
+		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>();
+		activations.put(pushBlob, MOVE_TYPE.ACTIVATE);
 		
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
 		finalPositions.put(boringBlob, new Coordinate(8, 5));
 		
-		GUIGameMove move = new GUIGameMove(finalPositions, activations, new ArrayList<Blob>());
+		GUIGameMove move = new GUIGameMove(finalPositions, activations);
 		state.executeMove(new GameMove(move));
 		
 		assertFalse("Boring blob should be alive", boringBlob.isDead());
@@ -107,7 +108,7 @@ public class LocalGameStateTest extends BaseTestCase {
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
 		finalPositions.put(blob1, new Coordinate(5.0, 0));
 		
-		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
+		GUIGameMove move = new GUIGameMove(finalPositions);
 		state.executeMove(new GameMove(move));
 		
 		assertTrue("Left blob should die", blob1.isDead());
@@ -125,12 +126,11 @@ public class LocalGameStateTest extends BaseTestCase {
 		
 		LocalGameState state = LocalGameState.getSpecifiedGameState(blobs);
 		
-		List<Blob> spawnList = new ArrayList<Blob>(1);
-		spawnList.add(blob);
+		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>(1);
+		activations.put(blob, MOVE_TYPE.SPAWN);
 		
 		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(),
-										   new ArrayList<Blob>(),
-										   spawnList);
+										   activations);
 		state.executeMove(new GameMove(move));
 		
 		assertEquals("Should have spawned", 2, state.getObjects().size());

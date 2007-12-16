@@ -49,11 +49,11 @@ import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.ConditionVariable;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
-import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
 import edu.columbia.threescompany.gameobjects.PullBlob;
@@ -95,8 +95,8 @@ public class Gui extends JFrame {
 	
 	private List<String> 		_buttonCmds = new ArrayList<String>();
 	private List<JButton>		_buttons = new ArrayList<JButton>();
-	private List<Blob> 			_blobsToActivate = new ArrayList<Blob>();
-	private List<Blob> 			_blobsToSpawn = new ArrayList<Blob>();
+	private HashMap<Blob, MOVE_TYPE>
+								_blobsToActivate = new HashMap<Blob, MOVE_TYPE>();
 	
 	private static Gui 			_instance;
 	private String				_username;
@@ -665,9 +665,8 @@ public class Gui extends JFrame {
 			else { // clear queue
 				_ap = _activePlayer.getActionPoints();
 				setAP();
-				_blobMoves = new HashMap<Blob, Coordinate>();
-				_blobsToActivate = new ArrayList<Blob>();
-				_blobsToSpawn = new ArrayList<Blob>();
+				_blobMoves.clear();
+				_blobsToActivate.clear();
 				_txtAreaQueue.setText("");
 			}
 		}
@@ -735,9 +734,9 @@ public class Gui extends JFrame {
 				addChatLine("You do not have enough action points to " + message);
 			} else {
 				if (isSpawn)
-					_blobsToSpawn.add(_graphicalState.getSelectedBlob());
+					_blobsToActivate.put(_graphicalState.getSelectedBlob(), MOVE_TYPE.SPAWN);
 				else
-					_blobsToActivate.add(_graphicalState.getSelectedBlob());
+					_blobsToActivate.put(_graphicalState.getSelectedBlob(), MOVE_TYPE.ACTIVATE);
 				
 				
 				addQueueLine("Activate blob " + _buttonCmds.get(_selectedAction) + " with cost of " + cost);
@@ -824,9 +823,8 @@ public class Gui extends JFrame {
 		_ap = activePlayer.getActionPoints();
 		setAP();
 		_turnOver.setFalse();
-		_blobMoves = new HashMap<Blob, Coordinate>();
-		_blobsToActivate = new ArrayList<Blob>();
-		_blobsToSpawn = new ArrayList<Blob>();
+		_blobMoves.clear();
+		_blobsToActivate.clear();
 		_graphicalState.setSelectedBlob(null);
 		_board.setMovementCost(null, 0);
 		updateActionsBorder(null);
@@ -834,7 +832,7 @@ public class Gui extends JFrame {
 		_turnOver.waitUntilTrue();
 		_activePlayer = null;
 
-		return new GUIGameMove(_blobMoves, _blobsToActivate, _blobsToSpawn);
+		return new GUIGameMove(_blobMoves, _blobsToActivate);
 	}
 
 	public void addChatLine(String line) {

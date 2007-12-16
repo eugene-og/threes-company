@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.ForceBlob;
@@ -34,11 +35,18 @@ public class GameMove implements Serializable {
 			addPhysicalMove(finalPositions.get(blob), (Blob) blob);
 		
 		_events = new HashMap<Blob, EventMove>();
-		for (GameObject blob : move.getBlobsToActivate())
-			addActivationTrigger((Blob) blob);
-		
-		for (GameObject blob : move.getBlobsToSpawn())
-			addSpawnTrigger((Blob) blob);
+		Map<Blob, MOVE_TYPE> activations = move.getBlobsToActivate();
+		for (GameObject blob : activations.keySet())
+			addMoveTrigger((Blob) blob, activations.get(blob));
+	}
+
+	private void addMoveTrigger(Blob blob, MOVE_TYPE type) {
+		if (type == MOVE_TYPE.ACTIVATE)
+			addActivationTrigger(blob);
+		else if (type == MOVE_TYPE.SPAWN)
+			addSpawnTrigger(blob);
+		else
+			throw new RuntimeException("Unknown move type " + type + "!");
 	}
 
 	private void addPhysicalMove(Coordinate pos, Blob blob) {
