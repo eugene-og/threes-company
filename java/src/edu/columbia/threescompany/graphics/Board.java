@@ -150,7 +150,7 @@ public class Board extends Canvas {
 				surface.setColor(Color.cyan);
 				drawAPCIPoint(surface, (APCIPoint) item);
 				continue;
-			} else if (item instanceof Hole) {
+			} else if (item instanceof Hole || item instanceof SlipperySpot) {
 				continue;
 			}
 //			else if (item instanceof DeathRayBlob) {
