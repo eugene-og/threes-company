@@ -732,6 +732,8 @@ public class Gui extends JFrame {
 				addChatLine("You do not have enough action points to " + message);
 			} else {
 				_blobsToActivate.put(_graphicalState.getSelectedBlob(), moveTypeFor(_selectedAction));
+				if (_selectedAction == ACTION_ROTATE)
+					return;
 				
 				addQueueLine(_buttonCmds.get(_selectedAction) + " with cost of " + cost);
 				debug(text+=message);
