@@ -65,11 +65,10 @@ public class Gui extends JFrame {
 	private static final int 	ACTION_MOVE		= 0;
 	private static final int 	ACTION_SPLIT	= 1;
 	private static final int 	ACTION_DEATH	= 2;
-	private static final int 	ACTION_ROTATE	= 3;
-	private static final int 	ACTION_SLIPPERY	= 4;
-	private static final int 	ACTION_EXPLODE	= 5;
-	private static final int 	ACTION_PUSH		= 6;
-	private static final int 	ACTION_PULL 	= 7;
+	private static final int 	ACTION_SLIPPERY	= 3;
+	private static final int 	ACTION_EXPLODE	= 4;
+	private static final int 	ACTION_PUSH		= 5;
+	private static final int 	ACTION_PULL 	= 6;
 	
 	private static final long 	serialVersionUID = -5234906655320340040L;
 	private int 				_xPos, _yPos;
@@ -549,7 +548,7 @@ public class Gui extends JFrame {
 				addMoveForCurrentBlob(worldClick);
 			}
 		}
-    	
+
 		private Blob getNewSelection(Coordinate worldClick) {
 			Blob newSelection = blobClickedOn(worldClick);
 			if (newSelection != null) {
@@ -583,7 +582,6 @@ public class Gui extends JFrame {
 			setButtonEnabled(ACTION_MOVE);
 			setButtonEnabled(ACTION_SPLIT);
 			setButtonDisabled(ACTION_DEATH);
-			setButtonDisabled(ACTION_ROTATE);
 			setButtonDisabled(ACTION_SLIPPERY);
 			setButtonDisabled(ACTION_EXPLODE);
 			setButtonDisabled(ACTION_PUSH);
@@ -595,11 +593,9 @@ public class Gui extends JFrame {
 			if (_graphicalState.getSelectedBlob() instanceof DeathRayBlob) {
 				if (_graphicalState.getSelectedBlob().getRadius() == GameParameters.BLOB_SIZE_LIMIT)
 					setButtonEnabled(ACTION_DEATH); // can only fire if at size limit
-				setButtonEnabled(ACTION_ROTATE);
 			}
 			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob) {
 				setButtonEnabled(ACTION_SLIPPERY); // can only fire if at size limit
-//				setButtonEnabled(ACTION_ROTATE);
 			}
 			else if (_graphicalState.getSelectedBlob() instanceof ExplodingBlob)
 				setButtonEnabled(ACTION_EXPLODE);
@@ -682,11 +678,6 @@ public class Gui extends JFrame {
 				_selectedAction = ACTION_DEATH;
 				cost = ActionPointEngine.getCostOfProjectile(_graphicalState.getSelectedBlob());
 			}
-			else if (cmd.equals(_buttonCmds.get(ACTION_ROTATE))) {
-				message = "rotate blob";
-				_selectedAction = ACTION_ROTATE;
-				cost = ActionPointEngine.getCostOfRotate();
-			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_SLIPPERY))) {
 				message = "fire slippery goop";
 				_selectedAction = ACTION_SLIPPERY;
@@ -712,8 +703,6 @@ public class Gui extends JFrame {
 				addChatLine("You do not have enough action points to " + message);
 			} else {
 				_blobsToActivate.put(_graphicalState.getSelectedBlob(), moveTypeFor(_selectedAction));
-				if (_selectedAction == ACTION_ROTATE)
-					return;
 				
 				addQueueLine(_buttonCmds.get(_selectedAction) + " with cost of " + cost);
 				debug(text+=message);
@@ -752,8 +741,6 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_SPLIT)));
 		_buttonCmds.add("Fire");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_DEATH)));
-		_buttonCmds.add("Rotate");
-		_buttons.add(new JButton(_buttonCmds.get(ACTION_ROTATE)));
 		_buttonCmds.add("Slippery");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_SLIPPERY)));
 		_buttonCmds.add("Explode");
@@ -781,21 +768,6 @@ public class Gui extends JFrame {
 			} else {
 				_blobMoves.put(selectedBlob, destination);
 				addQueueLine("Moving blob to " + destination.toRoundedString() + " with cost of " + cost);
-			}
-		} else if (moveType == "rotation") {
-			if (!(selectedBlob instanceof DeathRayBlob)) {
-				addChatLine("Rotating only for Death Rays right now");
-				return;
-			}
-			((DeathRayBlob)selectedBlob).setTheta(destination);
-			cost = ActionPointEngine.getCostOfRotate();
-			if (_ap - cost <= 0.0) {
-				//NotEnoughAPDialog("rotate this blob");
-				return;
-			} else {
-				//_blobMoves.put(selectedBlob, position);
-				addQueueLine("Rotating blob to " + ((DeathRayBlob)selectedBlob).getTheta() + " with cost of " + cost);
-				_board.repaint();
 			}
 		} else {
 			throw new RuntimeException("enqueueMove called with invalid move type");
@@ -847,8 +819,6 @@ public class Gui extends JFrame {
 			_buttons.get(button).setText("Push ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
 		} else if (button == ACTION_PULL) {
 			_buttons.get(button).setText("Pull ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
-		} else if (button == ACTION_ROTATE) {
-			_buttons.get(button).setText("Rotate ("+df.format(ActionPointEngine.getCostOfRotate())+")");
 		} else if (button == ACTION_SLIPPERY) {
 			_buttons.get(button).setText("Slippery ("+df.format(ActionPointEngine.getCostOfProjectile(blob))+")");
 		} else if (button == ACTION_SPLIT) {

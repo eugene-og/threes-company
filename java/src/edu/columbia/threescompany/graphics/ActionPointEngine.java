@@ -27,10 +27,6 @@ public class ActionPointEngine {
 		return ret;
 	}
 	
-	public static double getCostOfRotate() {
-		return GameParameters.BASE_ROTATE_COST;
-	}
-	
 	public static double getCostOfSplit(Blob blob) {
 		return GameParameters.BASE_SPLIT_COST;
 	}
