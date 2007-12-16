@@ -126,7 +126,7 @@ public class Board extends Canvas {
 		
 		drawBoardBorder(surface);
 		
-		useAntiAliasing(surface);
+		turnAntiAliasingOn(surface);
 		if (_gameState == null) {
 			surface.drawString("Waiting for start...", 1, getHeight()/2);
 			return;
@@ -211,8 +211,10 @@ public class Board extends Canvas {
 			}
 			
 			if (_mousePosition != null) {
+				turnAntiAliasingOff(surface);
 				drawMoveCost(surface, worldToScreen(_mousePosition), _movementCost, true); // TODO check if able
 			}
+			turnAntiAliasingOn(surface);
 		}
 		
 //		MediaTracker media = new MediaTracker(this);
@@ -251,8 +253,13 @@ public class Board extends Canvas {
 	}
 	
 	@SuppressWarnings("unused") // Disabled until we resolve framerate
-	private void useAntiAliasing(Graphics2D surface) {
+	private void turnAntiAliasingOn(Graphics2D surface) {
 		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
+	
+	@SuppressWarnings("unused") // Disabled until we resolve framerate
+	private void turnAntiAliasingOff(Graphics2D surface) {
+		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 	}
 
 	private void drawBoardBorder(Graphics2D surface) {
@@ -336,7 +343,6 @@ public class Board extends Canvas {
 	}
 	
 	public void drawMoveCost(Graphics2D surface, Coordinate pos, double cost, boolean able) {
-		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		DecimalFormat df = new DecimalFormat();
 		df.setMinimumFractionDigits(1);
 		df.setMaximumFractionDigits(1);
