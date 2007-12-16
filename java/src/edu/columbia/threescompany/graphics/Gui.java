@@ -681,7 +681,6 @@ public class Gui extends JFrame {
 			String cmd = event.getActionCommand();
 			String text = "you've selected to ";
 			String message = null;
-			boolean isSpawn = false;
 			double cost = 0.0;
 			
 			if (_graphicalState.getSelectedBlob() == null) {
@@ -691,7 +690,6 @@ public class Gui extends JFrame {
 			if (cmd.equals(_buttonCmds.get(ACTION_SPLIT))) {
 				message = "split a blob";
 				_selectedAction = ACTION_SPLIT;
-				isSpawn = true;
 				cost = ActionPointEngine.getCostOfSplit(_graphicalState.getSelectedBlob());
 			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_FILL))) {
@@ -733,17 +731,32 @@ public class Gui extends JFrame {
 			if (_ap - cost <= 0.0) {
 				addChatLine("You do not have enough action points to " + message);
 			} else {
-				if (isSpawn)
-					_blobsToActivate.put(_graphicalState.getSelectedBlob(), MOVE_TYPE.SPAWN);
-				else
-					_blobsToActivate.put(_graphicalState.getSelectedBlob(), MOVE_TYPE.ACTIVATE);
+				_blobsToActivate.put(_graphicalState.getSelectedBlob(), moveTypeFor(_selectedAction));
 				
-				
-				addQueueLine("Activate blob " + _buttonCmds.get(_selectedAction) + " with cost of " + cost);
+				addQueueLine(_buttonCmds.get(_selectedAction) + " with cost of " + cost);
 				debug(text+=message);
 				debug("Queueing action " + _buttonCmds.get(_selectedAction)+ " for blob " + _graphicalState.getSelectedBlob());
 				_ap -= cost;
 				setAP();
+			}
+		}
+
+		private MOVE_TYPE moveTypeFor(int selectedAction) {
+			switch (selectedAction) {
+			case ACTION_DEATH:
+			case ACTION_EXPLODE:
+			case ACTION_PULL:
+			case ACTION_PUSH:
+			case ACTION_SLIPPERY:
+				return MOVE_TYPE.ACTIVATE;
+			case ACTION_SPLIT:
+				return MOVE_TYPE.SPAWN;
+			case ACTION_FILL:
+				return MOVE_TYPE.FILL;
+			case ACTION_ROTATE:
+				return MOVE_TYPE.ROTATE;
+			default:
+				throw new RuntimeException("Unknown");
 			}
 		}
 

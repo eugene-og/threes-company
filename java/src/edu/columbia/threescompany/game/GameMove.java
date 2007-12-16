@@ -35,7 +35,7 @@ public class GameMove implements Serializable {
 		else if (type == MOVE_TYPE.SPAWN)
 			addSpawnTrigger(blob);
 		else
-			throw new RuntimeException("Unknown move type " + type + "!");
+			throw new RuntimeException("Unimplemented move type " + type + "!");
 	}
 
 	private void addPhysicalMove(Coordinate pos, Blob blob) {
