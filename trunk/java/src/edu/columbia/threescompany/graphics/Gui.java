@@ -116,6 +116,7 @@ public class Gui extends JFrame {
 	private URL _defaultBackgroundUrl = null; // Gets set to the first image loaded
 	private JPanel _actionButtonsPane;
 	private RedrawThread _redrawThread;
+	private List<Player> _localPlayers;
 	
 	public static Gui getInstance(ChatThread thread, List<Player> players) {
 		if (_instance == null) _instance = new Gui(thread, players);
@@ -130,6 +131,7 @@ public class Gui extends JFrame {
 		_graphicalState = new GraphicalGameState();
 		_turnOver = new ConditionVariable();
 		_activePlayer = null;
+		_localPlayers = players;
 		
 		try{ UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
         catch( Exception e ) { e.printStackTrace(); }
@@ -528,6 +530,10 @@ public class Gui extends JFrame {
 			if (_activePlayer == null) { // It's no one's turn
 				return;
 			}
+			if (!isLocalPlayer(_activePlayer)) {
+				addChatLine("It's not your turn.");
+				return;
+			}
 			Coordinate worldClick = pointToWorldCoordinate(e.getPoint());
 			if (e.getButton() == MouseEvent.BUTTON1) { // Left click selects a blob
 				Blob newSelection = getNewSelection(worldClick);
@@ -551,13 +557,13 @@ public class Gui extends JFrame {
 
 		private Blob getNewSelection(Coordinate worldClick) {
 			Blob newSelection = blobClickedOn(worldClick);
-			if (newSelection != null) {
-				debug("Clicked blob owned by player " + newSelection.getOwner().getName());
+			if (newSelection == null) {
+				return null;
 			}
-			
-			if (newSelection != null && !newSelection.getOwner().equals(_activePlayer)) {
-				newSelection = null;
+			debug("Clicked blob owned by player " + newSelection.getOwner().getName());
+			if (!newSelection.getOwner().equals(_activePlayer)) {
 				addChatLine("Blob does not belong to you.");
+				return null;
 			}
 			return newSelection;
 		}
@@ -751,6 +757,15 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_PULL)));
 	}
 	
+	public boolean isLocalPlayer(Player player) {
+		for (Player p : _localPlayers) {
+			if (player.equals(p)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Enqueues a move for the selected blob. Does nothing if no blob is selected.
 	 * @param destination Meaning depends on move type.
