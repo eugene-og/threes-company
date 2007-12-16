@@ -56,6 +56,8 @@ import edu.columbia.threescompany.gameobjects.ExplodingBlob;
 import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.gameobjects.PullBlob;
+import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
 
 public class Gui extends JFrame {
@@ -67,7 +69,8 @@ public class Gui extends JFrame {
 	private static final int 	ACTION_ROTATE	= 4;
 	private static final int 	ACTION_SLIPPERY	= 5;
 	private static final int 	ACTION_EXPLODE	= 6;
-	private static final int 	ACTION_FORCE	= 7;
+	private static final int 	ACTION_PUSH		= 7;
+	private static final int 	ACTION_PULL 	= 8;
 	
 	private static final long 	serialVersionUID = -5234906655320340040L;
 	private int 				_xPos, _yPos;
@@ -588,12 +591,13 @@ public class Gui extends JFrame {
 		private void updateAvailableActions() {
 			setButtonEnabled(ACTION_MOVE);
 			setButtonEnabled(ACTION_SPLIT);
-			setButtonEnabled(ACTION_FILL);
+			setButtonDisabled(ACTION_FILL);
 			setButtonDisabled(ACTION_DEATH);
 			setButtonDisabled(ACTION_ROTATE);
 			setButtonDisabled(ACTION_SLIPPERY);
 			setButtonDisabled(ACTION_EXPLODE);
-			setButtonDisabled(ACTION_FORCE);
+			setButtonDisabled(ACTION_PUSH);
+			setButtonDisabled(ACTION_PULL);
 			
 			if (_graphicalState.getSelectedBlob().getRadius() < GameParameters.BLOB_INITIAL_SIZE) {
 				setButtonDisabled(ACTION_SPLIT); // can't split if below initial size
@@ -612,8 +616,10 @@ public class Gui extends JFrame {
 				setButtonEnabled(ACTION_EXPLODE);
 			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob)
 				setButtonEnabled(ACTION_SLIPPERY);	
-			else if (_graphicalState.getSelectedBlob() instanceof ForceBlob)
-				setButtonEnabled(ACTION_FORCE);
+			else if (_graphicalState.getSelectedBlob() instanceof PushBlob)
+				setButtonEnabled(ACTION_PUSH);
+			else if (_graphicalState.getSelectedBlob() instanceof PullBlob)
+				setButtonEnabled(ACTION_PULL);
 		}
 		
 		private Coordinate pointToWorldCoordinate(Point p) {
@@ -714,9 +720,14 @@ public class Gui extends JFrame {
 				_selectedAction = ACTION_EXPLODE;
 				cost = ActionPointEngine.getCostOfProratedAction(_graphicalState.getSelectedBlob());
 			}
-			else if (cmd.equals(_buttonCmds.get(ACTION_FORCE))) {
-				message = "apply a blob force";
-				_selectedAction = ACTION_FORCE;
+			else if (cmd.equals(_buttonCmds.get(ACTION_PUSH))) {
+				message = "apply a push force";
+				_selectedAction = ACTION_PUSH;
+				cost = ActionPointEngine.getCostOfProratedAction(_graphicalState.getSelectedBlob());
+			}
+			else if (cmd.equals(_buttonCmds.get(ACTION_PULL))) {
+				message = "apply a pull force";
+				_selectedAction = ACTION_PULL;
 				cost = ActionPointEngine.getCostOfProratedAction(_graphicalState.getSelectedBlob());
 			}
 			
@@ -759,8 +770,10 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_SLIPPERY)));
 		_buttonCmds.add("Explode");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_EXPLODE)));
-		_buttonCmds.add("Force");
-		_buttons.add(new JButton(_buttonCmds.get(ACTION_FORCE)));
+		_buttonCmds.add("Push");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_PUSH)));
+		_buttonCmds.add("Pull");
+		_buttons.add(new JButton(_buttonCmds.get(ACTION_PULL)));
 	}
 	
 	/**
@@ -845,8 +858,10 @@ public class Gui extends JFrame {
 			_buttons.get(button).setText("Explode ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
 		} else if (button == ACTION_FILL) {
 			_buttons.get(button).setText("Fill (0)");
-		} else if (button == ACTION_FORCE) {
-			_buttons.get(button).setText("Force ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
+		} else if (button == ACTION_PUSH) {
+			_buttons.get(button).setText("Push ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
+		} else if (button == ACTION_PULL) {
+			_buttons.get(button).setText("Pull ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
 		} else if (button == ACTION_ROTATE) {
 			_buttons.get(button).setText("Rotate ("+df.format(ActionPointEngine.getCostOfRotate())+")");
 		} else if (button == ACTION_SLIPPERY) {
