@@ -33,18 +33,25 @@ public class PhysicalMove extends GameMoveComponent implements Serializable {
 		/* Moves can take an arbitrarily long time -- the force that the user's
 		 * "shove" applies is constant, so just figure out how long we need
 		 * to animate this. */
-		_duration = (int) (GameParameters.GRANULARITY_OF_PHYSICS * _vector.length() * target.getWeight() /
-							GameParameters.FORCE_OF_USERS_HAND);
+		_duration = timeNeededToMove(target.getWeight(), _vector.length());
+	}
+	
+	public int timeNeededToMove(double weight, double distance) {
+		double time = distance * weight;
+		time /= GameParameters.FORCE_OF_USERS_HAND;
+		time *= GameParameters.GRANULARITY_OF_PHYSICS;
+		return (int) Math.ceil(time + 0.5);
 	}
 	
 	public void execute(LocalGameState state) {
 		if (_target.isDead()) return;
 		
-		/* This integrates to 1 (almost) over the curve, but creates friction */
 		_step++;
-		double relativeForceStrength = 2.1 * (((double) (_duration - _step)) / (double) _duration);
-	//	System.out.println("Step " + _step + " of " + _duration + ", rel str = " + relativeForceStrength);
+		/* Not a tweakable             vvv -- don't change it! It's based on the
+		 * integral int(0, 1) 2x dx = 1. */
+		double relativeForceStrength = 2.0 * (((double) (_duration - _step)) / (double) _duration);
 		
+		/* This simulates friction. */
 		Force f = new Force(_fx * relativeForceStrength,
 							_fy * relativeForceStrength);
 		((Blob) _target).applyIrresistibleForce(f);

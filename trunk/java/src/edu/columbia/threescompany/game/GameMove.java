@@ -64,7 +64,7 @@ public class GameMove implements Serializable {
 		// FIXME uh, this is a lot of processing. use an approp. data struc instead.
 		List<PhysicalMove> result = new ArrayList<PhysicalMove>();
 		for (PhysicalMove move : _moves.values())
-			if (i <= move.getDuration()) result.add(move);
+			if (i < move.getDuration()) result.add(move);
 		
 		return result;
 	}

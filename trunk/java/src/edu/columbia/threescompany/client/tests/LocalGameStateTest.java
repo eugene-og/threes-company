@@ -1,6 +1,7 @@
 package edu.columbia.threescompany.client.tests;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class LocalGameStateTest extends BaseTestCase {
 		assertRoughlyEqual("Blob should be in new position",
 				   		   3, blob.getPosition().y);
 		
-		finalPositions.put(blob, new Coordinate(5, 0));
+		finalPositions.put(blob, new Coordinate(5, 1));
 		guiMove = new GUIGameMove(finalPositions);
 		move = new GameMove(guiMove);
 		
@@ -47,7 +48,7 @@ public class LocalGameStateTest extends BaseTestCase {
 		assertRoughlyEqual("Blob should be in new position",
 						   5, blob.getPosition().x);
 		assertRoughlyEqual("Blob should be in new position",
-				   		   0, blob.getPosition().y);
+				   		   1, blob.getPosition().y);
 	}
 	
 	public void testActivationTiming() {
@@ -100,13 +101,13 @@ public class LocalGameStateTest extends BaseTestCase {
 		/* Initial:		Final:
 		 * ==B===B==    ======B==
 		 */
-		LocalGameState state = BlobTestTools.getSingleBlobState(1.8, 0);
+		LocalGameState state = BlobTestTools.getSingleBlobState(1.8, 0.1);
 		Blob blob1 = (Blob) state.getObjects().get(0);
-		GameObject blob2 = new BlobTestTools.BoringBlob(5.0, 0.0, 2.0, BlobTestTools.PLAYER2);
+		GameObject blob2 = new BlobTestTools.BoringBlob(5.0, 0.1, 2.0, BlobTestTools.PLAYER2);
 		state.addObject(blob2);
 		
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
-		finalPositions.put(blob1, new Coordinate(5.0, 0));
+		finalPositions.put(blob1, new Coordinate(5.0, 0.1));
 		
 		GUIGameMove move = new GUIGameMove(finalPositions);
 		state.executeMove(new GameMove(move));
@@ -117,6 +118,24 @@ public class LocalGameStateTest extends BaseTestCase {
 		blob2.die();
 		
 		assertTrue("Game should be over", state.gameOver());
+	}
+	
+	public void testSameSizeCollision() {
+		Blob blob1 = new BlobTestTools.BoringBlob(8.0, 10.0, 5.0);
+		Blob blob2 = new BlobTestTools.BoringBlob(25.0, 10.0, 5.0);
+		
+		LocalGameState state = LocalGameState.getSpecifiedGameState(Arrays.asList(new GameObject[] {
+				blob1, blob2 }));
+		
+		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
+		finalPositions.put(blob1, new Coordinate(15.0, 10.0));
+		finalPositions.put(blob2, new Coordinate(15.0, 10.0));
+		
+		GUIGameMove move = new GUIGameMove(finalPositions);
+		state.executeMove(new GameMove(move));
+		
+		assertTrue("blob1 should die", blob1.isDead());
+		assertTrue("blob2 should die", blob2.isDead());
 	}
 	
 	public void testSpawning() {
