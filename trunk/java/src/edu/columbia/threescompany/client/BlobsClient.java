@@ -83,7 +83,7 @@ public class BlobsClient {
 	}
 		
 	public static void playerDisconnectedDialogAndClose() {
-		JOptionPane.showMessageDialog(null, "Your opponent disconnected from the game. Blobs will now close",
+		JOptionPane.showMessageDialog(null, "Your opponent disconnected from the game. Blobs will now close.",
 											"Player Disconnected",
 											JOptionPane.ERROR_MESSAGE );
 		System.exit(1);
