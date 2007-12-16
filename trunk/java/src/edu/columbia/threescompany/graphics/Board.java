@@ -122,6 +122,12 @@ public class Board extends Canvas {
 			return;
 		}
 		
+		// Draw holes first so they're below blobs
+		for (GameObject item : _gameState.getObjects()) {
+			if (item instanceof Hole) {
+				drawHole(surface, (Hole) item);
+			}
+		}
 		for (GameObject item : _gameState.getObjects()) {
 			if (item.isDead()) continue;
 			if (item instanceof AnchorPoint) {
@@ -133,10 +139,8 @@ public class Board extends Canvas {
 				drawAPCIPoint(surface, (APCIPoint) item);
 				continue;
 			} else if (item instanceof Hole) {
-				surface.setColor(Color.black);
-				drawHole(surface, (Hole) item);
 				continue;
-			} 
+			}
 //			else if (item instanceof DeathRayBlob) {
 //				surface.setColor(Color.black);
 //				drawDeathRay(surface, (DeathRayBlob) item, Color.white);
