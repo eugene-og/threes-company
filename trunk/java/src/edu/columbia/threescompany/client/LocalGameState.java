@@ -32,11 +32,16 @@ public class LocalGameState implements Serializable {
 		/* t is our time variable -- basically, we execute GRANULARITY tiny
 		 * moves, sequentially. */
 		double turnLength = move.getDuration();
+		double initialTurnLength = turnLength;
 		if (move.hasActivations())
 			turnLength += GameParameters.ADDITIONAL_SIMULATION_LENGTH;
 		
-		for (int t = 0; t < turnLength; t++)
+		for (int t = 0; t < turnLength; t++) {
+			/* Issue 63: If all relevant blobs are dead, stop simulating! */
+			if (turnLength > initialTurnLength && !move.hasActivations())
+				break;
 			executeMoveStep(move, gui, t, (int) turnLength);
+		}
 		
 		deactivateBlobs();
 		growBlobs();

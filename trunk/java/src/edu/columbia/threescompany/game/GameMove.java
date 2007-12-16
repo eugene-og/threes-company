@@ -88,6 +88,14 @@ public class GameMove implements Serializable {
 		System.err.println("Reporting move duration of " + _duration);
 		return _duration;
 	}
+
+	public boolean hasActivations() {
+		for (Blob blob : _events.keySet())
+			if (_events.get(blob).getMoveType() == EventMove.MOVE_TYPE.ACTIVATE &&
+					(blob instanceof ForceBlob) && !blob.isDead())
+				return true;
+		return false;
+	}
 	
 	public String toString() {
 		StringBuilder s = new StringBuilder("GameMove: ");
@@ -110,11 +118,4 @@ public class GameMove implements Serializable {
 	private Map<Blob, EventMove> _events;
 	private int _duration = 0;
 
-	public boolean hasActivations() {
-		for (Blob blob : _events.keySet())
-			if (_events.get(blob).getMoveType() == EventMove.MOVE_TYPE.ACTIVATE &&
-				(blob instanceof ForceBlob))
-				return true;
-		return false;
-	}
 }
