@@ -15,6 +15,7 @@ import edu.columbia.threescompany.gameobjects.AnchorPoint;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ExplodingBlob;
+import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
 import edu.columbia.threescompany.gameobjects.Hole;
@@ -162,11 +163,12 @@ public class LocalGameState implements Serializable {
 	private void applyForces(int t, int tmax) {
 		for (GameObject obj1 : _gameObjects) {
 			for (GameObject obj2 : _gameObjects) {
-				if (obj1.isDead() || 
-					obj2.isDead() || 
-					!(obj1 instanceof Blob) || 
-					!(obj2 instanceof Blob) || 
-					obj1.getPosition().distanceFrom(obj2.getPosition()) > GameParameters.FORCE_RADIUS) continue;
+				if (obj1.isDead() || obj2.isDead()) continue;
+				if (!(obj1 instanceof Blob && obj2 instanceof Blob)) continue;
+				
+				if (obj1 instanceof ForceBlob &&
+					obj1.distanceFrom(obj2) > GameParameters.FORCE_RADIUS)
+					continue;
 				
 				Force f = obj1.actOn(obj2);
 				
