@@ -5,6 +5,7 @@ import java.io.Serializable;
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.gameobjects.Hole;
 
 public class EventMove extends GameMoveComponent implements Serializable {
 	public enum MOVE_TYPE {
@@ -28,6 +29,13 @@ public class EventMove extends GameMoveComponent implements Serializable {
 			GameObject result = ((Blob) _target).spawn();
 			if (result != null)
 				state.addObject(result);
+		} else if (_moveType == MOVE_TYPE.FILL) {
+			for (GameObject obj : state.getObjects()) {
+				if (!(obj instanceof Hole)) continue;
+				if (obj.collidingWith(_target))
+					((Hole) obj).shrink(_target.getRadius());
+			}
+			_target.die();
 		}
 	}
 

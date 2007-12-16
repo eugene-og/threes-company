@@ -5,20 +5,23 @@ import edu.columbia.threescompany.common.Force;
 
 public class Hole extends ImmovableGameObject {
 	private static final long serialVersionUID = 2365645717684731802L;
+	private boolean _isDead = false;
 
 	public Hole(double x, double y, double r) {
 		_position = new Coordinate(x, y);
 		this._radius = r;
 	}	
 	
-	public void die() { /* I AM IMMUNE TO DEATH */ }
+	public void die() {
+		_isDead = true;
+	}
 
 	public Force actOn(GameObject obj) {
 		return Force.NULL_FORCE;
 	}
 
 	public boolean isDead() {
-		return false;
+		return _isDead;
 	}
 
 	public boolean checkCollision(GameObject rhs) {
@@ -35,5 +38,10 @@ public class Hole extends ImmovableGameObject {
 
 	public GameObject clone() {
 		return new Hole(_position.x, _position.y, _radius);
+	}
+
+	public void shrink(double radius) {
+		_radius -= radius;
+		if (_radius <= 0) die();
 	}
 }

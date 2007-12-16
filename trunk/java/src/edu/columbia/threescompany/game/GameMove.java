@@ -30,12 +30,14 @@ public class GameMove implements Serializable {
 	}
 
 	private void addMoveTrigger(Blob blob, MOVE_TYPE type) {
-		if (type == MOVE_TYPE.ACTIVATE)
-			addActivationTrigger(blob);
-		else if (type == MOVE_TYPE.SPAWN)
-			addSpawnTrigger(blob);
-		else
+		/* FIXME this is a useless function, but it's serving as a quick
+		 * verifier that we don't try to fire unimplemented move types. it can
+		 * be removed when bugs are closed. */ 
+		
+		if (type != MOVE_TYPE.ACTIVATE && type != MOVE_TYPE.SPAWN && type != MOVE_TYPE.FILL)
 			throw new RuntimeException("Unimplemented move type " + type + "!");
+		
+		addEventMove(blob, type);
 	}
 
 	private void addPhysicalMove(Coordinate pos, Blob blob) {
@@ -44,14 +46,6 @@ public class GameMove implements Serializable {
 		int duration = move.getDuration();
 	
 		if (duration > _duration) _duration = duration;
-	}
-
-	private void addSpawnTrigger(Blob blob) {
-		addEventMove(blob, EventMove.MOVE_TYPE.SPAWN);
-	}
-	
-	private void addActivationTrigger(Blob blob) {
-		addEventMove(blob, EventMove.MOVE_TYPE.ACTIVATE);
 	}
 
 	private void addEventMove(Blob blob, EventMove.MOVE_TYPE moveType) {
