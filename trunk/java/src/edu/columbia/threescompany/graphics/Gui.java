@@ -606,9 +606,8 @@ public class Gui extends JFrame {
 				setButtonEnabled(ACTION_ROTATE);
 			}
 			else if (_graphicalState.getSelectedBlob() instanceof SlipperyBlob) {
-				if (_graphicalState.getSelectedBlob().getRadius() == GameParameters.BLOB_SIZE_LIMIT)
-					setButtonEnabled(ACTION_SLIPPERY); // can only fire if at size limit
-				setButtonEnabled(ACTION_ROTATE);
+				setButtonEnabled(ACTION_SLIPPERY); // can only fire if at size limit
+//				setButtonEnabled(ACTION_ROTATE);
 			}
 			else if (_graphicalState.getSelectedBlob() instanceof ExplodingBlob)
 				setButtonEnabled(ACTION_EXPLODE);
