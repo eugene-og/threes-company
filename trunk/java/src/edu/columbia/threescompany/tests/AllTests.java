@@ -16,6 +16,7 @@ import edu.columbia.threescompany.gameobjects.tests.SlipperyBlobTest;
 import edu.columbia.threescompany.gameobjects.tests.SlipperySpotTest;
 import edu.columbia.threescompany.gameobjects.tests.SpringTest;
 import edu.columbia.threescompany.gameobjects.tests.WallTest;
+import edu.columbia.threescompany.graphics.tests.BoardTest;
 
 public class AllTests {
 
@@ -49,6 +50,10 @@ public class AllTests {
 		
 		/* Standalone functionality */
 		suite.addTestSuite(ServerAuthenticationTest.class);
+
+		/* Graphical functionality */
+		suite.addTestSuite(BoardTest.class);
+		
 		//$JUnit-END$
 		
 		return suite;

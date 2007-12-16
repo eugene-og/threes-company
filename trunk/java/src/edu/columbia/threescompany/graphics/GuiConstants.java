@@ -8,6 +8,7 @@ public class GuiConstants {
 
 	public static final String	VERSION = "0.1";
 	
+	 // This should only be used to initially size the board. Everything else should use getWidth/Height().
 	public static final int		BOARD_LENGTH = 600;
 	
 	public static final int		GUI_WIDTH = 840;
