@@ -3,13 +3,19 @@ package edu.columbia.threescompany.server;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
+import javax.swing.JOptionPane;
+
 import org.quickserver.net.server.ClientCommandHandler;
 import org.quickserver.net.server.ClientHandler;
+
+import edu.columbia.threescompany.client.BlobsClient;
+import edu.columbia.threescompany.graphics.Gui;
 
 public class BlobsChatHandler implements ClientCommandHandler {
 	public void lostConnection(ClientHandler handler) throws IOException {
 		handler.sendSystemMsg("Connection lost : "+handler.getHostAddress());
 		BlobsGameState.instance().removePlayerServerData(handler.getClientData());
+		BlobsClient.playerDisconnectedDialogAndClose();
 	}
 	
 	public void closingConnection(ClientHandler handler) throws IOException {

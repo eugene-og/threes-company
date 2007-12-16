@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
@@ -71,10 +72,21 @@ public class BlobsClient {
 		connectToServer(args);
 		
 		ServerMessage message;
-		while ((message = _serverConnection.receiveMessage()) != null)
-			handleMessage(message);
 		
-		//gameOverDialog();
+		try {
+			while ((message = _serverConnection.receiveMessage()) != null)
+				handleMessage(message);
+		}
+		catch (SocketException e) { 
+			playerDisconnectedDialogAndClose();
+		}
+	}
+		
+	public static void playerDisconnectedDialogAndClose() {
+		JOptionPane.showMessageDialog(null, "Your opponent disconnected from the game. Blobs will now close",
+											"Player Disconnected",
+											JOptionPane.ERROR_MESSAGE );
+		System.exit(1);
 	}
 
 	private static void startSoundEngine() {
