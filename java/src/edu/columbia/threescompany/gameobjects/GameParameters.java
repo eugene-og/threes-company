@@ -51,4 +51,6 @@ public class GameParameters {
 	public static final int BASE_FIRE_SLIPPERY_COST = 6;
 	public static final int BASE_FIRE_DEATH_RAY_COST = 9;
 	
+	public static final double AP_INCREASE_PER_ENERGY_POINT = 1.0;
+	
 }
