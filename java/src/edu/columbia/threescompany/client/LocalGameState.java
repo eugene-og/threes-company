@@ -105,36 +105,45 @@ public class LocalGameState implements Serializable {
 	private void checkCollisions(boolean playSounds) {
 		List<GameObject> killList = new ArrayList<GameObject>();
 		for (GameObject obj1 : _gameObjects)
-		for (GameObject obj2 : _gameObjects)
-			if (!obj1.isDead() && !obj2.isDead()) {
-				if (obj1.checkCollision(obj2)) {
-					if (obj2 instanceof Blob)
-						addToKillList(killList, obj2);
-					else
-						continue;
-					
-					if (!(obj1 instanceof Blob))
-						continue;
-					
-					double percent_diff = (obj1.getRadius()-obj2.getRadius())/obj1.getRadius();
-					if ((int)(obj1.getRadius()*100) == (int)(obj2.getRadius()*100)) {
-						addToKillList(killList, obj1);
-					} else if (percent_diff < GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL) {
-						addToKillList(killList, obj1);
-					} else {
-						/* add difference to initial size divided by growth factor -- instead of just
-						 * initial size -- to cancel out effect of growing immediately after turn 
-						 * ends (take more damage) */
-						obj1.setRadius((obj1.getRadius()-obj2.getRadius()) + 
-								GameParameters.BLOB_INITIAL_SIZE/GameParameters.BLOB_GROWTH_FACTOR);
-					}
-				}
+		for (GameObject obj2 : _gameObjects) {
+			if (obj1.isDead() || obj2.isDead()) continue;
+			if (!obj1.checkCollision(obj2)) continue;
+			
+			/* So, living-obj1 asserts that it should hit living-obj2. */
+			if (!(obj2 instanceof Blob)) continue;
+			
+			if (obj1 instanceof Hole) {
+				holeCollidesWithBlob(killList, (Hole) obj1, (Blob) obj2);
+				continue;
 			}
+			
+			if (obj1 instanceof Blob)
+				twoBlobsCollide(killList, obj1, obj2);
+		}
 		
 		for (GameObject obj : killList) {
 			obj.die();
 			if (playSounds) 
 				BlobsClient.getSoundEngine().play(SoundEngine.BUBBLE);
+		}
+	}
+
+	private void holeCollidesWithBlob(List<GameObject> killList, Hole hole, Blob blob) {
+		hole.shrink(blob.getRadius());
+		killList.add(blob);
+		if (hole.getRadius() <= 0) killList.add(hole);
+	}
+
+	private void twoBlobsCollide(List<GameObject> killList, GameObject obj1, GameObject obj2) {
+		double percent_diff = (obj1.getRadius()-obj2.getRadius())/obj1.getRadius();
+		if (percent_diff < GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL) {
+			addToKillList(killList, obj1);
+		} else {
+			/* add difference to initial size divided by growth factor -- instead of just
+			 * initial size -- to cancel out effect of growing immediately after turn 
+			 * ends (take more damage) */
+			obj1.setRadius((obj1.getRadius()-obj2.getRadius()) + 
+					GameParameters.BLOB_INITIAL_SIZE/GameParameters.BLOB_GROWTH_FACTOR);
 		}
 	}
 	
