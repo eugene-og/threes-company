@@ -148,7 +148,7 @@ public class LocalGameState implements Serializable {
 	private void twoBlobsCollide(List<GameObject> killList, GameObject obj1, GameObject obj2) {
 		if (killList.contains(obj1) || killList.contains(obj2)) return;
 		
-		if (obj2.getRadius() < obj1.getRadius())
+		if (obj2.getRadius() <= obj1.getRadius())
 			addToKillList(killList, obj2);
 			
 		if (obj1.getRadius() <= obj2.getRadius() * (1 + GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL)) {
@@ -176,7 +176,9 @@ public class LocalGameState implements Serializable {
 				
 				Force f = obj1.actOn(obj2);
 				
-				double modifier = 2.1 * (((double) (tmax - t)) / (double) tmax);
+				/* Not a tweakable vvv -- don't change it! It's based on the
+				 * integral int(0, 1) 2x dx = 1. */
+				double modifier = 2.0 * (tmax - t) / (double) tmax;
 				f = f.times(modifier);
 				
 				/* Newton's 3rd law: */
