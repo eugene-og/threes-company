@@ -73,7 +73,7 @@ public class LocalGameState implements Serializable {
 		for (EventMove eventMove : move.eventMovesAt(t))
 			eventMove.execute(this);
 		
-		applyForces();
+		applyForces(t, tmax);
 		checkCollisions(playSounds);
 		
 		if (gui != null) {
@@ -138,7 +138,7 @@ public class LocalGameState implements Serializable {
 		killList.add(gameObject);
 	}
 	
-	private void applyForces() {
+	private void applyForces(int t, int tmax) {
 		for (GameObject obj1 : _gameObjects) {
 			for (GameObject obj2 : _gameObjects) {
 				if (obj1.isDead() || 
@@ -148,6 +148,9 @@ public class LocalGameState implements Serializable {
 					obj1.getPosition().distanceFrom(obj2.getPosition()) > GameParameters.FORCE_RADIUS) continue;
 				
 				Force f = obj1.actOn(obj2);
+				
+				double modifier = 2.1 * (((double) (tmax - t)) / (double) tmax);
+				f = f.times(modifier);
 				
 				/* Newton's 3rd law: */
 				obj1.applyForce(f.inverse());

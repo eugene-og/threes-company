@@ -14,17 +14,6 @@ import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class GameMove implements Serializable {
-	/* README FIRST
-	 * 
-	 * Hi Dan and John:
-	 * 
-	 * For the sake of simplifying the link between our two classes, please
-	 * don't use GameMove -- I'm changing it to handle all the simulation stuff.
-	 * GUIGameMove is now how our classes talk, and I've defined it roughly
-	 * (feel free to change the implementation). I figured I'd minimize the
-	 * amount of data we use to converse.
-	 */
-	
 	private static final long serialVersionUID = -6368788904877021374L;
 
 	public GameMove(GUIGameMove move) {

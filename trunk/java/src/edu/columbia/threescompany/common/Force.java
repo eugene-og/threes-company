@@ -24,4 +24,8 @@ public class Force extends Coordinate {
 	public Force inverse() {
 		return newRawForce(-this.x, -this.y);
 	}
+	
+	public Force times(double d) {
+		return newRawForce(this.x * d, this.y * d);
+	}
 }
