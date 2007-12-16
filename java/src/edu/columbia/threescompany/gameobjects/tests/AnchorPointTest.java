@@ -1,13 +1,12 @@
 package edu.columbia.threescompany.gameobjects.tests;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.GameMove;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.AnchorPoint;
 import edu.columbia.threescompany.gameobjects.Blob;
@@ -41,11 +40,10 @@ public class AnchorPointTest extends BaseTestCase {
 		state.addObject(anchorPoint);
 		state.addObject(pushBlob);
 		
-		List<Blob> activations = new ArrayList<Blob>(1);
-		activations.add(pushBlob);
+		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>(1);
+		activations.put(pushBlob, MOVE_TYPE.ACTIVATE);
 		
-		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations,
-										   new ArrayList<Blob>());
+		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations);
 		state.executeMove(new GameMove(move));
 		
 		/* Blob should be caught on the anchor and not make it to its destination.
@@ -79,7 +77,7 @@ public class AnchorPointTest extends BaseTestCase {
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
 		finalPositions.put(boringBlob, new Coordinate(5.0, 0));
 		
-		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>(), new ArrayList<Blob>());
+		GUIGameMove move = new GUIGameMove(finalPositions);
 		state.executeMove(new GameMove(move));
 		
 		assertFalse("Boring blob should be alive", boringBlob.isDead());

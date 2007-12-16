@@ -1,14 +1,12 @@
 package edu.columbia.threescompany.client.tests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.GameMove;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.tests.BlobTestTools;
@@ -28,9 +26,10 @@ public class MoveQueueRulesTest extends BaseTestCase {
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
 		finalPositions.put(blob2, new Coordinate(0.0, 3.0));
 		
-		List<Blob> blobsToSpawn = Arrays.asList(new Blob[] { blob2 });
+		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>(1);
+		activations.put(blob2, MOVE_TYPE.SPAWN);
 		
-		GUIGameMove move = new GUIGameMove(finalPositions, new ArrayList<Blob>(), blobsToSpawn);
+		GUIGameMove move = new GUIGameMove(finalPositions, activations);
 		state.executeMove(new GameMove(move));
 		
 		assertTrue("Everything should be dead", blob.isDead());

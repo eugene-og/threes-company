@@ -1,9 +1,11 @@
 package edu.columbia.threescompany.game.graphics;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import edu.columbia.threescompany.common.Coordinate;
+import edu.columbia.threescompany.game.EventMove;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.gameobjects.Blob;
 
 public class GUIGameMove {
@@ -20,25 +22,22 @@ public class GUIGameMove {
 	 */
 
 	private Map<Blob, Coordinate> _finalPositions;
-	private List<Blob> _blobsToActivate;
-	private List<Blob> _blobsToSpawn;
+	private Map<Blob, EventMove.MOVE_TYPE> _blobsToActivate;
 	
-	public GUIGameMove(Map<Blob, Coordinate> finalPositions, List<Blob> blobsToActivate,
-					   List<Blob> blobsToSpawn) {
+	public GUIGameMove(Map<Blob, Coordinate> finalPositions, Map<Blob, MOVE_TYPE> blobsToActivate) {
 		_finalPositions = finalPositions;
 		_blobsToActivate = blobsToActivate;
-		_blobsToSpawn = blobsToSpawn;
+	}
+	
+	public GUIGameMove(Map<Blob, Coordinate> finalPositions) {
+		this(finalPositions, new HashMap<Blob, MOVE_TYPE>());
 	}
 	
 	public Map<Blob, Coordinate> getFinalPositions() {
 		return _finalPositions;
 	}
 	
-	public List<Blob> getBlobsToActivate() {
+	public Map<Blob, MOVE_TYPE> getBlobsToActivate() {
 		return _blobsToActivate;
-	}
-	
-	public List<Blob> getBlobsToSpawn() {
-		return _blobsToSpawn;
 	}
 }
