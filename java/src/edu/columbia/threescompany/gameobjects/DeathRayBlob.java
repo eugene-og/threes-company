@@ -28,7 +28,6 @@ public class DeathRayBlob extends Blob {
 	
 	public Force actOn(GameObject obj) {
 		if (!_activated) return Force.NULL_FORCE;
-		if (_lastMove == null) return Force.NULL_FORCE;
 		
 		Coordinate pos = obj.getPosition();
 		if (_position.distanceFrom(pos) < _strength && isInDeathRayAngle(obj)) 
@@ -38,19 +37,25 @@ public class DeathRayBlob extends Blob {
 	}
 
 	private boolean isInDeathRayAngle(GameObject obj) {
-		Coordinate intersectionVector = _lastMove.times(_strength);
-		
-		for (int i = 0; i < 4; i++) {
-			if (vectorCollides(intersectionVector, obj)) return true;
-			intersectionVector = intersectionVector.rotate(90);
-		}
-		return false;
+		return (vectorCollides(_lastMove, obj));
 	}
 	
 	public boolean vectorCollides(Coordinate vec, GameObject obj) {
-		// TODO Is the distance from obj.pos to
-		//	the line (_pos + vec.times(n)) < obj.radius?
-		return false;
+		double xCtr = obj.getPosition().x;
+		double yCtr = obj.getPosition().y;
+		
+		/* Number of unit vectors to the intersection of the perpendicular line from
+		 * vector-line to obj */
+		double u = ((xCtr - _position.x)*(vec.x) + (yCtr - _position.y)*(vec.y)) /
+					(vec.length() * vec.length());
+		Coordinate intersection = new Coordinate(_position.x + u * vec.x,
+												 _position.y + u * vec.y);
+		
+		double distance = intersection.distanceFrom(obj.getPosition());
+		
+		System.out.println("Distance from death line to obj center is " + distance);
+		
+		return (distance <= obj.getRadius() && distance < _strength);
 	}
 
 	public void applyForce(Force force) {
@@ -73,14 +78,14 @@ public class DeathRayBlob extends Blob {
 	}
 	
 	private void recalculateStrength() {
-		_strength = GameParameters.DEATH_RAY_RANGE_MULTIPLIER/_radius;
+		_strength = 2 + GameParameters.DEATH_RAY_RANGE_MULTIPLIER/_radius;
 	}
 	
 	public GameObject clone() {
 		return new DeathRayBlob(_position.x, _position.y, _radius, _owner, _theta);
 	}
 	
-	public Coordinate getLastMoveVector() {
+	public Coordinate getThetaCoordinate() {
 		return new Coordinate(getPolarX(_theta), getPolarY(_theta)); 		
 	}
 	
@@ -98,13 +103,14 @@ public class DeathRayBlob extends Blob {
 		double y = src.y - dest.y;
 		
 		_theta = Math.toDegrees(Math.atan2(y, x)) % 360;
+		_lastMove = dest.minus(_position);
 	}
 	
 	public double getTheta() {
 		return _theta;
 	}
 
-	private Coordinate _lastMove = null;
+	private Coordinate _lastMove = new Coordinate(1, 0);
 	private double _theta = 0.0;
 	private double _strength;
 }
