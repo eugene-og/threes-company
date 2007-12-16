@@ -11,6 +11,8 @@ public class DeathRayBlob extends Blob {
 	public DeathRayBlob(double x, double y, double radius, Player owner, double _theta) {
 		super(x, y, radius, owner);
 		this._theta = _theta;
+		this._rayDirection = new Coordinate(Math.cos(Math.toRadians(_theta)),
+											Math.sin(Math.toRadians(_theta)));
 	}
 	
 	public DeathRayBlob(double x, double y, double radius, Player owner) {
