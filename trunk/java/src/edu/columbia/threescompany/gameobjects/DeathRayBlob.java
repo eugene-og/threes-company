@@ -27,6 +27,10 @@ public class DeathRayBlob extends Blob {
 		_activated = activated;	
 	}
 	
+	public Boolean isActive() {
+		return _activated;
+	}
+	
 	public Force actOn(GameObject obj) {
 		if (obj == this) return Force.NULL_FORCE;
 		if (!_activated) return Force.NULL_FORCE;
@@ -94,7 +98,11 @@ public class DeathRayBlob extends Blob {
 	public double getTheta() {
 		return _theta;
 	}
-
+	
+	public Coordinate getRayDirection() {
+		return _rayDirection;
+	}
+	
 	private Coordinate _rayDirection = new Coordinate(1, 0);
 	private double _theta = 0.0;
 }
