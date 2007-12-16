@@ -143,15 +143,16 @@ public class LocalGameState implements Serializable {
 	}
 
 	private void twoBlobsCollide(List<GameObject> killList, GameObject obj1, GameObject obj2) {
-		double percent_diff = (obj1.getRadius()-obj2.getRadius())/obj1.getRadius();
-		if (percent_diff < GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL) {
+		if (killList.contains(obj1) || killList.contains(obj2)) return;
+		
+		if (obj2.getRadius() < obj1.getRadius())
+			addToKillList(killList, obj2);
+			
+		if (obj1.getRadius() <= obj2.getRadius() * (1 + GameParameters.PERCENTAGE_DIFFERENCE_FOR_KILL)) {
 			addToKillList(killList, obj1);
 		} else {
-			/* add difference to initial size divided by growth factor -- instead of just
-			 * initial size -- to cancel out effect of growing immediately after turn 
-			 * ends (take more damage) */
-			obj1.setRadius((obj1.getRadius()-obj2.getRadius()) + 
-					GameParameters.BLOB_INITIAL_SIZE/GameParameters.BLOB_GROWTH_FACTOR);
+			obj1.setRadius((obj1.getRadius() - obj2.getRadius()) + 
+					GameParameters.BLOB_INITIAL_SIZE / GameParameters.BLOB_GROWTH_FACTOR);
 		}
 	}
 	
