@@ -64,13 +64,12 @@ public class Gui extends JFrame {
 	
 	private static final int 	ACTION_MOVE		= 0;
 	private static final int 	ACTION_SPLIT	= 1;
-	private static final int 	ACTION_FILL		= 2;
-	private static final int 	ACTION_DEATH	= 3;
-	private static final int 	ACTION_ROTATE	= 4;
-	private static final int 	ACTION_SLIPPERY	= 5;
-	private static final int 	ACTION_EXPLODE	= 6;
-	private static final int 	ACTION_PUSH		= 7;
-	private static final int 	ACTION_PULL 	= 8;
+	private static final int 	ACTION_DEATH	= 2;
+	private static final int 	ACTION_ROTATE	= 3;
+	private static final int 	ACTION_SLIPPERY	= 4;
+	private static final int 	ACTION_EXPLODE	= 5;
+	private static final int 	ACTION_PUSH		= 6;
+	private static final int 	ACTION_PULL 	= 7;
 	
 	private static final long 	serialVersionUID = -5234906655320340040L;
 	private int 				_xPos, _yPos;
@@ -591,7 +590,6 @@ public class Gui extends JFrame {
 		private void updateAvailableActions() {
 			setButtonEnabled(ACTION_MOVE);
 			setButtonEnabled(ACTION_SPLIT);
-			setButtonDisabled(ACTION_FILL);
 			setButtonDisabled(ACTION_DEATH);
 			setButtonDisabled(ACTION_ROTATE);
 			setButtonDisabled(ACTION_SLIPPERY);
@@ -692,11 +690,6 @@ public class Gui extends JFrame {
 				_selectedAction = ACTION_SPLIT;
 				cost = ActionPointEngine.getCostOfSplit(_graphicalState.getSelectedBlob());
 			}
-			else if (cmd.equals(_buttonCmds.get(ACTION_FILL))) {
-				message = "file a hole";
-				_selectedAction = ACTION_FILL;
-				cost = 0.0; // sacrifice blob, no AP cost
-			}
 			else if (cmd.equals(_buttonCmds.get(ACTION_DEATH))) {
 				message = "fire a death ray";
 				_selectedAction = ACTION_DEATH;
@@ -753,8 +746,6 @@ public class Gui extends JFrame {
 				return MOVE_TYPE.ACTIVATE;
 			case ACTION_SPLIT:
 				return MOVE_TYPE.SPAWN;
-			case ACTION_FILL:
-				return MOVE_TYPE.FILL;
 			case ACTION_ROTATE:
 				return MOVE_TYPE.ROTATE;
 			default:
@@ -774,8 +765,6 @@ public class Gui extends JFrame {
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_MOVE)));
 		_buttonCmds.add("Split");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_SPLIT)));
-		_buttonCmds.add("Fill");
-		_buttons.add(new JButton(_buttonCmds.get(ACTION_FILL)));
 		_buttonCmds.add("Fire");
 		_buttons.add(new JButton(_buttonCmds.get(ACTION_DEATH)));
 		_buttonCmds.add("Rotate");
@@ -869,8 +858,6 @@ public class Gui extends JFrame {
 			_buttons.get(button).setText("Fire ("+df.format(ActionPointEngine.getCostOfProjectile(blob))+")");
 		} else if (button == ACTION_EXPLODE) {
 			_buttons.get(button).setText("Explode ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
-		} else if (button == ACTION_FILL) {
-			_buttons.get(button).setText("Fill (0)");
 		} else if (button == ACTION_PUSH) {
 			_buttons.get(button).setText("Push ("+df.format(ActionPointEngine.getCostOfProratedAction(blob))+")");
 		} else if (button == ACTION_PULL) {
