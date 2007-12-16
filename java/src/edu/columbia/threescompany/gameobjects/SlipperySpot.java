@@ -5,10 +5,17 @@ import edu.columbia.threescompany.common.Force;
 
 public class SlipperySpot extends ImmovableGameObject {
 	private static final long serialVersionUID = 8260564646695768837L;
+	private boolean _isDead;
 
 	public SlipperySpot(double x, double y, double radius) {
 		_position = new Coordinate(x, y);
 		_radius = radius;
+	}
+	
+	public void grow() {
+		_radius /= GameParameters.SLIPPERY_SPOT_SHRINK_FACTOR;
+		if (_radius < GameParameters.BLOB_INITIAL_SIZE)
+			die();
 	}
 	
 	public Force actOn(GameObject obj) {
@@ -16,11 +23,12 @@ public class SlipperySpot extends ImmovableGameObject {
 	}
 
 	public void die() {
-		/* I AM IMMUNE TO DEATH */
+		_isDead = true;
+		_radius = 0.0d;
 	}
 
 	public boolean isDead() {
-		return false;
+		return _isDead;
 	}
 
 	public GameObject clone() {
