@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 import edu.columbia.threescompany.client.tests.LocalGameStateTest;
 import edu.columbia.threescompany.common.tests.CoordinateTest;
 import edu.columbia.threescompany.common.tests.GameBoardTest;
+import edu.columbia.threescompany.game.FillTest;
 import edu.columbia.threescompany.game.tests.ActionPointCapIncreaserTest;
 import edu.columbia.threescompany.game.tests.PhysicalMoveTest;
 import edu.columbia.threescompany.gameobjects.tests.AnchorPointTest;
@@ -43,6 +44,7 @@ public class AllTests {
 		suite.addTestSuite(ActionPointCapIncreaserTest.class);
 		suite.addTestSuite(AnchorPointTest.class);
 		suite.addTestSuite(SlipperySpotTest.class);
+		suite.addTestSuite(FillTest.class);
 		
 		/* Simulation */
 		suite.addTestSuite(PhysicalMoveTest.class);
