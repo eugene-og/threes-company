@@ -10,7 +10,6 @@ public class DeathRayBlob extends Blob {
 	
 	public DeathRayBlob(double x, double y, double radius, Player owner, double _theta) {
 		super(x, y, radius, owner);
-		recalculateStrength();
 		this._theta = _theta;
 	}
 	
@@ -29,15 +28,10 @@ public class DeathRayBlob extends Blob {
 	public Force actOn(GameObject obj) {
 		if (!_activated) return Force.NULL_FORCE;
 		
-		Coordinate pos = obj.getPosition();
-		if (_position.distanceFrom(pos) < _strength && isInDeathRayAngle(obj)) 
+		if (vectorCollides(_rayDirection, obj)) 
 			obj.die();
 		
 		return Force.NULL_FORCE;
-	}
-
-	private boolean isInDeathRayAngle(GameObject obj) {
-		return (vectorCollides(_lastMove, obj));
 	}
 	
 	public boolean vectorCollides(Coordinate vec, GameObject obj) {
@@ -55,30 +49,12 @@ public class DeathRayBlob extends Blob {
 		
 		System.out.println("Distance from death line to obj center is " + distance);
 		
-		return (distance <= obj.getRadius() && distance < _strength);
+		return (distance <= obj.getRadius() && distance < GameParameters.DEATH_RAY_RANGE);
 	}
 
 	public void applyForce(Force force) {
 		super.applyForce(force);
-		_lastMove = force.toUnitVector();
-	}
-
-	public void grow() {
-		super.grow();
-		recalculateStrength();
-		
-	}
-	
-	public GameObject spawn() {
-		DeathRayBlob spawnedBlob = (DeathRayBlob) super.spawn();
-		
-		recalculateStrength();
-		spawnedBlob.recalculateStrength();
-		return spawnedBlob;
-	}
-	
-	private void recalculateStrength() {
-		_strength = 2 + GameParameters.DEATH_RAY_RANGE_MULTIPLIER/_radius;
+		_rayDirection = force.toUnitVector();
 	}
 	
 	public GameObject clone() {
@@ -103,14 +79,13 @@ public class DeathRayBlob extends Blob {
 		double y = src.y - dest.y;
 		
 		_theta = Math.toDegrees(Math.atan2(y, x)) % 360;
-		_lastMove = dest.minus(_position);
+		_rayDirection = dest.minus(_position);
 	}
 	
 	public double getTheta() {
 		return _theta;
 	}
 
-	private Coordinate _lastMove = new Coordinate(1, 0);
+	private Coordinate _rayDirection = new Coordinate(1, 0);
 	private double _theta = 0.0;
-	private double _strength;
 }
