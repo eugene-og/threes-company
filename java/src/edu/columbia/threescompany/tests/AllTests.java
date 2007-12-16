@@ -15,8 +15,6 @@ import edu.columbia.threescompany.gameobjects.tests.ExplodingBlobTest;
 import edu.columbia.threescompany.gameobjects.tests.ForceBlobTest;
 import edu.columbia.threescompany.gameobjects.tests.SlipperyBlobTest;
 import edu.columbia.threescompany.gameobjects.tests.SlipperySpotTest;
-import edu.columbia.threescompany.gameobjects.tests.SpringTest;
-import edu.columbia.threescompany.gameobjects.tests.WallTest;
 import edu.columbia.threescompany.graphics.tests.BoardTest;
 
 public class AllTests {
