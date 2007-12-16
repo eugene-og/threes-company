@@ -27,12 +27,12 @@ public class Hole extends ImmovableGameObject {
 	public boolean checkCollision(GameObject rhs) {
 		if (!(rhs instanceof Blob)) return false;	/* We don't care. */
 		Blob blob = (Blob) rhs;
-		if (blob.getRadius() > _radius) return false;
 		
 		return collidesWith(blob);
 	}
 
 	public boolean collidesWith(GameObject blob) {
+		/* We're checking if that blob's center is in the hole */
 		return _position.distanceFrom(blob.getPosition()) <= _radius;
 	}
 

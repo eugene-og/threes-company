@@ -22,10 +22,10 @@ public class FillTest extends BaseTestCase {
 		Hole hole = new Hole(4.0, 4.0, HOLE_SIZE);
 		state.addObject(hole);
 		
-		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>(1);
-		activations.put(blob, MOVE_TYPE.FILL);
+		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
+		finalPositions.put(blob, new Coordinate(4.0, 4.0));
 		
-		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations);
+		GUIGameMove move = new GUIGameMove(finalPositions);
 		state.executeMove(new GameMove(move));
 		
 		assertTrue("Blob should die", blob.isDead());
@@ -40,10 +40,10 @@ public class FillTest extends BaseTestCase {
 		Hole hole = new Hole(3.8, 3.8, 0.2);
 		state.addObject(hole);
 		
-		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>(1);
-		activations.put(blob, MOVE_TYPE.FILL);
+		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>();
+		finalPositions.put(blob, new Coordinate(3.8, 3.8));
 		
-		GUIGameMove move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations);
+		GUIGameMove move = new GUIGameMove(finalPositions);
 		state.executeMove(new GameMove(move));
 		
 		assertTrue("Blob should die", blob.isDead());

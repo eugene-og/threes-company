@@ -34,7 +34,7 @@ public class GameMove implements Serializable {
 		 * verifier that we don't try to fire unimplemented move types. it can
 		 * be removed when bugs are closed. */ 
 		
-		if (type != MOVE_TYPE.ACTIVATE && type != MOVE_TYPE.SPAWN && type != MOVE_TYPE.FILL)
+		if (type != MOVE_TYPE.ACTIVATE && type != MOVE_TYPE.SPAWN)
 			throw new RuntimeException("Unimplemented move type " + type + "!");
 		
 		addEventMove(blob, type);
