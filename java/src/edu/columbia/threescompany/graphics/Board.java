@@ -179,14 +179,28 @@ public class Board extends Canvas {
 			fillShapeWithImage(surface, blobToDraw, bi);
 			
 			if (item instanceof DeathRayBlob) {
+				DeathRayBlob deathRayBlob = (DeathRayBlob) item;
 				// draw barrel
-				Coordinate facing = ((DeathRayBlob)item).getThetaCoordinate();
+				Coordinate facing = deathRayBlob.getThetaCoordinate();
 				Coordinate screenCenter = worldToScreen(item.getPosition());
 				Coordinate screenFacing = worldToScreen(facing);
 				Line2D barrel = new Line2D.Double(screenCenter.x, screenCenter.y, screenFacing.x, screenFacing.y);
 				surface.setColor(Color.black);
 				surface.setStroke(new BasicStroke(4));
 				surface.draw(barrel);
+				// Draw ray
+				if (deathRayBlob.isActive()) {
+					Coordinate rayEnd = deathRayBlob.getRayDirection().times(GameParameters.DEATH_RAY_RANGE);
+					rayEnd = rayEnd.plus(deathRayBlob.getPosition());
+					System.err.println("Death ray active. Blob " + deathRayBlob);
+					System.err.println("Direction " + deathRayBlob.getRayDirection());
+					System.err.println("Firing death ray to " + rayEnd);
+					rayEnd = worldToScreen(rayEnd);
+					Line2D ray = new Line2D.Double(screenFacing.x, screenFacing.y, rayEnd.x, rayEnd.y);
+					surface.setColor(Color.red);
+					surface.setStroke(new BasicStroke(1));
+					surface.draw(ray);
+				}
 			}
 			
 			surface.setStroke(new BasicStroke(3.0f));
