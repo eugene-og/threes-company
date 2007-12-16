@@ -15,15 +15,11 @@ public class DeathRayBlob extends Blob {
 	}
 	
 	public DeathRayBlob(double x, double y, double radius, Player owner) {
-		super(x, y, radius, owner);
-		recalculateStrength();
-		_theta = Math.random() * 360;
+		this(x, y, radius, owner, Math.random() * 360);
 	}
 	
 	public DeathRayBlob(double x, double y, Player owner) {
-		super(x, y, owner);
-		recalculateStrength();
-		_theta = Math.random() * 360;
+		this(x, y, GameParameters.BLOB_INITIAL_SIZE, owner);
 	}
 
 	public void activate(boolean activated) {
@@ -100,11 +96,8 @@ public class DeathRayBlob extends Blob {
 		Coordinate src = getPosition();
 		double x = dest.x - src.x;
 		double y = src.y - dest.y;
-		int quad = 0;
 		
-		if (x < 0) quad = 180;
-		else if (y < 0) quad = 360;
-		_theta = Math.toDegrees(Math.atan(y/x)) + quad;
+		_theta = Math.toDegrees(Math.atan2(y, x)) % 360;
 	}
 	
 	public double getTheta() {
