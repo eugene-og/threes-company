@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.geom.Ellipse2D;
@@ -105,6 +106,7 @@ public class Board extends Canvas {
 	{		
 		// Graphics2D surface = (Graphics2D) strategy.getDrawGraphics();
 		Graphics2D surface = (Graphics2D) g;
+		surface.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		DecimalFormat df = new DecimalFormat();
 		df.setMinimumFractionDigits(1);
 		df.setMaximumFractionDigits(1);
