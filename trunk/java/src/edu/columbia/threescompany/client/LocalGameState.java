@@ -9,6 +9,7 @@ import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.PhysicalMove;
 import edu.columbia.threescompany.game.Player;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.APCIPoint;
 import edu.columbia.threescompany.gameobjects.AnchorPoint;
@@ -79,8 +80,12 @@ public class LocalGameState implements Serializable {
 		
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
 			granularMove.execute(this);
-		for (EventMove eventMove : move.eventMovesAt(t))
+		for (EventMove eventMove : move.eventMovesAt(t)) {
 			eventMove.execute(this);
+			if (eventMove.getTarget() instanceof DeathRayBlob &&
+					eventMove.getMoveType() == MOVE_TYPE.ACTIVATE)
+				move.addEventMove((Blob) eventMove.getTarget(), MOVE_TYPE.DEACTIVATE);
+		}
 		
 		applyForces(t, tmax);
 		checkCollisions(playSounds);
@@ -97,15 +102,8 @@ public class LocalGameState implements Serializable {
 					Thread.sleep(sleepTime);
 			} catch (InterruptedException exception) {}
 		}
-		
-		deactivateDeathRayBlobs();
 	}
 
-	private void deactivateDeathRayBlobs() {
-		for (GameObject blob : _gameObjects)
-			if (blob instanceof DeathRayBlob) ((Blob) blob).activate(false);
-	}
-	
 	private long sleepTimeForFrame(int t, int tmax) {
 		/* Starts at 0.2 * GAP, ends at 3.3 * GAP, moves linearly */
 		return GameParameters.AVERAGE_MS_FRAME_GAP;
