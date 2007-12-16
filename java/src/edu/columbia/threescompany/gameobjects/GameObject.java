@@ -58,6 +58,10 @@ public abstract class GameObject implements Serializable {
 				" and radius " + this._radius;
 	}
 	
+	public double distanceFrom(GameObject obj) {
+		return _position.distanceFrom(obj._position);
+	}
+	
 	protected Coordinate _position;
 	protected double _weight;
 	protected double _radius;

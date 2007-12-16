@@ -26,6 +26,7 @@ public class DeathRayBlob extends Blob {
 	}
 	
 	public Force actOn(GameObject obj) {
+		if (obj == this) return Force.NULL_FORCE;
 		if (!_activated) return Force.NULL_FORCE;
 		
 		if (vectorCollides(_rayDirection, obj)) 
@@ -52,9 +53,9 @@ public class DeathRayBlob extends Blob {
 		return (distance <= obj.getRadius() && distance < GameParameters.DEATH_RAY_RANGE);
 	}
 
-	public void applyForce(Force force) {
-		super.applyForce(force);
-		_rayDirection = force.toUnitVector();
+	public void applyIrresistibleForce(Force force) {
+		super.applyIrresistibleForce(force);
+		updateTheta(force);
 	}
 	
 	public GameObject clone() {
@@ -62,24 +63,27 @@ public class DeathRayBlob extends Blob {
 	}
 	
 	public Coordinate getThetaCoordinate() {
-		return new Coordinate(getPolarX(_theta), getPolarY(_theta)); 		
+		return new Coordinate(getPolarX(), getPolarY()); 		
 	}
 	
-	public double getPolarX(double theta) {
-		return getPosition().x + ((GameParameters.BLOB_INITIAL_SIZE + getRadius()) * Math.cos(Math.toRadians(theta)));
+	private double getPolarX() {
+		return getPosition().x + ((GameParameters.BLOB_INITIAL_SIZE + getRadius()) * Math.cos(Math.toRadians(_theta)));
 	}
 
-	private double getPolarY(double theta) {
-		return getPosition().y - ((GameParameters.BLOB_INITIAL_SIZE + getRadius()) * Math.sin(Math.toRadians(theta)));
+	private double getPolarY() {
+		return getPosition().y + ((GameParameters.BLOB_INITIAL_SIZE + getRadius()) * Math.sin(Math.toRadians(_theta)));
 	}
 	
 	public void setTheta(Coordinate dest) {
-		Coordinate src = getPosition();
-		double x = dest.x - src.x;
-		double y = src.y - dest.y;
+		Coordinate diff = dest.minus(getPosition());
+		updateTheta(diff);
+	}
+	
+	private void updateTheta(Coordinate diff) {
+		if (diff.x == 0 && diff.y == 0) return;
 		
-		_theta = Math.toDegrees(Math.atan2(y, x)) % 360;
-		_rayDirection = dest.minus(_position);
+		_theta = Math.toDegrees(Math.atan2(diff.y, diff.x)) % 360;
+		_rayDirection = diff.toUnitVector();
 	}
 	
 	public double getTheta() {
