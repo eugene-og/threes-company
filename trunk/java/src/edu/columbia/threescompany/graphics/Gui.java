@@ -741,8 +741,6 @@ public class Gui extends JFrame {
 				return MOVE_TYPE.ACTIVATE;
 			case ACTION_SPLIT:
 				return MOVE_TYPE.SPAWN;
-			case ACTION_ROTATE:
-				return MOVE_TYPE.ROTATE;
 			default:
 				throw new RuntimeException("Unknown");
 			}
