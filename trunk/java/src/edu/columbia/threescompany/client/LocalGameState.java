@@ -93,6 +93,13 @@ public class LocalGameState implements Serializable {
 					Thread.sleep(sleepTime);
 			} catch (InterruptedException exception) {}
 		}
+		
+		deactivateDeathRayBlobs();
+	}
+
+	private void deactivateDeathRayBlobs() {
+		for (GameObject blob : _gameObjects)
+			if (blob instanceof DeathRayBlob) ((Blob) blob).activate(false);
 	}
 	
 	private long sleepTimeForFrame(int t, int tmax) {

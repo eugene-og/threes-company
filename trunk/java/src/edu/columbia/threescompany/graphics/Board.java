@@ -179,7 +179,7 @@ public class Board extends Canvas {
 			
 			if (item instanceof DeathRayBlob) {
 				// draw barrel
-				Coordinate facing = ((DeathRayBlob)item).getLastMoveVector();
+				Coordinate facing = ((DeathRayBlob)item).getThetaCoordinate();
 				Coordinate screenCenter = worldToScreen(item.getPosition());
 				Coordinate screenFacing = worldToScreen(facing);
 				Line2D barrel = new Line2D.Double(screenCenter.x, screenCenter.y, screenFacing.x, screenFacing.y);
