@@ -88,7 +88,7 @@ public class Gui extends JFrame {
 	private ChatThread 			_chatThread;
 	private LocalGameState 		_gameState;
 	private GraphicalGameState	_graphicalState;
-	private Map<Blob, Coordinate> _blobMoves; // final positions
+	private Map<Blob, Coordinate> _blobMoves = new HashMap<Blob, Coordinate>(); // final positions
 	private int 				_selectedAction	= 0;
 	private Player 				_activePlayer; // Null means no one's turn
 	public ConditionVariable 	_turnOver;
