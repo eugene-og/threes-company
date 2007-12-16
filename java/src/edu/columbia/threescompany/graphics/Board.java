@@ -32,6 +32,7 @@ import edu.columbia.threescompany.gameobjects.ImmovableGameObject;
 import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
+import edu.columbia.threescompany.gameobjects.SlipperySpot;
 
 public class Board extends Canvas {
 	private static final long serialVersionUID = 3523741675646270283L;
@@ -131,10 +132,12 @@ public class Board extends Canvas {
 			return;
 		}
 		
-		// Draw holes first so they're below blobs
+		// Draw holes and slippery spots first so they're below blobs
 		for (GameObject item : _gameState.getObjects()) {
 			if (item instanceof Hole) {
 				drawHole(surface, (Hole) item);
+			} else if (item instanceof SlipperySpot) {
+				drawSlipperySpot(surface, (SlipperySpot) item);
 			}
 		}
 		for (GameObject item : _gameState.getObjects()) {
@@ -236,7 +239,7 @@ public class Board extends Canvas {
 //		}
 //		catch (Exception e) {e.printStackTrace();}
 	}
-
+	
 	public Coordinate worldToScreen(Coordinate position) {
 		return new Coordinate(position.x * getWidth() / GameParameters.BOARD_SIZE, 
 		                      position.y * getHeight() / GameParameters.BOARD_SIZE);
@@ -307,6 +310,12 @@ public class Board extends Canvas {
 		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
 		Ellipse2D holeToDraw = circle(item.getPosition().x, item.getPosition().y, item.getRadius());
 		fillShapeWithImage(surface, holeToDraw, bi);
+	}
+	
+	private void drawSlipperySpot(Graphics2D surface, ImmovableGameObject item) {
+		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
+		Ellipse2D slipperySpotToDraw = circle(item.getPosition().x, item.getPosition().y, item.getRadius());
+		fillShapeWithImage(surface, slipperySpotToDraw, bi);
 	}
 	
 	private void fillShapeWithImage(Graphics2D surface, RectangularShape shape, BufferedImage bi) {

@@ -17,6 +17,7 @@ import edu.columbia.threescompany.gameobjects.Hole;
 import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.SlipperyBlob;
+import edu.columbia.threescompany.gameobjects.SlipperySpot;
 
 public class ImageUtilities {
 	
@@ -48,6 +49,7 @@ public class ImageUtilities {
 			imageMap.put(AnchorPoint.class, GuiConstants.ANCHOR_POINT_IMAGE);
 			imageMap.put(APCIPoint.class, GuiConstants.APCI_POINT_IMAGE);
 			imageMap.put(Hole.class, GuiConstants.HOLE_IMAGE);
+			imageMap.put(SlipperySpot.class, GuiConstants.SLIPPERY_SPOT_IMAGE);
 		}
 		return gameObjectClass.getResource("/icons/"+imageMap.get(gameObjectClass));
 	}
