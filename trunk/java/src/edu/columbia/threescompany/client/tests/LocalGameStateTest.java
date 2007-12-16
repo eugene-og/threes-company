@@ -14,6 +14,8 @@ import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.GameObject;
 import edu.columbia.threescompany.gameobjects.GameParameters;
+import edu.columbia.threescompany.gameobjects.Hole;
+import edu.columbia.threescompany.gameobjects.PullBlob;
 import edu.columbia.threescompany.gameobjects.PushBlob;
 import edu.columbia.threescompany.gameobjects.tests.BlobTestTools;
 import edu.columbia.threescompany.tests.BaseTestCase;
@@ -158,14 +160,17 @@ public class LocalGameStateTest extends BaseTestCase {
 	public void testGameOver() {
 		List<GameObject> blobs = new ArrayList<GameObject>(2);
 		Blob blob1 = new PushBlob(1.0, 1.0, BlobTestTools.PLAYER);
-		Blob blob2 = new PushBlob(3.0, 3.0, BlobTestTools.PLAYER);
-		Blob blob3 = new PushBlob(5.0, 5.0, BlobTestTools.PLAYER2);
+		Blob blob2 = new PullBlob(3.0, 3.0, BlobTestTools.PLAYER);
+		Blob blob3 = new PullBlob(5.0, 5.0, BlobTestTools.PLAYER2);
 		Blob blob4 = new PushBlob(7.0, 7.0, BlobTestTools.PLAYER2);
+		
+		Hole hole = new Hole(10.0, 10.0, 1.0);
 		
 		blobs.add(blob1);
 		blobs.add(blob2);
 		blobs.add(blob3);
 		blobs.add(blob4);
+		blobs.add(hole);
 		
 		LocalGameState state = LocalGameState.getSpecifiedGameState(blobs);
 		assertFalse("No game over!", state.gameOver());
