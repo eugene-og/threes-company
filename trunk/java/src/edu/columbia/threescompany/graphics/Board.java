@@ -18,6 +18,7 @@ import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
@@ -296,9 +297,8 @@ public class Board extends Canvas {
 	
 	public void drawState(LocalGameState gameState)
 	{
-		_gameState = gameState;
-		/* This is moved to RedrawThread --ZvS */
-//		repaint();
+		_gameState = gameState;		
+		// The board gets repainted constantly in RedrawThread
 	}
 	
 	public void setBackground(URL backgroundUrl) {
