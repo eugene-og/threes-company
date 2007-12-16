@@ -23,7 +23,7 @@ public class BlobsServerQuickAuthenticator extends QuickAuthenticator {
 			throw new RuntimeException("Error deserializing player list", e);
 		}
 		
-		Object[] players = (Object[])ao.getPlayers();
+		Object[] players = ao.getPlayers();
 		boolean isFirstConnection = ao.isFirstConnection();
 		
 		if (!isFirstConnection) {

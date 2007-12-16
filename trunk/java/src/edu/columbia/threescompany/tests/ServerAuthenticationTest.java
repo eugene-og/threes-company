@@ -47,7 +47,7 @@ public class ServerAuthenticationTest extends BaseTestCase {
 		
 		Thread.sleep(2000);
 		serverThread.stop();
-		chatThread1.stop();
-		chatThread2.stop();
+		chatThread1.stopThread();
+		chatThread2.stopThread();
 	}
 }

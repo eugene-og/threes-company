@@ -2,18 +2,12 @@ package edu.columbia.threescompany.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.columbia.threescompany.client.communication.AuthenticationException;
-import edu.columbia.threescompany.client.communication.AuthenticationObject;
-import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.graphics.Gui;
 
 public class ChatThread extends Thread {
@@ -72,6 +66,10 @@ public class ChatThread extends Thread {
 				System.err.println("Socket not closed");
 			}
 		}
+	}
+	
+	public void stopThread() {
+		stop();
 	}
 
 	public void sendLine(String text) {

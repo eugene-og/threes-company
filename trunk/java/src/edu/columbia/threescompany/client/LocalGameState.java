@@ -159,11 +159,11 @@ public class LocalGameState implements Serializable {
 	}
 
 	private void checkOffBoard(GameObject obj1, GameObject obj2) {
-		if (obj1.getPosition().x < 0 || obj1.getPosition().x > GameParameters.BOARD_SIZE ||
-				obj1.getPosition().y < 0 || obj1.getPosition().y > GameParameters.BOARD_SIZE)
+		if (obj1.getPosition().x < 0 || obj1.getPosition().x >= GameParameters.BOARD_SIZE ||
+				obj1.getPosition().y < 0 || obj1.getPosition().y >= GameParameters.BOARD_SIZE)
 			obj1.die();
-		if (obj2.getPosition().x < 0 || obj2.getPosition().x > GameParameters.BOARD_SIZE ||
-				obj2.getPosition().y < 0 || obj2.getPosition().y > GameParameters.BOARD_SIZE)
+		if (obj2.getPosition().x < 0 || obj2.getPosition().x >= GameParameters.BOARD_SIZE ||
+				obj2.getPosition().y < 0 || obj2.getPosition().y >= GameParameters.BOARD_SIZE)
 			obj2.die();
 	}
 
