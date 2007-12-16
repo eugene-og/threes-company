@@ -154,4 +154,32 @@ public class LocalGameStateTest extends BaseTestCase {
 		
 		assertEquals("Should have spawned", 2, state.getObjects().size());
 	}
+	
+	public void testGameOver() {
+		List<GameObject> blobs = new ArrayList<GameObject>(2);
+		Blob blob1 = new PushBlob(1.0, 1.0, BlobTestTools.PLAYER);
+		Blob blob2 = new PushBlob(3.0, 3.0, BlobTestTools.PLAYER);
+		Blob blob3 = new PushBlob(5.0, 5.0, BlobTestTools.PLAYER2);
+		Blob blob4 = new PushBlob(7.0, 7.0, BlobTestTools.PLAYER2);
+		
+		blobs.add(blob1);
+		blobs.add(blob2);
+		blobs.add(blob3);
+		blobs.add(blob4);
+		
+		LocalGameState state = LocalGameState.getSpecifiedGameState(blobs);
+		assertFalse("No game over!", state.gameOver());
+		
+		blob1.die();
+		assertFalse("No game over!", state.gameOver());
+		
+		blob3.die();
+		assertFalse("No game over!", state.gameOver());
+		
+		blob4.die();
+		assertTrue("Game over!", state.gameOver());
+		
+		blob2.die();
+		assertTrue("Game over!", state.gameOver());
+	}
 }
