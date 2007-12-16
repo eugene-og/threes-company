@@ -91,6 +91,12 @@ public class GameMove implements Serializable {
 		return false;
 	}
 	
+	public boolean hasMoves() {
+		for (Blob blob : _moves.keySet())
+			if (!blob.isDead()) return true;
+		return false;
+	}
+	
 	public String toString() {
 		StringBuilder s = new StringBuilder("GameMove: ");
 		for (GameObject b : _moves.keySet()) {
@@ -111,5 +117,4 @@ public class GameMove implements Serializable {
 	private Map<Blob, PhysicalMove> _moves;
 	private Map<Blob, EventMove> _events;
 	private int _duration = 0;
-
 }

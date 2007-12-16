@@ -38,6 +38,9 @@ public class LocalGameState implements Serializable {
 			turnLength += GameParameters.ADDITIONAL_SIMULATION_LENGTH;
 		
 		for (int t = 0; t < turnLength; t++) {
+			if (t < initialTurnLength && !move.hasMoves())
+				t = (int) initialTurnLength - 1;	/* Skip to simulation phase */
+			
 			/* Issue 63: If all relevant blobs are dead, stop simulating! */
 			if (turnLength > initialTurnLength && !move.hasActivations())
 				break;
