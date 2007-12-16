@@ -621,11 +621,7 @@ public class Gui extends JFrame {
 		}
 		
 		private Coordinate pointToWorldCoordinate(Point p) {
-			// TODO use board's screenToWorld
-			double worldX = (double)p.x * (int)GameParameters.BOARD_SIZE / _board.getWidth();
-			double worldY = (double)p.y * (int)GameParameters.BOARD_SIZE / _board.getHeight();
-			Coordinate worldClick = new Coordinate(worldX, worldY);
-			return worldClick;
+			return _board.screenToWorld(new Coordinate(p.x, p.y));
 		}
 		
 		public void mouseMoved(MouseEvent e) {
