@@ -17,6 +17,7 @@ import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.text.DecimalFormat;
+
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.gameobjects.APCIPoint;
@@ -118,7 +119,7 @@ public class Board extends Canvas {
 		drawBoardBorder(surface);
 		
 		if (_gameState == null) {
-			surface.drawString("Waiting for start...", 1, (int)GuiConstants.BOARD_LENGTH/2);
+			surface.drawString("Waiting for start...", 1, GuiConstants.BOARD_LENGTH/2);
 			return;
 		}
 		

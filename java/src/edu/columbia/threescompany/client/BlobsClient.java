@@ -23,7 +23,6 @@ import edu.columbia.threescompany.client.communication.ServerMessage;
 import edu.columbia.threescompany.client.communication.TurnChangeMessage;
 import edu.columbia.threescompany.client.communication.UpdateStateMessage;
 import edu.columbia.threescompany.common.Coordinate;
-import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.Player;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
