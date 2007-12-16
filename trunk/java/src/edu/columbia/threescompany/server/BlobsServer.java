@@ -101,7 +101,7 @@ public class BlobsServer {
 		
 		broadcastMessage(serverGameState, blobsServer, "Game Started!");
 		mainServerLoop();
-		broadcastMessage(serverGameState, blobsServer, "Game Over!");
+//		broadcastMessage(serverGameState, blobsServer, "Game Over!");
 	}
 
 	private void broadcastMessage(BlobsGameState gameState, QuickServer server, String msg) throws IOException {
@@ -132,7 +132,6 @@ public class BlobsServer {
 			sendStateToAllPlayers(gameState);
 		}
 		sendGameOver(gameState.getWinner());
-		BlobsClient.getSoundEngine().play(SoundEngine.GAMEOVER);
 	}
 
 	private void sendGameOver(Player winner) throws IOException {
