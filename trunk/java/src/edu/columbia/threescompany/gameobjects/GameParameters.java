@@ -22,10 +22,10 @@ public class GameParameters {
 	 * GUI framerate is going to be affected by it. */
 	public static final double FORCE_OF_USERS_HAND = 15;
 	
-	/* How many milliseconds between average animation frames? (Variable!) */
+	/* Time between simulation frames. */
 	public static final int AVERAGE_MS_FRAME_GAP = 50;
 	
-	/* FRAME_DELAY is used by the redraw thread. How's it different than AVERAGE_MS_GAP? */
+	/* Time between animation frames. */
 	public static final int FRAME_DELAY = 20;
 
 	/* How much does stuff slide over a slippery spot? */
@@ -36,6 +36,8 @@ public class GameParameters {
 	public static final double FORCE_RADIUS = BOARD_SIZE / 5;
 	
 	public static final double EXPLOSION_RADIUS_MULTIPLIER = 2.5;
+	public static final double SLIPPERY_RADIUS_MULTIPLIER =
+		EXPLOSION_RADIUS_MULTIPLIER;
 	
 	/* Percentage difference between two colliding blobs for double kill */ 
 	public static final double PERCENTAGE_DIFFERENCE_FOR_KILL = 0.10;
@@ -48,4 +50,5 @@ public class GameParameters {
 	public static final int BASE_SPLIT_COST = 3;
 	public static final int BASE_FIRE_SLIPPERY_COST = 6;
 	public static final int BASE_FIRE_DEATH_RAY_COST = 9;
+	
 }

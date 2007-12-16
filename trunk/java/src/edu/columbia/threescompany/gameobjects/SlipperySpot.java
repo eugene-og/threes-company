@@ -24,7 +24,7 @@ public class SlipperySpot extends ImmovableGameObject {
 	}
 
 	public GameObject clone() {
-		return new SlipperySpot(_position.x, _position.y, _radius);
+		return new SlipperySpot(_position.x, _position.y, _radius * GameParameters.SLIPPERY_RADIUS_MULTIPLIER);
 	}
 
 	public boolean checkCollision(GameObject rhs) {
