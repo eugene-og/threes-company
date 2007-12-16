@@ -39,7 +39,7 @@ public class DeathRayBlobTest extends BaseTestCase {
 		DeathRayBlob death = new DeathRayBlob(3.54256, 8.41652, 1.5, BlobTestTools.PLAYER);
 		Blob victim = new PushBlob(4.0, 5.0, 1.5, BlobTestTools.PLAYER);
 		
-		death.setTheta(new Coordinate(3.54256, 9.41652));
+		death.setTheta(new Coordinate(3.54256, 7.41652));
 		death.activate(true);
 		death.actOn(victim);
 		
@@ -64,5 +64,17 @@ public class DeathRayBlobTest extends BaseTestCase {
 		state.executeMove(new GameMove(move));
 		
 		assertRoughlyEqual("Theta should be atan2(2, 3)", Math.toDegrees(Math.atan2(2, 3)), death.getTheta());
+	}
+	
+	public void testShootingBackwards() {
+		/* Issue 75: Don't shoot backwards, you chump! */
+		
+		DeathRayBlob death = new DeathRayBlob(1, 1, 3, BlobTestTools.PLAYER);
+		Blob victim = BlobTestTools.getBoringBlob(1, 3);
+		death.setTheta(new Coordinate(0, -1));
+		death.activate(true);
+		death.actOn(victim);
+		
+		assertFalse("Death ray shouldn't have hit victim", victim.isDead());
 	}
 }

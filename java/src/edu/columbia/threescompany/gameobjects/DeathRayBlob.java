@@ -43,6 +43,9 @@ public class DeathRayBlob extends Blob {
 		 * vector-line to obj */
 		double u = ((xCtr - _position.x)*(vec.x) + (yCtr - _position.y)*(vec.y)) /
 					(vec.length() * vec.length());
+		
+		if (u < 0) return false;	/* don't shoot backwards */
+		
 		Coordinate intersection = new Coordinate(_position.x + u * vec.x,
 												 _position.y + u * vec.y);
 		
