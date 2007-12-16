@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.geom.Ellipse2D;
@@ -18,8 +17,6 @@ import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.List;
-
 import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.gameobjects.APCIPoint;
