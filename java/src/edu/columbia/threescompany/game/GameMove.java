@@ -10,8 +10,10 @@ import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
+import edu.columbia.threescompany.gameobjects.DeathRayBlob;
 import edu.columbia.threescompany.gameobjects.ForceBlob;
 import edu.columbia.threescompany.gameobjects.GameObject;
+import edu.columbia.threescompany.gameobjects.GameParameters;
 
 public class GameMove implements Serializable {
 	private static final long serialVersionUID = -6368788904877021374L;
@@ -48,7 +50,7 @@ public class GameMove implements Serializable {
 		if (duration > _duration) _duration = duration;
 	}
 
-	private void addEventMove(Blob blob, EventMove.MOVE_TYPE moveType) {
+	public void addEventMove(Blob blob, MOVE_TYPE moveType) {
 		int activationTime = 0;
 		
 		/* If a blob is moving physically, its activation time doesn't
@@ -56,7 +58,15 @@ public class GameMove implements Serializable {
 		if (_moves.containsKey(blob))
 			activationTime = _moves.get(blob).getDuration() + 1;
 		
+		if (blob instanceof DeathRayBlob && moveType == MOVE_TYPE.DEACTIVATE)
+			activationTime += GameParameters.DEATH_RAY_DURATION;
+		
 		_events.put(blob, new EventMove(blob, activationTime, moveType));
+		
+		if (blob instanceof DeathRayBlob && moveType == MOVE_TYPE.ACTIVATE)
+			/* make a space for the deactivation */
+			activationTime += GameParameters.DEATH_RAY_DURATION;
+		
 		if (activationTime + 1 > _duration) _duration = activationTime + 1;
 	}
 

@@ -7,6 +7,8 @@ public class GameParameters {
 	public static final double SLIPPERY_SPOT_SHRINK_FACTOR = 1.07;
 	
 	public static final double DEATH_RAY_RANGE = 10;
+	public static final int DEATH_RAY_DURATION = 5;
+	
 	public static final double BOARD_SIZE = 40; // TODO Can we make this an int? I think it makes screen to world coordinate conversion saner.
 	
 	/* How many pieces moves are broken down into (basically 1/dt).

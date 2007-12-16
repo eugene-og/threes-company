@@ -8,7 +8,7 @@ import edu.columbia.threescompany.gameobjects.GameObject;
 
 public class EventMove extends GameMoveComponent implements Serializable {
 	public enum MOVE_TYPE {
-		ACTIVATE, SPAWN
+		ACTIVATE, SPAWN, DEACTIVATE
 	};
 	private static final long serialVersionUID = -4695883001161759780L;
 	private MOVE_TYPE _moveType;
@@ -24,6 +24,8 @@ public class EventMove extends GameMoveComponent implements Serializable {
 		
 		if (_moveType == MOVE_TYPE.ACTIVATE)
 			((Blob) _target).activate(true);
+		else if (_moveType == MOVE_TYPE.DEACTIVATE)
+			((Blob) _target).activate(false);
 		else if (_moveType == MOVE_TYPE.SPAWN) {
 			GameObject result = ((Blob) _target).spawn();
 			if (result != null)
