@@ -529,35 +529,27 @@ public class Gui extends JFrame {
 			if (_activePlayer == null) { // It's no one's turn
 				return;
 			}
-			processClick(e.getPoint());
-		}
-    	
-    	private void processClick(Point p) {
-			// The world variables are locations in world/game space (as opposed to screen space)
-			Coordinate worldClick = pointToWorldCoordinate(p);
-			// TODO have screen to world and world to screen in only one place
-			Blob newSelection = getNewSelection(worldClick);
-			if (newSelection != null) { // clicked a blob that player controls
-				_selectedAction = 0;
-				_graphicalState.setSelectedBlob(newSelection);
-				updateActionsBorder(newSelection);
-				updateAvailableActions();
-				_board.repaint();
-				debug("Selected blob " + _graphicalState.getSelectedBlob());
-			} else if (_graphicalState.getSelectedBlob() != null) { // clicked a destination for a blob
-				if (_selectedAction == ACTION_MOVE) { // move action
-					addMoveForCurrentBlob(worldClick);
-				} else if (_selectedAction == ACTION_ROTATE) {
-					addRotationForCurrentBlob(worldClick);
+			Coordinate worldClick = pointToWorldCoordinate(e.getPoint());
+			if (e.getButton() == MouseEvent.BUTTON1) { // Left click selects a blob
+				Blob newSelection = getNewSelection(worldClick);
+				if (newSelection != null) { // clicked a blob that player controls
+					_selectedAction = 0;
+					_graphicalState.setSelectedBlob(newSelection);
+					updateActionsBorder(newSelection);
+					updateAvailableActions();
+					_board.repaint();
+					debug("Selected blob " + _graphicalState.getSelectedBlob());
 				}
+			} else if (e.getButton() == MouseEvent.BUTTON2 || 
+					e.getButton() == MouseEvent.BUTTON3) { // Middle and right click moves
+				if (_graphicalState.getSelectedBlob() == null) {
+					addChatLine("You must select a blob before trying to move it.");
+					return;
+				}
+				addMoveForCurrentBlob(worldClick);
 			}
 		}
-
-		private void addRotationForCurrentBlob(Coordinate position) {
-			// TODO What is this? Does it do anything in mouse listener?
-			enqueueMove("rotation", position);
-		}
-
+    	
 		private Blob getNewSelection(Coordinate worldClick) {
 			Blob newSelection = blobClickedOn(worldClick);
 			if (newSelection != null) {
