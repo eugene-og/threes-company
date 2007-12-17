@@ -782,7 +782,11 @@ public class Gui extends JFrame {
 				return;
 			} else {
 				_blobMoves.put(selectedBlob, destination);
-				addQueueLine("Moving blob to " + destination.toRoundedString() + " with cost of " + cost);
+
+				DecimalFormat fmt = new DecimalFormat();
+				fmt.setMinimumFractionDigits(1);
+				fmt.setMaximumFractionDigits(1);
+				addQueueLine("Moving blob to " + destination.toRoundedString() + " with cost of " + fmt.format(cost));
 			}
 		} else {
 			throw new RuntimeException("enqueueMove called with invalid move type");
