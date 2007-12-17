@@ -198,7 +198,7 @@ public class Board extends Canvas {
 					rayEnd = worldToScreen(rayEnd);
 					Line2D ray = new Line2D.Double(screenFacing.x, screenFacing.y, rayEnd.x, rayEnd.y);
 					surface.setColor(Color.red);
-					surface.setStroke(new BasicStroke(1));
+					surface.setStroke(new BasicStroke(2));
 					surface.draw(ray);
 				}
 			}
