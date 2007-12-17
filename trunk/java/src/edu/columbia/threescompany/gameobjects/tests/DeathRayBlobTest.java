@@ -8,6 +8,7 @@ import edu.columbia.threescompany.client.LocalGameState;
 import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.GameMove;
+import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.Blob;
 import edu.columbia.threescompany.gameobjects.DeathRayBlob;
@@ -46,24 +47,33 @@ public class DeathRayBlobTest extends BaseTestCase {
 		assertTrue("Death ray should have hit victim", victim.isDead());
 	}
 	
-	public void testThetaOrientation() {
+	public void testThetaOrientationAndGameStateFlow() {
 		DeathRayBlob death = new DeathRayBlob(1.0, 1.0, 1.0, BlobTestTools.PLAYER);
 		death.applyIrresistibleForce(Force.newRawForce(1.0, 1.0));
 		
 		assertEquals("Should be 45 deg angle", death.getTheta(), 45.0);
 		
-		LocalGameState state = LocalGameState.getSpecifiedGameState(Arrays.asList(new GameObject[] { death }));
+		Blob victim = BlobTestTools.getBoringBlob(7, 5);
+		LocalGameState state = LocalGameState.getSpecifiedGameState(Arrays.asList(new GameObject[] { death, victim }));
 		
 		death.applyIrresistibleForce(Force.newRawForce(-1.0, -1.0));
 		
 		Map<Blob, Coordinate> finalPositions = new HashMap<Blob, Coordinate>(1);
-		finalPositions.put(death, new Coordinate(4, 3));
+		finalPositions.put(death, new Coordinate(4, 3));	
 		
 		GUIGameMove move = new GUIGameMove(finalPositions);
-		
 		state.executeMove(new GameMove(move));
 		
 		assertRoughlyEqual("Theta should be atan2(2, 3)", Math.toDegrees(Math.atan2(2, 3)), death.getTheta());
+		
+		Map<Blob, MOVE_TYPE> activations = new HashMap<Blob, MOVE_TYPE>(1);
+		activations.put(death, MOVE_TYPE.ACTIVATE);
+		
+		move = new GUIGameMove(new HashMap<Blob, Coordinate>(), activations);
+		state.executeMove(new GameMove(move));
+		
+		assertFalse("Death ray should be alive", death.isDead());
+		assertTrue("Ray should have fired and killed victim", victim.isDead());
 	}
 	
 	public void testShootingBackwards() {

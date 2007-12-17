@@ -6,7 +6,6 @@ import edu.columbia.threescompany.game.Player;
 
 public class DeathRayBlob extends Blob {
 	private static final long serialVersionUID = 4191070966886734000L;
-	private boolean _activated;
 	
 	public DeathRayBlob(double x, double y, double radius, Player owner, double _theta) {
 		super(x, y, radius, owner);

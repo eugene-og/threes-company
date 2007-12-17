@@ -9,7 +9,6 @@ import edu.columbia.threescompany.game.EventMove;
 import edu.columbia.threescompany.game.GameMove;
 import edu.columbia.threescompany.game.PhysicalMove;
 import edu.columbia.threescompany.game.Player;
-import edu.columbia.threescompany.game.EventMove.MOVE_TYPE;
 import edu.columbia.threescompany.game.graphics.GUIGameMove;
 import edu.columbia.threescompany.gameobjects.APCIPoint;
 import edu.columbia.threescompany.gameobjects.AnchorPoint;
@@ -39,12 +38,15 @@ public class LocalGameState implements Serializable {
 			turnLength += GameParameters.ADDITIONAL_SIMULATION_LENGTH;
 		
 		for (int t = 0; t < turnLength; t++) {
-			if (t < initialTurnLength && !move.hasMoves())
-				t = (int) initialTurnLength - 1;	/* Skip to simulation phase */
+			if (t < initialTurnLength && !move.hasMoves()) {
+				t = move.firstActivation();	/* Skip to simulation phase */;
+				initialTurnLength = move.firstActivation();
+			}
 			
 			/* Issue 63: If all relevant blobs are dead, stop simulating! */
-			if (turnLength > initialTurnLength && !move.hasActivations())
+			if (t > initialTurnLength && turnLength > initialTurnLength && !move.hasActivationsAfter(t)) {
 				break;
+			}
 			executeMoveStep(move, gui, t, (int) turnLength);
 		}
 		
@@ -80,12 +82,8 @@ public class LocalGameState implements Serializable {
 		
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
 			granularMove.execute(this);
-		for (EventMove eventMove : move.eventMovesAt(t)) {
+		for (EventMove eventMove : move.eventMovesAt(t))
 			eventMove.execute(this);
-			if (eventMove.getTarget() instanceof DeathRayBlob &&
-					eventMove.getMoveType() == MOVE_TYPE.ACTIVATE)
-				move.addEventMove((Blob) eventMove.getTarget(), MOVE_TYPE.DEACTIVATE);
-		}
 		
 		applyForces(t, tmax);
 		checkCollisions(playSounds);

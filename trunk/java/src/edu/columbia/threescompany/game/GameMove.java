@@ -58,9 +58,6 @@ public class GameMove implements Serializable {
 		if (_moves.containsKey(blob))
 			activationTime = _moves.get(blob).getDuration() + 1;
 		
-		if (blob instanceof DeathRayBlob && moveType == MOVE_TYPE.DEACTIVATE)
-			activationTime += GameParameters.DEATH_RAY_DURATION;
-		
 		_events.put(blob, new EventMove(blob, activationTime, moveType));
 		
 		if (blob instanceof DeathRayBlob && moveType == MOVE_TYPE.ACTIVATE)
@@ -80,10 +77,14 @@ public class GameMove implements Serializable {
 	}
 	
 	public List<EventMove> eventMovesAt(int i) {
-		// FIXME same as above FIXME
 		List<EventMove> result = new ArrayList<EventMove>();
-		for (EventMove move : _events.values())
+		
+		for (EventMove move : _events.values()) {
 			if (i == move.getActivationTime()) result.add(move);
+			if (move.getTarget() instanceof DeathRayBlob && move.getMoveType() == MOVE_TYPE.ACTIVATE &&
+					i == move.getActivationTime() + GameParameters.DEATH_RAY_DURATION)
+				result.add(new EventMove(move.getTarget(), i, MOVE_TYPE.DEACTIVATE));
+		}
 		
 		return result;
 	}
@@ -95,9 +96,41 @@ public class GameMove implements Serializable {
 
 	public boolean hasActivations() {
 		for (Blob blob : _events.keySet())
-			if (_events.get(blob).getMoveType() == EventMove.MOVE_TYPE.ACTIVATE &&
-					(blob instanceof ForceBlob) && !blob.isDead())
+			if (isActivation(blob) &&
+					(blob instanceof ForceBlob || blob instanceof DeathRayBlob) && !blob.isDead())
 				return true;
+		return false;
+	}
+
+	private boolean isActivation(Blob blob) {
+		MOVE_TYPE type = _events.get(blob).getMoveType();
+		return type == MOVE_TYPE.ACTIVATE || type == MOVE_TYPE.DEACTIVATE;
+	}
+	
+	public int firstActivation() {
+		int first = _duration - 1;
+		for (Blob blob : _events.keySet()) {
+			int time = _events.get(blob).getActivationTime();
+			if (isActivation(blob) && !blob.isDead() && time < first)
+				first = time;
+		}
+		return first;
+	}
+	
+	public boolean hasActivationsAfter(int t) {
+		for (Blob blob : _events.keySet()) {
+			if (!blob.isDead() && blob.isActivated())
+				return true;
+			
+			if (isActivation(blob) &&
+					(blob instanceof ForceBlob || blob instanceof DeathRayBlob) && !blob.isDead() &&
+					_events.get(blob).getActivationTime() >= t)
+				return true;
+			
+			/* Horrible special case. */
+			if (blob instanceof DeathRayBlob && !blob.isDead() && _events.get(blob).getActivationTime() >= t - GameParameters.DEATH_RAY_DURATION)
+				return true;
+		}
 		return false;
 	}
 	
@@ -106,6 +139,7 @@ public class GameMove implements Serializable {
 			if (!blob.isDead()) return true;
 		return false;
 	}
+	
 	
 	public String toString() {
 		StringBuilder s = new StringBuilder("GameMove: ");
@@ -127,4 +161,6 @@ public class GameMove implements Serializable {
 	private Map<Blob, PhysicalMove> _moves;
 	private Map<Blob, EventMove> _events;
 	private int _duration = 0;
+
+
 }
