@@ -82,9 +82,16 @@ public class LocalGameState implements Serializable {
 		
 		for (PhysicalMove granularMove : move.granularMovesAt(t))
 			granularMove.execute(this);
-		for (EventMove eventMove : move.eventMovesAt(t))
+		for (EventMove eventMove : move.eventMovesAt(t)) {
 			eventMove.execute(this);
-		
+			if (playSounds && eventMove.getMoveType() == EventMove.MOVE_TYPE.ACTIVATE) {
+				if (eventMove.getTarget() instanceof DeathRayBlob)
+					BlobsClient.getSoundEngine().play(SoundEngine.LASER);
+				else if (eventMove.getTarget() instanceof ExplodingBlob)
+					BlobsClient.getSoundEngine().play(SoundEngine.EXPLODE);
+			}
+		}
+			
 		applyForces(t, tmax);
 		checkCollisions(playSounds);
 		
