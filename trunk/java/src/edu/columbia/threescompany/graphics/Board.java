@@ -238,7 +238,9 @@ public class Board extends Canvas {
 			
 			if (_mousePosition != null) {
 				turnAntiAliasingOff(surface);
-				drawMoveCost(surface, worldToScreen(_mousePosition), _movementCost, true); // TODO check if able
+				//boolean able = (_movementCost < item.getOwner().getActionPoints());
+				boolean able = true;
+				drawMoveCost(surface, worldToScreen(_mousePosition), _movementCost, true);
 			}
 			turnAntiAliasingOn(surface);
 		}
@@ -337,6 +339,7 @@ public class Board extends Canvas {
 	private void drawHole(Graphics2D surface, ImmovableGameObject item) {
 		BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
 		Ellipse2D holeToDraw = circle(item.getPosition().x, item.getPosition().y, item.getRadius());
+		
 		fillShapeWithImage(surface, holeToDraw, bi);
 	}
 	
