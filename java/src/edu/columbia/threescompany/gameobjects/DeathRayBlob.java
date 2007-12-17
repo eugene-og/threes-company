@@ -58,7 +58,7 @@ public class DeathRayBlob extends Blob {
 		
 		System.out.println("Distance from death line to obj center is " + distance);
 		
-		return (distance <= obj.getRadius() && distance < GameParameters.DEATH_RAY_RANGE);
+		return (distance <= obj.getRadius() && u < GameParameters.DEATH_RAY_RANGE);
 	}
 
 	public void applyIrresistibleForce(Force force) {
