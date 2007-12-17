@@ -110,7 +110,12 @@ public abstract class Blob extends GameObject implements Serializable {
 	public void setSliding(boolean sliding) {
 		_sliding = sliding;
 	}
+	
+	public boolean isActivated() {
+		return _activated;
+	}
 
+	protected boolean _activated = false;
 	protected Player _owner;
 	protected boolean _dead;
 	protected boolean _anchored;

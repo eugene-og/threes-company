@@ -55,7 +55,7 @@ public class AnchorPointTest extends BaseTestCase {
 					 boringBlob.getPosition().y, 0.0);
 		assertEquals("Anchor point shouldn't move at all",
 				     new Coordinate(9.5, 0), anchorPoint.getPosition());
-		assertTrue("Boring blob should move", boringBlob.getPosition().x > 7.5 + 0.2);
+		assertSignificantlyGreaterThan("Boring blob should move", boringBlob.getPosition().x, 7.5);
 		assertTrue("Boring blob shouldn't move after hitting the anchor",
 				   boringBlob.getPosition().x < 8.6);
 		assertTrue("Push blob should have moved more than boring blob did " +

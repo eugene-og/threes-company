@@ -4,9 +4,7 @@ import edu.columbia.threescompany.common.Coordinate;
 import edu.columbia.threescompany.common.Force;
 import edu.columbia.threescompany.game.Player;
 
-public abstract class ForceBlob extends Blob {
-	private boolean _activated;
-	
+public abstract class ForceBlob extends Blob {	
 	protected ForceBlob(double x, double y, double radius, Player owner) {
 		super(x, y, radius, owner);
 	}
