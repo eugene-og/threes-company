@@ -175,8 +175,6 @@ public class Board extends Canvas {
 			//TODO Need to find better icons and way to differentiate between 2 players
 			BufferedImage bi = ImageUtilities.getBufferedImage(item, this);
 			Coordinate pos = item.getPosition();
-			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
-			fillShapeWithImage(surface, blobToDraw, bi);
 			
 			if (item instanceof DeathRayBlob) {
 				DeathRayBlob deathRayBlob = (DeathRayBlob) item;
@@ -203,6 +201,9 @@ public class Board extends Canvas {
 				}
 			}
 			
+			Ellipse2D blobToDraw = circle(pos.x, pos.y, item.getRadius());
+			fillShapeWithImage(surface, blobToDraw, bi);
+			
 			surface.setStroke(new BasicStroke(3.0f));
 			if (item.getOwner().getName().equals(_gameState.getPlayers().get(0).getName())) {
 				surface.setColor(Color.red);
@@ -216,7 +217,12 @@ public class Board extends Canvas {
 			Coordinate stringScreenPos = worldToScreen(pos);
 			double x = stringScreenPos.x - 16 / 2; // 16 = approximate width of string
 			double y = stringScreenPos.y + 8 / 2; // 8 = approximate height of string
-			surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
+			// TODO hover
+			//surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
+			
+			if (item instanceof DeathRayBlob) {
+				if (item.getRadius() == GameParameters.BLOB_SIZE_LIMIT) drawReadyToFireIndicator(surface, (Blob) item);
+			}
 			
 			if (item instanceof Blob) {
 				if (((Blob)item).isAnchored()) drawAnchoredIndicator(surface, (Blob)item);
@@ -239,14 +245,19 @@ public class Board extends Canvas {
 	}
 	
 	private void drawEnergizedIndicator(Graphics2D surface, Blob blob) {
-		surface.setColor(Color.yellow);
-		Ellipse2D selectionIndicator = circle(blob.getPosition().x, blob.getPosition().y, blob.getRadius() + 0.2);
-		surface.setStroke(new BasicStroke(2.0f));
-		surface.draw(selectionIndicator);
+		drawBlobIndicator(surface, blob, Color.yellow);
+	}
+	
+	private void drawAnchoredIndicator(Graphics2D surface, Blob blob) {
+		drawBlobIndicator(surface, blob, Color.black);
 	}
 
-	private void drawAnchoredIndicator(Graphics2D surface, Blob blob) {
-		surface.setColor(Color.black);
+	public void drawReadyToFireIndicator(Graphics2D surface, Blob blob) {
+		drawBlobIndicator(surface, blob, Color.green);
+	}
+	
+	private void drawBlobIndicator(Graphics2D surface, Blob blob, Color color) {
+		surface.setColor(color);
 		Ellipse2D selectionIndicator = circle(blob.getPosition().x, blob.getPosition().y, blob.getRadius() + 0.2);
 		surface.setStroke(new BasicStroke(2.0f));
 		surface.draw(selectionIndicator);

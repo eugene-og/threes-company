@@ -38,15 +38,15 @@ public class GuiConstants {
 												"Eugene Kozhukalo\n" +
     											"Zach van Schouwen";
     
-    public static final String PUSH_BLOB_IMAGE = "bgblu02.gif";
-    public static final String PULL_BLOB_IMAGE = "bgred02.gif";
-    public static final String EXPLODING_BLOB_IMAGE = "bgyel01.gif";
-    public static final String SLIPPERY_BLOB_IMAGE = "bggrn01.gif";
-    public static final String DEATHRAY_BLOB_IMAGE = "bgbrn07.gif";
+    public static final String PUSH_BLOB_IMAGE = "push_zach.gif";
+    public static final String PULL_BLOB_IMAGE = "pull_zach.gif";
+    public static final String EXPLODING_BLOB_IMAGE = "bomb_zach.gif";
+    public static final String SLIPPERY_BLOB_IMAGE = "slip_zach.gif";
+    public static final String DEATHRAY_BLOB_IMAGE = "death_zach.gif";
     public static final String ANCHOR_POINT_IMAGE = "Anchor0b.gif";
-    public static final String APCI_POINT_IMAGE = "mq_plus.gif";
-    public static final String HOLE_IMAGE = "hole.PNG";
-    public static final String SLIPPERY_SPOT_IMAGE = "slime.jpg";
+    public static final String APCI_POINT_IMAGE = "apci_zach.gif";
+    public static final String HOLE_IMAGE = "hole_zach.gif";
+    public static final String SLIPPERY_SPOT_IMAGE = "slip_spot_zach.gif";
 
 }
 												
