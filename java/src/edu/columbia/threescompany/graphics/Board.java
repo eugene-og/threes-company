@@ -162,11 +162,11 @@ public class Board extends Canvas {
 			
 			Color textColor = null; //TODO This may change depending on the fill color/texture of the blob
 			if (item instanceof PushBlob) {
-				textColor = Color.white;
+				textColor = Color.black;
 			} else if (item instanceof PullBlob) {
-				textColor = Color.white;
+				textColor = Color.black;
 			} else if (item instanceof DeathRayBlob) {
-				textColor = Color.white;
+				textColor = Color.black;
 			} else if (item instanceof ExplodingBlob) {
 				textColor = Color.white;
 			} else if (item instanceof SlipperyBlob) {
@@ -212,13 +212,13 @@ public class Board extends Canvas {
 			}
 			
 			surface.draw(blobToDraw);
-				
+			
 			surface.setColor(textColor);
 			Coordinate stringScreenPos = worldToScreen(pos);
 			double x = stringScreenPos.x - 16 / 2; // 16 = approximate width of string
 			double y = stringScreenPos.y + 8 / 2; // 8 = approximate height of string
 			// TODO hover
-			//surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
+			surface.drawString(df.format(item.getRadius()*(5/GameParameters.BLOB_SIZE_LIMIT)), (float)x, (float)y);
 			
 			if (item instanceof DeathRayBlob) {
 				if (item.getRadius() == GameParameters.BLOB_SIZE_LIMIT) drawReadyToFireIndicator(surface, (Blob) item);
